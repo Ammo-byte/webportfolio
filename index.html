@@ -235,5 +235,19 @@
                 'color: #3498db; font-size: 16px; font-weight: bold; background: #000; padding: 10px; border-radius: 5px;'
             );
         </script>
+        <script>
+            (function() {
+                const storedTheme = localStorage.getItem('theme');
+                const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+    
+                if (storedTheme === 'dark') {
+                    document.documentElement.classList.add('dark-mode');
+                } else if (storedTheme === 'light') {
+                    document.documentElement.classList.remove('dark-mode');
+                } else if (prefersDarkScheme.matches) {
+                    document.documentElement.classList.add('dark-mode');
+                }
+            })();
+        </script>
 </body>
 </html>

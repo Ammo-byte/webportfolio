@@ -4,26 +4,51 @@ document.addEventListener('DOMContentLoaded', () => {
     /** ============================
      * 1. Theme Toggle Logic
      ============================ */
-    const themeToggle = document.getElementById('theme-toggle');
-    const themeIcon = document.getElementById('theme-icon');
-    const currentTheme = localStorage.getItem('theme');
-
-    // Apply saved theme on load
-    if (currentTheme === 'dark') {
-        document.body.classList.add('dark-mode');
-        themeIcon.classList.replace('fa-sun', 'fa-moon');
-    }
-
-    themeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
-        if (document.body.classList.contains('dark-mode')) {
-            themeIcon.classList.replace('fa-sun', 'fa-moon');
-            localStorage.setItem('theme', 'dark');
-        } else {
-            themeIcon.classList.replace('fa-moon', 'fa-sun');
-            localStorage.setItem('theme', 'light');
-        }
-    });
+     const themeToggle = document.getElementById('theme-toggle');
+     const themeIcon = document.getElementById('theme-icon');
+     const currentTheme = localStorage.getItem('theme');
+     const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+ 
+     // Function to apply theme
+     function applyTheme(theme) {
+         if (theme === 'dark') {
+             document.body.classList.add('dark-mode');
+             themeIcon.classList.replace('fa-sun', 'fa-moon');
+             themeToggle.checked = true;
+         } else if (theme === 'light') {
+             document.body.classList.remove('dark-mode');
+             themeIcon.classList.replace('fa-moon', 'fa-sun');
+             themeToggle.checked = false;
+         }
+     }
+ 
+     // Apply saved theme on load, or system preference if no saved theme
+     if (currentTheme) {
+         applyTheme(currentTheme);
+     } else if (prefersDarkScheme.matches) {
+         applyTheme('dark');
+     } else {
+         applyTheme('light');
+     }
+ 
+     // Listen for system preference changes and apply if no user preference is set
+     prefersDarkScheme.addEventListener('change', (e) => {
+         if (!localStorage.getItem('theme')) { // Only if user hasn't set a preference
+             applyTheme(e.matches ? 'dark' : 'light');
+         }
+     });
+ 
+     // Toggle theme on button click
+     themeToggle.addEventListener('click', () => {
+         document.body.classList.toggle('dark-mode');
+         if (document.body.classList.contains('dark-mode')) {
+             themeIcon.classList.replace('fa-sun', 'fa-moon');
+             localStorage.setItem('theme', 'dark');
+         } else {
+             themeIcon.classList.replace('fa-moon', 'fa-sun');
+             localStorage.setItem('theme', 'light');
+         }
+     });
 
     /** ============================
      * 2. Typing Animation Logic
