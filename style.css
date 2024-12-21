@@ -1,0 +1,1762 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600&display=swap');
+
+/* CSS Variables for Theming */
+:root {
+    --accent-color: #3498db; /* Blue accent color */
+    --bg-color-light: #ffffff; /* Light mode background */
+    --bg-color-dark: #000000; /* Dark mode background - Pure black */
+    --text-color-light: #000000; /* Light mode text */
+    --text-color-dark: #ffffff; /* Dark mode text */
+    --hover-color: #1e7fc6; /* Slightly darker blue for hover */
+
+     /* Footer Specific Variables */
+     --footer-bg-light: #f8f9fa; /* Light gray background */
+     --footer-bg-dark: #1a1a1a; /* Dark background */
+     --footer-text-light: #333333; /* Dark text */
+     --footer-text-dark: #ffffff; /* Light text */
+ }
+ 
+ body.dark-mode {
+    --bg-color: var(--bg-color-dark);
+    --text-color: var(--text-color-dark);
+    
+    /* Footer Dark Mode Variables */
+    --footer-bg: var(--footer-bg-dark);
+    --footer-text: var(--footer-text-dark);
+}
+
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    border: none;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+html {
+    scroll-padding-top: 8rem;
+    font-size: 62.5%; /* 1rem = 10px */
+    scroll-behavior: smooth;   /* Enables smooth scrolling */
+}
+
+body {
+    background-color: var(--bg-color-light);
+    color: var(--text-color-light);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: var(--bg-color-dark);
+    color: var(--text-color-dark);
+}
+
+/* Header Styles */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 8rem; /* Fixed height */
+    padding: 1rem 9%;
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent */
+    backdrop-filter: blur(8px); /* Optional blur effect */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark-mode header {
+    background-color: rgba(0, 0, 0, 0.8); /* Dark mode: 80% opaque */
+}
+
+/* Logo Styles */
+.logo img {
+    width: 6rem; /* Increased size */
+    height: auto; /* Maintains aspect ratio */
+    transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+    transform: scale(1.1); /* Slight zoom on hover */
+}
+
+/* Logo Visibility */
+.logo-light {
+    display: block; /* Show light logo by default */
+}
+
+.logo-dark {
+    display: none; /* Hide dark logo by default */
+}
+
+body.dark-mode .logo-light {
+    display: none; /* Hide light logo in dark mode */
+}
+
+body.dark-mode .logo-dark {
+    display: block; /* Show dark logo in dark mode */
+}
+
+/* Navigation Styles */
+nav a {
+    font-size: 1.8rem;
+    color: var(--text-color-light);
+    margin-left: 4rem;
+    font-weight: 500;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+    border-bottom: 3px solid transparent;
+}
+
+body.dark-mode nav a {
+    color: var(--text-color-dark);
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--accent-color);
+    border-bottom: 3px solid var(--accent-color);
+}
+
+/* Remove Focus Outline for Links */
+nav a:focus {
+    outline: none; /* Removes default blue outline */
+}
+
+nav a:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 4px;
+}
+
+/* Home Section */
+section.home {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem 9%;
+    gap: 5rem;
+    transition: background-color 0.3s;
+}
+
+.home .home-content h1 {
+    font-size: 6rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+span {
+    color: var(--accent-color);
+}
+
+.home-content h3 {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.intro-paragraph {
+    font-size: 2.4rem;
+    line-height: 1.5;
+    margin-top: 2rem;
+}
+
+/* Container for the Image */
+.home-img {
+    position: relative;
+    display: inline-block;
+    border-radius: 50%; /* Keeps the image circular */
+}
+
+/* Main Image */
+.home-img img {
+    width: 32vw;
+    border-radius: 50%;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.home-img img:hover {
+    transform: scale(1.015); /* Slight zoom effect on hover */
+}
+
+/* Fire Ring Effect */
+.home-img::before {
+    content: '';
+    position: absolute;
+    top: -2px; /* Offset to create space for the fire ring */
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 50%;
+    z-index: -1; /* Ensures it doesn't overlap the image */
+    background: transparent;
+    box-shadow: 
+        0 -8px 15px rgba(0, 120, 255, 0.5), /* Base sparks */
+        0 8px 10px rgba(0, 0, 0, 0.4); /* Soft black glow */
+    animation: fire-sparks 10s infinite linear; /* Slower, smooth animation */
+}
+
+/* Enhanced Sparks Animation for the Fire Ring */
+@keyframes fire-sparks {
+    0% {
+        box-shadow: 
+            0 -8px 15px rgba(0, 120, 255, 0.5), /* Blue sparks */
+            5px 10px 12px rgba(0, 150, 255, 0.4), /* Side sparks */
+            -10px -5px 8px rgba(0, 120, 255, 0.6), /* Randomized placement */
+            0 8px 10px rgba(0, 0, 0, 0.4); /* Black soft glow */
+        transform: rotate(0deg) scale(1);
+    }
+    25% {
+        box-shadow: 
+            0 -12px 20px rgba(0, 150, 255, 0.6), /* Brighter blue sparks */
+            -10px -15px 12px rgba(0, 120, 255, 0.5), /* Top-left sparks */
+            15px 10px 18px rgba(0, 150, 255, 0.7), /* Larger side sparks */
+            0 8px 10px rgba(0, 0, 0, 0.5); /* Slightly brighter black glow */
+        transform: rotate(90deg) scale(1.03); /* Gradual rotation and scaling */
+    }
+    50% {
+        box-shadow: 
+            0 -8px 15px rgba(0, 120, 255, 0.5), 
+            -5px 10px 8px rgba(0, 150, 255, 0.5), 
+            10px -10px 12px rgba(0, 120, 255, 0.4), 
+            0 8px 10px rgba(0, 0, 0, 0.4);
+        transform: rotate(180deg) scale(1);
+    }
+    75% {
+        box-shadow: 
+            0 -10px 18px rgba(0, 150, 255, 0.6), 
+            10px -12px 15px rgba(0, 120, 255, 0.4), 
+            -15px 8px 10px rgba(0, 150, 255, 0.5), 
+            0 10px 12px rgba(0, 0, 0, 0.5);
+        transform: rotate(270deg) scale(1.03); /* Gradual rotation and scaling */
+    }
+    100% {
+        box-shadow: 
+            0 -8px 15px rgba(0, 120, 255, 0.5), 
+            5px 10px 12px rgba(0, 150, 255, 0.4), 
+            -10px -5px 8px rgba(0, 120, 255, 0.6), 
+            0 8px 10px rgba(0, 0, 0, 0.4);
+        transform: rotate(360deg) scale(1);
+    }
+}
+/* Highlight Class for Specific Text */
+.highlight {
+    color: var(--accent-color); /* Uses the predefined blue accent color */
+    font-style: italic;         /* Makes the text italic */
+}
+
+/* Dark Mode Glow Adjustment */
+body.dark-mode .home-img::before {
+    box-shadow: 
+        0 -8px 15px rgba(255, 255, 255, 0.5), /* White sparks */
+        5px 10px 12px rgba(200, 200, 200, 0.4), /* Softer white glow */
+        -10px -5px 8px rgba(255, 255, 255, 0.6), 
+        0 8px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    background-color: var(--accent-color);
+    color: var(--bg-color-light);
+    width: 5rem; /* Larger size */
+    height: 5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.2rem; /* Increased icon size */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    border: 2px solid var(--accent-color);
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1); /* Slight hover effect */
+    background-color: var(--hover-color);
+    color: #ffffff;
+}
+
+body.dark-mode .theme-toggle {
+    color: var(--bg-color-dark);
+    background-color: var(--hover-color);
+}
+
+
+/* General Section Styling */
+section {
+    min-height: 100vh;
+    position: relative; /* Each section takes full viewport height */
+    padding: 2rem 9%; /* Reduced top padding to move content upwards */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align items to the top */
+    text-align: left; /* Align text to the left */
+}
+
+/* Center Content for Each Section */
+.about, .experience, .projects, .contact, .resume {
+    display: flex;
+    align-items: flex-start; /* Align items to the top */
+    text-align: left; /* Align text to the left */
+    flex-direction: row; /* Arrange items in a row */
+    width: 100%; /* Ensure full width */
+}
+
+/* Add Positioning for Content */
+section h2, section p {
+    margin-bottom: 1rem;
+}
+
+/* Pseudo-Element Offset for All Sections */
+section::before {
+    content: "";
+    display: block;
+    height: 6rem; /* Match the header's height */
+    margin-top: -6rem; /* Negative margin to offset the fixed header */
+    visibility: hidden; /* Keeps the pseudo-element invisible */
+}
+
+/* About Section Specific Styling */
+.about {
+    position: relative; /* Acts as positioning context for absolute arrow */
+    min-height: 100vh;  /* Ensures the section fills the viewport */
+    padding: 0rem 5% 20rem; /* Keeps content well-spaced */
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Centers the content vertically */
+    background-color: transparent;
+    color: var(--text-color-light);
+    transition: background-color 0.3s, color 0.3s;
+    margin-top: -10rem;
+    margin-bottom: -20rem;
+}
+
+body.dark-mode .about {
+    background-color: transparent;
+    color: var(--text-color-dark);
+}
+
+/* About Container */
+.about-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10rem;
+    width: 100%;
+    flex-wrap: wrap;
+    min-height: 80vh; /* Ensures enough height for the arrow to be visible */
+}
+
+/* About Content */
+.about-content {
+    flex: 3; /* Allocates more space to text */
+    max-width: 980px; /* Increased from 600px */
+    text-align: left; /* Align text to the left */
+}
+
+.about-title {
+    font-size: 5rem; /* Increased font size */
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: var(--accent-color);
+}
+
+.about-content p {
+    font-size: 2.4rem; /* Increased font size */
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.about-content .currently strong {
+    color: var(--accent-color);
+}
+
+/* About Image Container */
+.about-image {
+    position: relative;
+    display: inline-block;
+    border-radius: 50%; /* Keeps the image circular */
+}
+
+/* Main Image */
+.about-image img {
+    width: 22vw;
+    height: 22vw;
+    border-radius: 50%; /* Ensures the image stays circular */
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.about-image img:hover {
+    transform: scale(1.015); /* Slight zoom effect on hover */
+}
+
+/* Fire Ring Effect */
+.about-image::before {
+    content: '';
+    position: absolute;
+    top: -4px; /* Offset evenly to maintain circular shape */
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border-radius: 50%; /* Ensures the fire ring is circular */
+    z-index: -1; /* Keeps the ring behind the image */
+    background: transparent;
+    box-shadow: 
+        0 0 20px rgba(0, 120, 255, 0.6), /* Uniform blue glow */
+        0 0 30px rgba(0, 120, 255, 0.5); /* Softer blue outer glow */
+    animation: fire-sparks 10s infinite linear;
+}
+
+/* Enhanced Sparks Animation for the Fire Ring */
+@keyframes fire-sparks {
+    0% {
+        box-shadow: 
+            0 0 20px rgba(0, 120, 255, 0.6), 
+            0 0 30px rgba(0, 120, 255, 0.5);
+        transform: rotate(0deg) scale(1);
+    }
+    25% {
+        box-shadow: 
+            0 0 25px rgba(0, 150, 255, 0.7), 
+            0 0 35px rgba(0, 150, 255, 0.6);
+        transform: rotate(90deg) scale(1.02);
+    }
+    50% {
+        box-shadow: 
+            0 0 20px rgba(0, 120, 255, 0.6), 
+            0 0 30px rgba(0, 120, 255, 0.5);
+        transform: rotate(180deg) scale(1);
+    }
+    75% {
+        box-shadow: 
+            0 0 25px rgba(0, 150, 255, 0.7), 
+            0 0 35px rgba(0, 150, 255, 0.6);
+        transform: rotate(270deg) scale(1.02);
+    }
+    100% {
+        box-shadow: 
+            0 0 20px rgba(0, 120, 255, 0.6), 
+            0 0 30px rgba(0, 120, 255, 0.5);
+        transform: rotate(360deg) scale(1);
+    }
+}
+
+/* Dark Mode Glow Adjustment */
+body.dark-mode .about-image::before {
+    box-shadow: 
+        0 0 20px rgba(255, 255, 255, 0.6), 
+        0 0 30px rgba(255, 255, 255, 0.5);
+}
+
+/* Highlight Class for Specific Text */
+.highlight a {
+    color: var(--accent-color); /* Blue color as defined in your theme */
+    font-style: italic;         /* Italicize the text */
+    text-decoration: none;      /* Remove underline from links */
+    transition: color 0.3s ease; /* Smooth transition for color changes */
+}
+
+.highlight a:hover {
+    text-decoration: underline; /* Underline on hover for better UX */
+}
+
+
+/* Header Visibility */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 8rem;
+    padding: 1rem 9%;
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 10;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+header.hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+}
+
+body.dark-mode header {
+    background-color: rgba(0, 0, 0, 0.85);
+}
+
+/* Particles.js Container */
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -10; /* Ensures particles are behind everything */
+    background: transparent;
+    pointer-events: none; /* Allows clicks to pass through */
+}
+
+body.dark-mode #particles-js {
+    background-color: var(--bg-color-dark); /* Dark mode background */
+}
+
+body {
+    margin: 0; /* Remove any default body margin */
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+.cursor {
+    display: inline-block;
+    margin-left: 2px;
+    font-size: inherit; /* Match the text size */
+    color: #3498db; /* Match the text color */
+    line-height: 1.1; /* Align cursor with text */
+    animation: blink 1s infinite;
+    font-weight: 350; /* Adjust weight to match text if needed */
+}
+
+.cursor.typing {
+    animation: none; /* Stop blinking during typing */
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+
+/* ============================
+   3. Experience Section Styling
+   ============================ */
+
+/* 4. Overall Experience Section */
+.experience {
+    padding: 2rem 2rem; /* Adjusted padding to reduce space */
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    width: 100%;
+    overflow-x: hidden; /* Prevents horizontal overflow */
+    min-height: 100vh; /* Ensures full viewport height */
+    box-sizing: border-box; /* Prevent padding issues */
+    scroll-margin-top: 500rem; /* Offset for fixed header */
+}
+
+/* 5. Experience Title */
+.experience-title {
+    font-size: 5rem; /* Increased font size */
+    color: var(--accent-color); /* Blue Accent */
+    text-align: center;
+    margin-bottom: 3rem;
+    font-weight: 600; /* Semi-Bold */
+    font-family: 'Poppins', sans-serif;
+    margin-top: 2rem;
+}
+
+/* Main Container for Experience */
+.experience-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Centers child containers vertically */
+    width: 100%; /* Full width */
+    max-width: 1200px; /* Adjust as needed for responsiveness */
+    /* Removed min-height to allow dynamic height based on content */
+    /* min-height: 550px; */
+    margin: 0 auto;
+    background-color: var(--secondary-background); /* Secondary Background */
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(52, 152, 219, 0.5); /* Blue Shadow for Depth */
+    overflow: hidden; /* Hide internal overflow */
+    position: relative; /* Establishes positioning context for ::before */
+    transition: background-color 0.3s, box-shadow 0.3s;
+    height: fit-content; /* Allows container to adjust height based on content */
+}
+
+/* Gradient Border */
+.experience-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(225deg, var(--accent-color), var(--background-color));
+    z-index: -1;
+    border-radius: 10px;
+}
+
+/* Left Side: Experience Categories */
+.experience-left {
+    flex: 2; /* Increased from 1 to 2 */
+    margin-right: 2rem;
+    overflow-y: auto; /* Add Scroll if Categories Overflow */
+    max-height: 100%; /* Prevent exceeding container height */
+    box-sizing: border-box;
+    min-width: 0; /* Allows the flex item to shrink properly */
+    
+    /* Flexbox Properties to Center Buttons Vertically */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centers buttons vertically */
+    align-items: flex-start; /* Aligns buttons to the start horizontally */
+    padding-bottom: 0; /* Ensures no extra padding at the bottom */
+    margin-bottom: 0;
+    
+    /* Optional: Center buttons horizontally on smaller screens */
+    /* align-items: center; */
+}
+
+/* Experience Tags */
+.experience-tag {
+    color: #777;
+    margin-bottom: 0.5rem;
+    font-size: 2.2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Experience List */
+.experience-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%; /* Ensures the list takes full width */
+}
+
+.experience-list li {
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    background-color: var(--secondary-background);
+    border: 1px solid var(--accent-color);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s; /* Removed transform transition */
+    font-size: 2rem;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%; /* Makes buttons stretch to full width */
+    box-sizing: border-box; /* Includes padding and border in width */
+}
+.experience-list li:last-child {
+    margin-bottom: 0; /* Removes margin at the bottom of the last button */
+}
+
+.experience-list li.active,
+.experience-list li:hover {
+    background-color: var(--accent-color);
+    color: #ffffff;
+    /* Removed transform to prevent shifting */
+}
+
+/* Separator Lines */
+.experience-left hr {
+    border: 1px solid #555;
+    margin: 1.5rem 0;
+}
+
+/* Right Side: Content Area */
+.experience-right {
+    flex: 4; /* Increased from 3 to 4 */
+    background-color: var(--background-color);
+    padding: 2.5rem; /* Controls padding inside the box */
+    border-radius: 10px;
+    position: relative;
+    overflow-y: auto;
+    transition: background-color 0.3s;
+    box-sizing: border-box;
+    min-width: 0;
+
+    /* Flexbox for Left Alignment */
+    display: flex;
+    flex-direction: column; /* Arrange children vertically */
+    justify-content: flex-start; /* Align content to the top */
+    align-items: flex-start; /* Align content to the left horizontally */
+
+    /* Remove extra margin/padding for fine control */
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    margin: 0; /* Ensures no additional space */
+}
+
+/* Experience Content Sections */
+.experience-content {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    font-family: 'Poppins', sans-serif;
+}
+
+.experience-content.active {
+    display: block;
+    opacity: 1;
+}
+
+/* Job Title Styling */
+.job-title {
+    font-size: 3em;
+    color: var(--accent-color);
+    text-align: left;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Job Dates Styling */
+.job-dates {
+    font-size: 2rem;
+    color: #777;
+    text-align: left;
+    margin-bottom: 1rem;
+    font-family: "Poppins", sans-serif;
+}
+
+/* Job Role/Description Styling */
+.job-role {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Prevent Long Words from Causing Overflow */
+.experience-right, .experience-left, .experience-container {
+    word-wrap: break-word;
+}
+
+/* 6. Job Text Styling */
+.blue-text-job {
+    font-style: italic; /* Makes the text italic */
+    font-size: 3rem;    /* Adjusts the font size as needed */
+    color: var(--text-color-light); /* Black in light mode */
+    transition: color 0.3s ease;   /* Smooth transition for color changes */
+}
+
+/* Dark Mode Styling for Job Text */
+body.dark-mode .blue-text-job {
+    color: var(--text-color-dark); /* White in dark mode */
+}
+
+
+
+/* ============================
+   Projects Section Styling
+============================ */
+
+/* General Section Styling */
+section {
+    margin: 0 auto; /* Center the section horizontally */
+    padding: 2rem 1rem; /* Adjust the padding for spacing inside */
+    box-sizing: border-box; /* Ensure padding doesn’t add to width */
+}
+
+.projects {
+    max-width: 1200px;
+    padding: 2rem 1rem; /* Adjusted padding */
+    background-color: var(--background-color); /* Matches your theme */
+    color: var(--text-color); /* Matches your theme */
+    transition: background-color 0.3s, color 0.3s; /* Smooth theme transitions */
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    justify-content: flex-start; /* Align to the top */
+    align-items: center; /* Center horizontally */
+    width: 100%; /* Full width */
+    overflow-x: hidden; /* Prevent horizontal overflow */
+    min-height: 100vh; /* Full viewport height */
+    box-sizing: border-box; /* Prevent padding issues */
+}
+
+.projects-title {
+    font-size: 5rem; /* Emphasized font size */
+    color: var(--accent-color); /* Accent color for title */
+    text-align: center; /* Center-align the title */
+    font-weight: 600; /* Semi-bold font weight */
+    font-family: 'Poppins', sans-serif; /* Use your preferred font */
+    margin-top: 4rem;
+}
+
+.projects-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+    justify-content: center; /* Centers the grid items horizontally */
+    align-items: center; /* Centers items vertically if needed */
+    column-gap: 2rem; /* Horizontal spacing between cards */
+    row-gap: 2rem; /* Vertical spacing between rows */
+    width: 100%;
+    margin-top: 2rem; /* Spacing above the container */
+    padding: 0 2rem; /* Padding inside the container */
+    box-sizing: border-box;
+}
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: none; /* Disable smooth transition for mode changes */
+}
+
+/* Card Styles */
+.card {
+    position: relative;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.9); /* Default light background */
+    color: var(--text-color); /* Dynamic text color */
+    border: solid 2px #3498db; /* Accent border */
+    margin: 1rem; /* Space around the card */
+    transition: all 0.2s ease-in-out; /* Faster and smoother transitions */
+    max-width: 500px;
+    width: 100%;
+    min-height: 320px; /* Ensure sufficient height */
+    padding: 1.5rem; /* Inner spacing */
+    border-radius: 12px; /* Rounded corners for a modern look */
+    backdrop-filter: blur(6px); /* Subtle background blur */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Lift on hover */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+    background: rgba(255, 255, 255, 1); /* Less transparency on hover */
+}
+
+.card:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    border-radius: inherit; /* Match card radius */
+    background: rgba(52, 152, 219, 0.1); /* Subtle gradient overlay */
+}
+
+/* Title Styling */
+.card-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--accent-color); /* Accent color */
+    text-align: center; /* Center-align title */
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em; /* Slight spacing for a cleaner look */
+}
+
+/* Description Styling */
+.card-text {
+    font-size: 1.35rem;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--text-color); /* Dynamic text color */
+    margin-bottom: 1rem;
+}
+
+/* Code Text Styling */
+.card-code {
+    font-family: "Source Code Pro", monospace;
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--text-color-secondary); /* Secondary text color */
+    margin-bottom: 1rem;
+}
+
+/* Icon Styling */
+.card-icon {
+    font-size: 2.5rem;
+    color: var(--accent-color); /* Dynamic accent color */
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.card-icon:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+    color: var(--hover-color); /* Hover color */
+}
+
+/* Light Mode */
+body.light-mode .card {
+    background: rgba(255, 255, 255, 0.95); /* Slightly opaque white */
+    color: #333; /* Dark text */
+    border-color: #3498db; /* Accent color */
+}
+
+body.light-mode .card-title {
+    color: #2c3e50; /* Darker accent for light mode */
+}
+
+body.light-mode .card-text {
+    color: #4a4a4a; /* Neutral dark gray for readability */
+}
+
+body.light-mode .card-code {
+    color: #6c757d; /* Subtle gray for code text */
+}
+
+body.light-mode .card-icon {
+    color: #3498db; /* Light mode icon color */
+}
+
+body.light-mode .card-icon:hover {
+    color: #1e7fc6; /* Slightly darker hover color */
+}
+
+/* Dark Mode */
+body.dark-mode .card {
+    background: rgba(28, 28, 28, 0.85); /* Semi-transparent dark background */
+    color: #fff; /* Light text */
+    border-color: #1e7fc6; /* Slightly lighter border in dark mode */
+}
+
+body.dark-mode .card-title {
+    color: #ecf0f1; /* Lighter title color */
+}
+
+body.dark-mode .card-text {
+    color: #ddd; /* Softer light gray for readability */
+}
+
+body.dark-mode .card-code {
+    color: #aaa; /* Subtle gray for code text */
+}
+
+body.dark-mode .card-icon {
+    color: #3498db; /* Icon color for dark mode */
+}
+
+body.dark-mode .card-icon:hover {
+    color: #52a2e5; /* Hover color in dark mode */
+}
+
+/* ============================
+   4. Hamburger Menu Styling
+   ============================ */
+
+/* Hide hamburger and mobile menu by default */
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 3rem;
+    cursor: pointer;
+    color: var(--text-color-light);
+    transition: color 0.3s ease;
+}
+
+body.dark-mode .hamburger {
+    color: var(--text-color-dark);
+}
+
+/* ============================
+   4. Hamburger Menu Styling
+   ============================ */
+
+/* Hamburger Button Styling */
+.hamburger {
+    display: none; /* Hidden on desktop by default */
+    background: none;
+    border: none;
+    font-size: 3rem;
+    cursor: pointer;
+    color: var(--text-color-light); /* Black in light mode */
+    transition: color 0.3s ease;
+    z-index: 101; /* Above the mobile menu */
+}
+
+body.dark-mode .hamburger {
+    color: var(--text-color-dark); /* White in dark mode */
+}
+
+/* Mobile Menu Hidden by Default */
+.mobile-menu {
+    display: none; /* Hidden by default */
+    position: fixed; /* Fixed positioning */
+    top: 8rem; /* Below the header */
+    right: 0;
+    left: 0;
+    width: 100%;
+    max-width: 300px;
+    background-color: rgba(255, 255, 255, 0.95); /* Light mode background */
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem;
+    z-index: 100; /* Below the hamburger button */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+/* Dark Mode Mobile Menu */
+body.dark-mode .mobile-menu {
+    background-color: rgba(0, 0, 0, 0.95); /* Dark mode background */
+}
+
+/* Show Mobile Menu When Active */
+.mobile-menu.active {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Mobile Navigation Links */
+.mobile-menu nav {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.mobile-menu nav .nav-link {
+    font-size: 2rem;
+    margin: 1rem 0;
+    color: var(--text-color-light); /* Black in light mode */
+    transition: color 0.3s ease;
+}
+
+body.dark-mode .mobile-menu nav .nav-link {
+    color: var(--text-color-dark); /* White in dark mode */
+}
+
+.mobile-menu nav .nav-link:hover,
+.mobile-menu nav .nav-link.active {
+    color: var(--accent-color);
+}
+
+/* Mobile Theme Toggle Button */
+#mobile-theme-toggle {
+    margin-top: 2rem;
+    width: 100%;
+    font-size: 2rem;
+    background-color: transparent;
+    color: var(--text-color-light);
+    border: 2px solid var(--accent-color);
+    border-radius: 50%;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode #mobile-theme-toggle {
+    color: var(--text-color-dark);
+    border-color: var(--accent-color);
+}
+
+#mobile-theme-toggle:hover {
+    background-color: var(--hover-color);
+    color: #ffffff;
+}
+
+/* Adjust Theme Toggle Icon in Mobile Menu */
+#mobile-theme-icon {
+    font-size: 2rem;
+}
+
+/* Close Mobile Menu Button */
+.close-mobile-menu {
+    background: none;
+    border: none;
+    font-size: 3rem;
+    cursor: pointer;
+    color: var(--text-color-light);
+    align-self: flex-end;
+    margin-bottom: 2rem;
+    transition: color 0.3s ease;
+}
+
+body.dark-mode .close-mobile-menu {
+    color: var(--text-color-dark);
+}
+
+.close-mobile-menu:hover {
+    color: var(--accent-color);
+}
+
+/* Prevent body scroll when mobile menu is open */
+body.no-scroll {
+    overflow: hidden;
+}
+
+/* ============================
+   5. Responsive Design
+   ============================ */
+   @media (max-width: 977px) {
+    /* Hide desktop navigation */
+    header nav {
+        display: none;
+    }
+    
+    /* Show hamburger button */
+    .hamburger {
+        display: block;
+    }
+
+    /* Adjust mobile menu positioning and center content */
+    .mobile-menu {
+        top: 8rem; /* Align with header height */
+        right: 0;
+        left: 0;
+        max-width: none;
+        width: 100%;
+        display: flex; /* Ensure flex is enabled */
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center items horizontally */
+        text-align: center; /* Center text within items */
+        padding: 2rem; /* Optional: Add padding for spacing */
+    }
+
+    /* Optional: Add backdrop overlay when mobile menu is open */
+    .mobile-menu.active::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+    }
+
+    /* Center navigation links within the mobile menu */
+    .mobile-menu nav a {
+        width: 100%; /* Make links take full width */
+        text-align: center; /* Center the text within links */
+        margin: 1rem 0; /* Add vertical spacing between links */
+        font-size: 2rem; /* Adjust font size as needed */
+        color: var(--text-color-light); /* Ensure text color matches theme */
+        transition: color 0.3s ease;
+    }
+
+    /* Dark Mode Adjustments for Mobile Menu Links */
+    body.dark-mode .mobile-menu nav a {
+        color: var(--text-color-dark); /* White text in dark mode */
+    }
+
+    /* Hover and Active States */
+    .mobile-menu nav a:hover,
+    .mobile-menu nav a.active {
+        color: var(--accent-color); /* Accent color on hover/active */
+    }
+}
+
+/* ============================
+   6. Contact Section Styling
+   ============================ */
+
+/* Contact Section Container */
+.contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4rem 2rem;
+    background-color: var(--background-color); /* Matches your theme */
+    color: var(--text-color); /* Matches your theme */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Contact Title */
+.contact-title {
+    font-size: 5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: var(--accent-color); /* Accent color for the title */
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+
+/* Contact Icons Container */
+.contact-icons {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Individual Icon Styling */
+.contact-icons a {
+    font-size: 10rem;
+    color: var(--text-color);
+    transition: color 0.3s, transform 0.3s;
+}
+
+/* Icon Hover Effects */
+.contact-icons a:hover {
+    color: var(--accent-color);
+    transform: scale(1.2);
+}
+
+/* Specific Icon Colors (Optional) */
+/* You can assign different colors to each icon if desired */
+.contact-icons a[aria-label="Download Resume"] {
+    color: #FF5733; /* Example: Orange for Resume */
+}
+
+.contact-icons a[aria-label="GitHub Profile"] {
+    color: #333333; /* GitHub's dark color */
+}
+
+.contact-icons a[aria-label="Send Email"] {
+    color: #C70039; /* Example: Red for Email */
+}
+
+.contact-icons a[aria-label="LinkedIn Profile"] {
+    color: #0077B5; /* LinkedIn's blue color */
+}
+
+/* Dark Mode Adjustments */
+body.dark-mode .contact {
+    background-color: var(--background-color-dark); /* Dark mode background */
+    color: var(--text-color-dark); /* Dark mode text color */
+}
+
+body.dark-mode .contact-title {
+    color: var(--accent-color);
+}
+
+body.dark-mode .contact-icons a {
+    color: var(--text-color-dark);
+}
+
+body.dark-mode .contact-icons a[aria-label="Download Resume"] {
+    color: #FF5733; /* Consistent color or adjust as needed */
+}
+
+body.dark-mode .contact-icons a[aria-label="GitHub Profile"] {
+    color: #ffffff; /* White for GitHub in dark mode */
+}
+
+body.dark-mode .contact-icons a[aria-label="Send Email"] {
+    color: #FF6B81; /* Lighter red for Email in dark mode */
+}
+
+body.dark-mode .contact-icons a[aria-label="LinkedIn Profile"] {
+    color: #0077B5; /* LinkedIn's blue remains the same */
+}
+/* ============================
+   7. Footer Styling
+   ============================ */
+
+/* Footer Container */
+
+.footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1rem;
+    background-color: var(--footer-bg-light); /* Default to light mode */
+    color: var(--footer-text-light); /* Default to light mode text */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark Mode Footer */
+body.dark-mode .footer {
+    background-color: var(--footer-bg-dark); /* Dark mode background */
+    color: var(--footer-text-dark); /* Dark mode text color */
+}
+
+/* Footer Text */
+.footer p {
+    font-size: 1.6rem;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+
+/* Main Body */
+section:last-of-type {
+    min-height: 10vh; /* Ensures this section fills the viewport */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Vertically centers content */
+    align-items: center;
+    margin: 0; /* Prevents extra margin below */
+}
+
+/* ============================
+     Scrollbar Styling
+   ============================ */
+
+/* Scrollbar Styling for WebKit Browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 8px; /* Width of the entire scrollbar */
+    height: 12px; /* Height of the scrollbar (for horizontal scrollbars) */
+}
+
+::-webkit-scrollbar-track {
+    background: var(--background-color); /* Track color matches the current theme's background */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--accent-color); /* Thumb color using the accent color */
+    border-radius: 6px; /* Rounded corners for the thumb */
+    border: 3px solid var(--background-color); /* Creates padding around the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #2980b9; /* Darker blue when hovering over the thumb */
+}
+
+::-webkit-scrollbar-thumb:active {
+    background-color: #1c6690; /* Even darker blue when active (clicked) */
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent; /* Optional: makes the corner transparent */
+}
+
+/* Scrollbar Styling for Firefox */
+body {
+    scrollbar-width: thin; /* Options: auto, thin */
+    scrollbar-color: var(--accent-color) var(--background-color); /* thumb and track colors */
+}
+
+body.dark-mode {
+    scrollbar-color: var(--accent-color) var(--background-color); /* Ensures consistency in dark mode */
+}
+
+/* Optional: Scrollbar Styling for Internet Explorer 10+ */
+/* Note: Limited customization available */
+body {
+    -ms-overflow-style: -ms-autohiding-scrollbar; /* Auto-hiding scrollbars */
+}
+/* ============================
+    404 Page Specific Styles
+============================ */
+
+/* Container Styling */
+.page-not-found {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Full viewport height */
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-color);
+}
+
+/* General Text Styling */
+.page-not-found p {
+    font-size: 2rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+}
+/* Subtitle Styling */
+.subtitle-404 {
+    font-size: 500rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--accent-color); /* Accent color for emphasis */
+}
+
+/* Pokémon Information Section */
+.pokemon-info {
+    margin-top: 2.5rem;
+    text-align: center;
+    color: var(--text-color);
+    background-color: rgba(255, 255, 255, 0.1); /* Subtle background for box */
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    max-width: 600px; /* Constrain box width */
+    width: 90%; /* Adjust width to fit smaller screens */
+}
+
+/* Pokémon Name Styling */
+#pokemon-name {
+    font-size: 3rem; /* Increased font size */
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+}
+
+/* Pokémon Image Styling */
+#pokemon-img {
+    width: 70%; /* Larger image size */
+    max-width: 400px; /* Increased max size */
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25); /* Stronger shadow for emphasis */
+    margin: 2rem 0;
+    transition: transform 0.3s ease;
+}
+
+#pokemon-img:hover {
+    transform: scale(1.05); /* Slightly larger hover effect */
+}
+
+/* Pokémon Details Styling */
+.pokemon-info p {
+    font-size: 1.8rem; /* Larger font size */
+    margin-bottom: 1rem;
+}
+
+.pokemon-info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pokemon-info ul li {
+    font-size: 1.8rem; /* Larger font size for stats */
+    line-height: 1.8;
+    margin-bottom: 0.8rem;
+}
+
+/* Home Button Styling */
+.home-button {
+    display: inline-block;
+    margin-top: 2rem; /* Added spacing from the content */
+    padding: 1.2rem 2.5rem; /* Increased padding for larger button */
+    font-size: 2rem; /* Larger font size */
+    font-weight: 700;
+    color: #ffffff;
+    background-color: var(--accent-color);
+    border-radius: 8px; /* Slightly more rounded */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+}
+
+.home-button:hover {
+    background-color: var(--hover-color);
+    transform: scale(1.1); /* Slightly larger hover effect */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .subtitle-404 {
+        font-size: 2.5rem;
+    }
+
+    .page-not-found p {
+        font-size: 1.4rem;
+    }
+
+    .home-button {
+        font-size: 1.8rem;
+        padding: 1rem 2rem;
+    }
+
+    #pokemon-img {
+        width: 80%;
+        max-width: 300px;
+    }
+
+    .pokemon-info {
+        padding: 1.5rem;
+    }
+
+    .pokemon-info p,
+    .pokemon-info ul li {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .subtitle-404 {
+        font-size: 2rem;
+    }
+
+    .page-not-found p {
+        font-size: 1.2rem;
+    }
+
+    .home-button {
+        font-size: 1.6rem;
+        padding: 0.8rem 1.6rem;
+    }
+
+    #pokemon-img {
+        width: 90%;
+        max-width: 250px;
+    }
+
+    .pokemon-info {
+        padding: 1rem;
+    }
+
+    .pokemon-info p,
+    .pokemon-info ul li {
+        font-size: 1.4rem;
+    }
+}/* ============================
+   Enhanced Responsive Design
+   ============================ */
+
+/* 1. Small Tablets and Large Phones (Max Width: 1024px) */
+@media (max-width: 1024px) {
+    /* Home Section Adjustments */
+    section.home {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem 5%;
+        gap: 3rem;
+    }
+
+    .home .home-content h1 {
+        font-size: 4rem;
+    }
+
+    .home-content h3 {
+        font-size: 3rem;
+    }
+
+    .intro-paragraph {
+        font-size: 2rem;
+    }
+
+    .home-img {
+        width: 60vw;
+    }
+
+    .home-img img {
+        width: 60vw;
+    }
+
+    /* About Section Adjustments */
+    .about {
+        flex-direction: column;
+        padding: 2rem 5% 15rem;
+        margin-top: -5rem;
+        margin-bottom: -15rem;
+    }
+
+    .about-container {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .about-content {
+        max-width: 100%;
+    }
+
+    .about-title {
+        font-size: 4rem;
+    }
+
+    .about-content p {
+        font-size: 2rem;
+    }
+
+    .about-image img {
+        width: 50vw;
+        height: 50vw;
+    }
+
+    /* Experience Section Adjustments */
+    .experience-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .experience-left {
+        margin-right: 0;
+        margin-bottom: 2rem;
+        align-items: center;
+    }
+
+    .experience-right {
+        width: 100%;
+    }
+}
+
+/* 2. Tablets and Small Devices (Max Width: 768px) */
+@media (max-width: 768px) {
+    /* Home Section Adjustments */
+    section.home {
+        padding: 2rem 3%;
+        gap: 2rem;
+    }
+
+    .home .home-content h1 {
+        font-size: 3rem;
+    }
+
+    .home-content h3 {
+        font-size: 2.5rem;
+    }
+
+    .intro-paragraph {
+        font-size: 1.8rem;
+    }
+
+    .home-img {
+        width: 80vw;
+    }
+
+    .home-img img {
+        width: 80vw;
+    }
+
+    /* About Section Adjustments */
+    .about {
+        padding: 2rem 3% 10rem;
+        margin-top: -3rem;
+        margin-bottom: -10rem;
+    }
+
+    .about-container {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .about-title {
+        font-size: 3.5rem;
+    }
+
+    .about-content p {
+        font-size: 1.8rem;
+    }
+
+    .about-image img {
+        width: 60vw;
+        height: 60vw;
+    }
+
+    /* Experience Section Adjustments */
+    .experience-container {
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem;
+    }
+
+    .experience-left {
+        margin-right: 0;
+        margin-bottom: 1.5rem;
+        align-items: center;
+    }
+
+    .experience-right {
+        width: 100%;
+        padding: 1.5rem;
+    }
+
+    /* Projects Section Adjustments */
+    .projects-container {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+    }
+
+    /* Contact Section Adjustments */
+    .contact-icons a {
+        font-size: 8rem;
+    }
+}
+
+/* 3. Mobile Devices (Max Width: 480px) */
+@media (max-width: 480px) {
+    /* Home Section Adjustments */
+    section.home {
+        padding: 1.5rem 2%;
+        gap: 1.5rem;
+    }
+
+    .home .home-content h1 {
+        font-size: 2.5rem;
+    }
+
+    .home-content h3 {
+        font-size: 2rem;
+    }
+
+    .intro-paragraph {
+        font-size: 1.6rem;
+    }
+
+    .home-img {
+        width: 90vw;
+    }
+
+    .home-img img {
+        width: 90vw;
+    }
+
+    /* About Section Adjustments */
+    .about {
+        padding: 1.5rem 2% 8rem;
+        margin-top: -2rem;
+        margin-bottom: -8rem;
+    }
+
+    .about-title {
+        font-size: 3rem;
+    }
+
+    .about-content p {
+        font-size: 1.6rem;
+    }
+
+    .about-image img {
+        width: 70vw;
+        height: 70vw;
+    }
+
+    /* Experience Section Adjustments */
+    .experience-container {
+        padding: 1rem;
+    }
+
+    .experience-title {
+        font-size: 4rem;
+    }
+
+    .experience-list li {
+        font-size: 1.8rem;
+        padding: 1rem;
+    }
+
+    .job-title {
+        font-size: 2.5rem;
+    }
+
+    .job-dates {
+        font-size: 1.6rem;
+    }
+
+    .job-role {
+        font-size: 1.4rem;
+    }
+
+    /* Projects Section Adjustments */
+    .projects-title {
+        font-size: 4rem;
+    }
+
+    .card-title {
+        font-size: 1.6rem;
+    }
+
+    .card-text {
+        font-size: 1.2rem;
+    }
+
+    .card-code {
+        font-size: 1rem;
+    }
+
+    /* Contact Section Adjustments */
+    .contact-title {
+        font-size: 4rem;
+    }
+
+    .contact-icons a {
+        font-size: 6rem;
+    }
+
+    /* Footer Adjustments */
+    .footer p {
+        font-size: 1.4rem;
+    }
+}

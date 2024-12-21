@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aamodit Acharya | 404</title>
+    <link rel="shortcut icon" href="/assets/images/favicon.ico">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Replace with your preferred fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,600&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&family=Roboto:wght@500&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400&display=swap">
+
+    <!-- Custom Fonts -->
+    <link rel="stylesheet" href="https://twilkhoo.github.io/assets/fonts/ragastaitalic/Ragasta.css">
+    <link rel="stylesheet" href="https://twilkhoo.github.io/assets/fonts/ragastaregular/Ragasta.css">
+    <link rel="stylesheet" href="https://twilkhoo.github.io/assets/fonts/helonik/Helonik%20Extended.css">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"
+        defer></script>
+
+    <!-- Animations -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>  referrerpolicy="no-referrer"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css" type="text/css"> <!-- Use absolute path -->
+
+    <!-- Font Awesome (Icons) -->
+    <script src="https://kit.fontawesome.com/1aeed9195d.js" crossorigin="anonymous" defer></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body class="dark-mode"> <!-- Added 'dark-mode' class by default -->
+
+    <!-- Particles.js Container -->
+    <div id="particles-js"></div>
+
+    <!-- 404 Content -->
+    <div class="container page-not-found text-center">
+        <p class="text-center subtitle-404">Aamodit Acharya - <span class="blue-text code-text">404</span></p>
+        <p>Sorry, but the page you were looking for might have moved, or does not exist.</p>
+        <p>Meanwhile, enjoy today's <strong>Pokemon of the Day</strong>, retrieved from <a href="https://pokeapi.co/" target="_blank" class="code-text">PokeAPI</a>.</p>
+        <button type="button" class="btn home-button mx-auto d-block" onclick="window.location.href='/index.html';">Home</button>
+        
+        <!-- Pokemon Information Section -->
+        <div class="pokemon-info mt-4">
+            <h2 class="title-404">"<span id="pokemon-name"></span>"</h2>
+            <img id="pokemon-img" src="" alt="Pokemon Image" class="img-fluid" width="50%">
+            
+            <!-- Additional Pokemon Details -->
+            <div class="mt-4">
+                <p><strong>ID:</strong> <span id="pokemon-id"></span></p>
+                <p><strong>Types:</strong> <span id="pokemon-types"></span></p>
+                <p><strong>Abilities:</strong> <span id="pokemon-abilities"></span></p>
+                <p><strong>Height:</strong> <span id="pokemon-height"></span> dm</p>
+                <p><strong>Weight:</strong> <span id="pokemon-weight"></span> hg</p>
+                <p><strong>Base Experience:</strong> <span id="pokemon-base-experience"></span></p>
+                <p><strong>Stats:</strong></p>
+                <ul id="pokemon-stats" class="list-unstyled">
+                    <!-- Stats will be populated here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <!-- Particles.js -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+    <!-- Inline Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            /** ============================
+             * 1. Initialize Particles.js
+             ============================ */
+             particlesJS("particles-js", {
+        particles: {
+            number: { value: 100, density: { enable: true, value_area: 800 } },
+            color: { value: "#3498db" },
+            shape: { type: "circle" },
+            opacity: { value: 0.5 },
+            size: { value: 3, random: true },
+            line_linked: { enable: true, distance: 150, color: "#3498db", opacity: 0.4, width: 1 },
+            move: { enable: true, speed: 3 }
+        },
+        interactivity: {
+            detect_on: "canvas",
+            events: {
+                onhover: { enable: true, mode: "repulse" },
+                onclick: { enable: true, mode: "push" }
+            },
+            modes: {
+                repulse: { distance: 100, duration: 0.4 },
+                push: { particles_nb: 4 }
+            }
+        },
+        retina_detect: true
+    });
+
+
+            /** ============================
+             * 2. Fetch and Display Pokemon Data
+             ============================ */
+            function getPokemonId() {
+                const today = new Date();
+                const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+                const totalPokemon = 1010; // Update this number based on the current total in PokeAPI
+                return (dayOfYear % totalPokemon) + 1;
+            }
+
+            async function fetchPokemonData() {
+                const id = getPokemonId();
+                const url = `https://pokeapi.co/api/v2/pokemon/${id}/`;
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const data = await response.json();
+                    displayPokemon(data);
+                } catch (error) {
+                    console.error("Fetch error:", error);
+                    displayErrorMessage();
+                }
+            }
+
+            function displayPokemon(pokemon) {
+                // Basic Info
+                document.getElementById('pokemon-name').textContent = capitalizeFirstLetter(pokemon.name);
+                document.getElementById('pokemon-img').src = pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default;
+                document.getElementById('pokemon-img').alt = pokemon.name;
+
+                // Additional Info
+                document.getElementById('pokemon-id').textContent = pokemon.id;
+                document.getElementById('pokemon-height').textContent = pokemon.height;
+                document.getElementById('pokemon-weight').textContent = pokemon.weight;
+                document.getElementById('pokemon-base-experience').textContent = pokemon.base_experience;
+
+                // Types
+                const types = pokemon.types.map(typeInfo => capitalizeFirstLetter(typeInfo.type.name)).join(', ');
+                document.getElementById('pokemon-types').textContent = types;
+
+                // Abilities
+                const abilities = pokemon.abilities.map(abilityInfo => capitalizeFirstLetter(abilityInfo.ability.name)).join(', ');
+                document.getElementById('pokemon-abilities').textContent = abilities;
+
+                // Stats
+                const statsList = document.getElementById('pokemon-stats');
+                statsList.innerHTML = ''; // Clear existing stats
+                pokemon.stats.forEach(statInfo => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<strong>${capitalizeFirstLetter(statInfo.stat.name)}:</strong> ${statInfo.base_stat}`;
+                    statsList.appendChild(li);
+                });
+            }
+
+            function displayErrorMessage() {
+                const container = document.querySelector('.page-not-found');
+                container.innerHTML += `
+                    <h2 class="title-404">Oops! Something went wrong.</h2>
+                    <p class="description">We couldn't fetch the Pokemon of the Day. Please try again later.</p>
+                `;
+            }
+
+            function capitalizeFirstLetter(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            }
+
+            // Fetch Pokemon data on load
+            fetchPokemonData();
+        });
+    </script>
+</body>
+
+</html>
