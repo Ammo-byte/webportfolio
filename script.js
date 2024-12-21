@@ -6,19 +6,31 @@ document.addEventListener('DOMContentLoaded', () => {
      ============================ */
      const themeToggle = document.getElementById('theme-toggle');
      const themeIcon = document.getElementById('theme-icon');
+     const favicon = document.getElementById('favicon'); // New: Favicon element
      const currentTheme = localStorage.getItem('theme');
      const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
  
-     // Function to apply theme
+     // Function to apply theme and update favicon
      function applyTheme(theme) {
          if (theme === 'dark') {
              document.body.classList.add('dark-mode');
              themeIcon.classList.replace('fa-sun', 'fa-moon');
              themeToggle.checked = true;
+             updateFavicon('dark');
          } else if (theme === 'light') {
              document.body.classList.remove('dark-mode');
              themeIcon.classList.replace('fa-moon', 'fa-sun');
              themeToggle.checked = false;
+             updateFavicon('light');
+         }
+     }
+ 
+     // Function to update favicon based on theme
+     function updateFavicon(theme) {
+         if (theme === 'dark') {
+             favicon.href = 'assets/1.png'; // Path to dark mode favicon
+         } else if (theme === 'light') {
+             favicon.href = 'assets/2.png'; // Path to light mode favicon
          }
      }
  
@@ -44,12 +56,13 @@ document.addEventListener('DOMContentLoaded', () => {
          if (document.body.classList.contains('dark-mode')) {
              themeIcon.classList.replace('fa-sun', 'fa-moon');
              localStorage.setItem('theme', 'dark');
+             updateFavicon('dark');
          } else {
              themeIcon.classList.replace('fa-moon', 'fa-sun');
              localStorage.setItem('theme', 'light');
+             updateFavicon('light');
          }
      });
-
     /** ============================
      * 2. Typing Animation Logic
      ============================ */
