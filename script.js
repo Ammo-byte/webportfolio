@@ -28,9 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
      // Function to update favicon based on theme
      function updateFavicon(theme) {
          if (theme === 'dark') {
-             favicon.href = 'assets/1.png'; // Path to dark mode favicon
+             favicon.href = 'Images/1.png'; // Path to dark mode favicon
          } else if (theme === 'light') {
-             favicon.href = 'assets/2.png'; // Path to light mode favicon
+             favicon.href = 'Images/2.png'; // Path to light mode favicon
          }
      }
  
