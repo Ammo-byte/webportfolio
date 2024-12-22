@@ -1392,7 +1392,17 @@ body {
     margin: 2rem 0;
     transition: transform 0.3s ease;
 }
+.pokeapi-link {
+    color: #ffffff; /* Tomato color */
+    /* Optional: Add additional styles */
+    text-decoration: none; /* Removes the underline */
+    font-weight: bold;     /* Makes the text bold */
+}
 
+.pokeapi-link:hover {
+    color: #3498db; /* Darker shade on hover */
+    text-decoration: underline; /* Adds underline on hover */
+}
 #pokemon-img:hover {
     transform: scale(1.05); /* Slightly larger hover effect */
 }
