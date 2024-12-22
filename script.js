@@ -6,57 +6,35 @@ document.addEventListener('DOMContentLoaded', () => {
      ============================ */
      const themeToggle = document.getElementById('theme-toggle');
      const themeIcon = document.getElementById('theme-icon');
-     
-     // Favicon Elements
-     const favicons = {
-         light: {
-             'favicon-96x96': document.getElementById('favicon-light-96x96'),
-             'favicon-svg': document.getElementById('favicon-light-svg'),
-             'favicon-ico': document.getElementById('favicon-light-ico'),
-             'apple-touch-icon': document.getElementById('apple-touch-icon-light')
-         },
-         dark: {
-             'favicon-96x96': document.getElementById('favicon-dark-96x96'),
-             'favicon-svg': document.getElementById('favicon-dark-svg'),
-             'favicon-ico': document.getElementById('favicon-dark-ico'),
-             'apple-touch-icon': document.getElementById('apple-touch-icon-dark')
-         }
-     };
- 
+     const favicon = document.getElementById('favicon'); // New: Favicon element
      const currentTheme = localStorage.getItem('theme');
      const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
  
-     // Function to apply theme and update favicons
+     // Function to apply theme and update favicon
      function applyTheme(theme) {
          if (theme === 'dark') {
              document.body.classList.add('dark-mode');
              themeIcon.classList.replace('fa-sun', 'fa-moon');
              themeToggle.checked = true;
-             updateFavicons('dark');
+             updateFavicon('dark');
          } else if (theme === 'light') {
              document.body.classList.remove('dark-mode');
              themeIcon.classList.replace('fa-moon', 'fa-sun');
              themeToggle.checked = false;
-             updateFavicons('light');
+             updateFavicon('light');
          }
      }
  
-     // Function to update favicons based on theme
-     function updateFavicons(theme) {
-         const otherTheme = theme === 'dark' ? 'light' : 'dark';
- 
-         // Hide the favicons of the other theme
-         for (let key in favicons[otherTheme]) {
-             favicons[otherTheme][key].disabled = true;
-         }
- 
-         // Enable the favicons of the current theme
-         for (let key in favicons[theme]) {
-             favicons[theme][key].disabled = false;
+     // Function to update favicon based on theme
+     function updateFavicon(theme) {
+         if (theme === 'dark') {
+             favicon.href = 'Images/favicons/favicon-dark.ico'; // Path to dark mode favicon
+         } else if (theme === 'light') {
+             favicon.href = 'Images/favicons/favicon-light.ico'; // Path to light mode favicon
          }
      }
  
-     // Initial theme application
+     // Apply saved theme on load, or system preference if no saved theme
      if (currentTheme) {
          applyTheme(currentTheme);
      } else if (prefersDarkScheme.matches) {
@@ -74,12 +52,15 @@ document.addEventListener('DOMContentLoaded', () => {
  
      // Toggle theme on button click
      themeToggle.addEventListener('click', () => {
+         document.body.classList.toggle('dark-mode');
          if (document.body.classList.contains('dark-mode')) {
-             applyTheme('light');
-             localStorage.setItem('theme', 'light');
-         } else {
-             applyTheme('dark');
+             themeIcon.classList.replace('fa-sun', 'fa-moon');
              localStorage.setItem('theme', 'dark');
+             updateFavicon('dark');
+         } else {
+             themeIcon.classList.replace('fa-moon', 'fa-sun');
+             localStorage.setItem('theme', 'light');
+             updateFavicon('light');
          }
      });
     /** ============================
