@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /** ============================
      * 6. Initialize Experience Section Logic
      ============================ */
-    function initializeExperienceSection() {
+     function initializeExperienceSection() {
         const experienceListItems = document.querySelectorAll('.experience-list li');
         const experienceContents = document.querySelectorAll('.experience-content');
 

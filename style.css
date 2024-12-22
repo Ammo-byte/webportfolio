@@ -552,7 +552,7 @@ body {
     overflow-x: hidden; /* Prevents horizontal overflow */
     min-height: 100vh; /* Ensures full viewport height */
     box-sizing: border-box; /* Prevent padding issues */
-    scroll-margin-top: 500rem; /* Offset for fixed header */
+    scroll-margin-top: 8rem; /* Offset for fixed header */
 }
 
 /* 5. Experience Title */
@@ -580,7 +580,7 @@ body {
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(52, 152, 219, 0.5); /* Blue Shadow for Depth */
-    overflow: hidden; /* Hide internal overflow */
+    overflow: auto; /* Hide internal overflow */
     position: relative; /* Establishes positioning context for ::before */
     transition: background-color 0.3s, box-shadow 0.3s;
     height: fit-content; /* Allows container to adjust height based on content */
@@ -941,6 +941,10 @@ body.dark-mode .card-icon:hover {
     color: #52a2e5; /* Hover color in dark mode */
 }
 
+.experience, .projects {
+    position: relative; /* Ensure positioning context */
+    z-index: 1; /* Lower than fixed header/menu if necessary */
+}
 /* ============================
    4. Hamburger Menu Styling
    ============================ */
