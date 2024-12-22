@@ -24,22 +24,15 @@ document.addEventListener('DOMContentLoaded', () => {
              updateFavicon('light');
          }
      }
-    // Function to update favicon based on theme
-    function updateFavicon(theme) {
-        if (theme === 'dark') {
-            favicon.href = '/Images/favicons/favicon-dark.ico?v=1'; // Path to dark mode favicon with cache-busting
-            // Optional: Update Apple Touch Icon for dark mode
-            if (appleTouchIcon) {
-                appleTouchIcon.href = '/Images/favicons/apple-touch-icon-dark.png?v=1';
-            }
-        } else if (theme === 'light') {
-            favicon.href = '/Images/favicons/favicon-light.ico?v=1'; // Path to light mode favicon with cache-busting
-            // Optional: Update Apple Touch Icon for light mode
-            if (appleTouchIcon) {
-                appleTouchIcon.href = '/Images/favicons/apple-touch-icon-light.png?v=1';
-            }
-        }
-    }
+ 
+     // Function to update favicon based on theme
+     function updateFavicon(theme) {
+         if (theme === 'dark') {
+             favicon.href = 'Images/favicons/1.png'; // Path to dark mode favicon
+         } else if (theme === 'light') {
+             favicon.href = 'Images/favicons/2.png'; // Path to light mode favicon
+         }
+     }
  
      // Apply saved theme on load, or system preference if no saved theme
      if (currentTheme) {
