@@ -5,64 +5,73 @@ document.addEventListener('DOMContentLoaded', () => {
      * 1. Theme Toggle Logic
      ============================ */
      const themeToggle = document.getElementById('theme-toggle');
-     const themeIcon = document.getElementById('theme-icon');
-     const favicon = document.getElementById('favicon'); // New: Favicon element
-     const currentTheme = localStorage.getItem('theme');
-     const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
- 
-     // Function to apply theme and update favicon
-     function applyTheme(theme) {
-         if (theme === 'dark') {
-             document.body.classList.add('dark-mode');
-             themeIcon.classList.replace('fa-sun', 'fa-moon');
-             themeToggle.checked = true;
-             updateFavicon('dark');
-         } else if (theme === 'light') {
-             document.body.classList.remove('dark-mode');
-             themeIcon.classList.replace('fa-moon', 'fa-sun');
-             themeToggle.checked = false;
-             updateFavicon('light');
-         }
-     }
- 
-     // Function to update favicon based on theme
-     function updateFavicon(theme) {
-         if (theme === 'dark') {
-             favicon.href = 'Images/favicons/1.png'; // Path to dark mode favicon
-         } else if (theme === 'light') {
-             favicon.href = 'Images/favicons/2.png'; // Path to light mode favicon
-         }
-     }
- 
-     // Apply saved theme on load, or system preference if no saved theme
-     if (currentTheme) {
-         applyTheme(currentTheme);
-     } else if (prefersDarkScheme.matches) {
-         applyTheme('dark');
-     } else {
-         applyTheme('light');
-     }
- 
-     // Listen for system preference changes and apply if no user preference is set
-     prefersDarkScheme.addEventListener('change', (e) => {
-         if (!localStorage.getItem('theme')) { // Only if user hasn't set a preference
-             applyTheme(e.matches ? 'dark' : 'light');
-         }
-     });
- 
-     // Toggle theme on button click
-     themeToggle.addEventListener('click', () => {
-         document.body.classList.toggle('dark-mode');
-         if (document.body.classList.contains('dark-mode')) {
-             themeIcon.classList.replace('fa-sun', 'fa-moon');
-             localStorage.setItem('theme', 'dark');
-             updateFavicon('dark');
-         } else {
-             themeIcon.classList.replace('fa-moon', 'fa-sun');
-             localStorage.setItem('theme', 'light');
-             updateFavicon('light');
-         }
-     });
+    const themeIcon = document.getElementById('theme-icon');
+    const favicon = document.getElementById('favicon'); // Correct favicon element
+    const appleTouchIcon = document.getElementById('apple-touch-icon'); // Apple Touch Icon element
+    const currentTheme = localStorage.getItem('theme');
+    const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+
+    // Function to apply theme and update favicon
+    function applyTheme(theme) {
+        if (theme === 'dark') {
+            document.body.classList.add('dark-mode');
+            document.documentElement.classList.add('dark-mode'); // Ensure root element has dark-mode class
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+            themeToggle.checked = true;
+            updateFavicon('dark');
+        } else if (theme === 'light') {
+            document.body.classList.remove('dark-mode');
+            document.documentElement.classList.remove('dark-mode'); // Ensure root element removes dark-mode class
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+            themeToggle.checked = false;
+            updateFavicon('light');
+        }
+    }
+
+    // Function to update favicon based on theme
+    function updateFavicon(theme) {
+        if (theme === 'dark') {
+            favicon.href = '/Images/favicons/favicon-dark.ico?v=1'; // Path to dark mode favicon with cache-busting
+            // Optional: Update Apple Touch Icon for dark mode
+            if (appleTouchIcon) {
+                appleTouchIcon.href = '/Images/favicons/apple-touch-icon-dark.png?v=1';
+            }
+        } else if (theme === 'light') {
+            favicon.href = '/Images/favicons/favicon-light.ico?v=1'; // Path to light mode favicon with cache-busting
+            // Optional: Update Apple Touch Icon for light mode
+            if (appleTouchIcon) {
+                appleTouchIcon.href = '/Images/favicons/apple-touch-icon-light.png?v=1';
+            }
+        }
+    }
+
+    // Apply saved theme on load, or system preference if no saved theme
+    if (currentTheme) {
+        applyTheme(currentTheme);
+    } else if (prefersDarkScheme.matches) {
+        applyTheme('dark');
+    } else {
+        applyTheme('light');
+    }
+
+    // Listen for system preference changes and apply if no user preference is set
+    prefersDarkScheme.addEventListener('change', (e) => {
+        if (!localStorage.getItem('theme')) { // Only if user hasn't set a preference
+            applyTheme(e.matches ? 'dark' : 'light');
+        }
+    });
+
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', () => {
+        if (document.body.classList.contains('dark-mode')) {
+            applyTheme('light');
+            localStorage.setItem('theme', 'light');
+        } else {
+            applyTheme('dark');
+            localStorage.setItem('theme', 'dark');
+        }
+    });
+
     /** ============================
      * 2. Typing Animation Logic
      ============================ */
