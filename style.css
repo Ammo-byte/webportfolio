@@ -468,7 +468,6 @@ body.dark-mode .about-image::before {
     text-decoration: underline; /* Underline on hover for better UX */
 }
 
-
 /* Existing Header Styles */
 header {
     position: fixed;
@@ -537,7 +536,6 @@ body {
         opacity: 0;
     }
 }
-
 
 /* ============================
    3. Experience Section Styling
@@ -689,7 +687,7 @@ body {
 
     /* Flexbox for Left Alignment */
     display: flex;
-    flex-direction: column; /* Arrange children vertically */
+    flex-direction: column; /* Arrange vertically */
     justify-content: flex-start; /* Align content to the top */
     align-items: flex-start; /* Align content to the left horizontally */
 
@@ -757,8 +755,6 @@ body.dark-mode .blue-text-job {
     color: var(--text-color-dark); /* White in dark mode */
 }
 
-
-
 /* ============================
    Projects Section Styling
 ============================ */
@@ -777,7 +773,7 @@ section {
     color: var(--text-color); /* Matches your theme */
     transition: background-color 0.3s, color 0.3s; /* Smooth theme transitions */
     display: flex;
-    flex-direction: column; /* Stack children vertically */
+    flex-direction: column; /* Stack vertically */
     justify-content: flex-start; /* Align to the top */
     align-items: center; /* Center horizontally */
     width: 100%; /* Full width */
@@ -1510,7 +1506,9 @@ body {
     .pokemon-info ul li {
         font-size: 1.4rem;
     }
-}/* ============================
+}
+
+/* ============================
    Enhanced Responsive Design
    ============================ */
 
