@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 120">
+  
+  <!-- Chart axes -->
+  <line x1="24" y1="20" x2="24" y2="96" stroke="#3498db" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="24" y1="96" x2="156" y2="96" stroke="#3498db" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Grid lines -->
+  <line x1="24" y1="40" x2="156" y2="40" stroke="#3498db" stroke-width="0.4" opacity="0.3"/>
+  <line x1="24" y1="60" x2="156" y2="60" stroke="#3498db" stroke-width="0.4" opacity="0.3"/>
+  <line x1="24" y1="80" x2="156" y2="80" stroke="#3498db" stroke-width="0.4" opacity="0.3"/>
+  <!-- Stock line with GME squeeze spike -->
+  <polyline points="26,88 36,86 46,84 56,82 66,80 76,78 82,74 86,60 90,28 94,24 96,22 98,30 102,52 106,68 110,76 116,80 126,84 136,86 146,88 154,90" stroke="#3498db" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Spike highlight area -->
+  <polyline points="86,60 90,28 94,24 96,22 98,30 102,52" stroke="#eeeae2" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Rocket -->
+  <polygon points="160,36 164,28 168,36" stroke="#eeeae2" stroke-width="1" fill="none" stroke-linejoin="round"/>
+  <line x1="164" y1="36" x2="164" y2="42" stroke="#eeeae2" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="161" y1="42" x2="163" y2="46" stroke="#3498db" stroke-width="1" stroke-linecap="round"/>
+  <line x1="164" y1="42" x2="164" y2="48" stroke="#3498db" stroke-width="1" stroke-linecap="round"/>
+  <line x1="167" y1="42" x2="165" y2="46" stroke="#3498db" stroke-width="1" stroke-linecap="round"/>
+  <!-- Store icon -->
+  <rect x="12" y="100" width="16" height="10" stroke="#3498db" stroke-width="1" fill="none" stroke-linejoin="round"/>
+  <polyline points="10,100 20,92 30,100" stroke="#3498db" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="18" y1="104" x2="18" y2="110" stroke="#3498db" stroke-width="1" stroke-linecap="round"/>
+  <!-- GME text -->
+  <text x="90" y="14" font-family="monospace" font-size="9" fill="#eeeae2" text-anchor="middle" font-weight="bold">GME</text>
+  <!-- Dollar signs on Y axis -->
+  <circle cx="16" cy="40" r="1.5" fill="#eeeae2" opacity="0.5"/>
+  <circle cx="16" cy="60" r="1.5" fill="#eeeae2" opacity="0.5"/>
+  <circle cx="16" cy="80" r="1.5" fill="#eeeae2" opacity="0.5"/>
+</svg>

@@ -1,173 +1,269 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aamodit Acharya | 404</title>
-    <link rel="shortcut icon" href="/assets/images/favicon.ico">
-
-    <!-- Fonts -->
-
-
-    <!-- Bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" 
-    integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" 
-    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css" type="text/css"> <!-- Use absolute path -->
-
-    <!-- Font Awesome (Icons) -->
-    <script src="https://kit.fontawesome.com/1aeed9195d.js" crossorigin="anonymous" defer></script>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-</head>
-
-<body class="dark-mode"> <!-- Added 'dark-mode' class by default -->
-
-    <!-- Particles.js Container -->
-    <div id="particles-js"></div>
-
-    <!-- 404 Content -->
-    <div class="container page-not-found text-center">
-        <p class="text-center subtitle-404">Aamodit Acharya - <span class="blue-text code-text">404</span></p>
-        <p>Sorry, but the page you were looking for might have moved, or does not exist.</p>
-        <p>
-            Meanwhile, enjoy today's <strong>Pokemon of the Day</strong>, retrieved from 
-            <a href="https://pokeapi.co/" target="_blank" class="code-text pokeapi-link">PokeAPI</a>.
-        </p>
-        <button type="button" class="btn home-button mx-auto d-block" onclick="window.location.href='/index.html';">Home</button>
-        
-        <!-- Pokemon Information Section -->
-        <div class="pokemon-info mt-4">
-            <h2 class="title-404">"<span id="pokemon-name"></span>"</h2>
-            <img id="pokemon-img" src="" alt="Pokemon Image" class="img-fluid" width="50%">
-            
-            <!-- Additional Pokemon Details -->
-            <div class="mt-4">
-                <p><strong>ID:</strong> <span id="pokemon-id"></span></p>
-                <p><strong>Types:</strong> <span id="pokemon-types"></span></p>
-                <p><strong>Abilities:</strong> <span id="pokemon-abilities"></span></p>
-                <p><strong>Height:</strong> <span id="pokemon-height"></span> dm</p>
-                <p><strong>Weight:</strong> <span id="pokemon-weight"></span> hg</p>
-                <p><strong>Base Experience:</strong> <span id="pokemon-base-experience"></span></p>
-                <p><strong>Stats:</strong></p>
-                <ul id="pokemon-stats" class="list-unstyled">
-                    <!-- Stats will be populated here -->
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <!-- Scripts -->
-    <!-- Particles.js -->
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-
-    <!-- Inline Scripts -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Aamodit Acharya portfolio 404 page."
+    />
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            /** ============================
-             * 1. Initialize Particles.js
-             ============================ */
-             particlesJS("particles-js", {
-        particles: {
-            number: { value: 100, density: { enable: true, value_area: 800 } },
-            color: { value: "#3498db" },
-            shape: { type: "circle" },
-            opacity: { value: 0.5 },
-            size: { value: 3, random: true },
-            line_linked: { enable: true, distance: 150, color: "#3498db", opacity: 0.4, width: 1 },
-            move: { enable: true, speed: 3 }
-        },
-        interactivity: {
-            detect_on: "canvas",
-            events: {
-                onhover: { enable: true, mode: "repulse" },
-                onclick: { enable: true, mode: "push" }
-            },
-            modes: {
-                repulse: { distance: 100, duration: 0.4 },
-                push: { particles_nb: 4 }
-            }
-        },
-        retina_detect: true
-    });
-
-
-            /** ============================
-             * 2. Fetch and Display Pokemon Data
-             ============================ */
-            function getPokemonId() {
-                const today = new Date();
-                const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
-                const totalPokemon = 1010; // Update this number based on the current total in PokeAPI
-                return (dayOfYear % totalPokemon) + 1;
-            }
-
-            async function fetchPokemonData() {
-                const id = getPokemonId();
-                const url = `https://pokeapi.co/api/v2/pokemon/${id}/`;
-                try {
-                    const response = await fetch(url);
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    const data = await response.json();
-                    displayPokemon(data);
-                } catch (error) {
-                    console.error("Fetch error:", error);
-                    displayErrorMessage();
-                }
-            }
-
-            function displayPokemon(pokemon) {
-                // Basic Info
-                document.getElementById('pokemon-name').textContent = capitalizeFirstLetter(pokemon.name);
-                document.getElementById('pokemon-img').src = pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default;
-                document.getElementById('pokemon-img').alt = pokemon.name;
-
-                // Additional Info
-                document.getElementById('pokemon-id').textContent = pokemon.id;
-                document.getElementById('pokemon-height').textContent = pokemon.height;
-                document.getElementById('pokemon-weight').textContent = pokemon.weight;
-                document.getElementById('pokemon-base-experience').textContent = pokemon.base_experience;
-
-                // Types
-                const types = pokemon.types.map(typeInfo => capitalizeFirstLetter(typeInfo.type.name)).join(', ');
-                document.getElementById('pokemon-types').textContent = types;
-
-                // Abilities
-                const abilities = pokemon.abilities.map(abilityInfo => capitalizeFirstLetter(abilityInfo.ability.name)).join(', ');
-                document.getElementById('pokemon-abilities').textContent = abilities;
-
-                // Stats
-                const statsList = document.getElementById('pokemon-stats');
-                statsList.innerHTML = ''; // Clear existing stats
-                pokemon.stats.forEach(statInfo => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `<strong>${capitalizeFirstLetter(statInfo.stat.name)}:</strong> ${statInfo.base_stat}`;
-                    statsList.appendChild(li);
-                });
-            }
-
-            function displayErrorMessage() {
-                const container = document.querySelector('.page-not-found');
-                container.innerHTML += `
-                    <h2 class="title-404">Oops! Something went wrong.</h2>
-                    <p class="description">We couldn't fetch the Pokemon of the Day. Please try again later.</p>
-                `;
-            }
-
-            function capitalizeFirstLetter(string) {
-                return string.charAt(0).toUpperCase() + string.slice(1);
-            }
-
-            // Fetch Pokemon data on load
-            fetchPokemonData();
-        });
+      (function () {
+        let savedTheme = null;
+        try {
+          savedTheme = localStorage.getItem("theme");
+        } catch (error) {
+          console.warn("Theme preference could not be read.", error);
+        }
+        const systemDark = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+        document.documentElement.dataset.theme =
+          savedTheme || (systemDark ? "dark" : "light");
+      })();
     </script>
-</body>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      id="favicon"
+      rel="icon"
+      type="image/x-icon"
+      href="assets/Images/favicons/favicon-dark.ico"
+    />
+    <title>Aamodit Acharya | 404</title>
+  </head>
+  <body class="not-found-page">
+    <div id="particles-js" aria-hidden="true"></div>
 
+    <main class="not-found-shell">
+      <div class="hero-letter-field not-found-letters" aria-hidden="true">
+        <span style="--x: 7%; --y: 12%; --delay: 0ms">A</span
+        ><span style="--x: 24%; --y: 22%; --delay: 140ms">A</span
+        ><span style="--x: 43%; --y: 10%; --delay: 280ms">M</span
+        ><span style="--x: 61%; --y: 18%; --delay: 420ms">O</span
+        ><span style="--x: 82%; --y: 12%; --delay: 560ms">D</span
+        ><span style="--x: 16%; --y: 38%; --delay: 700ms">I</span
+        ><span style="--x: 36%; --y: 47%; --delay: 840ms">T</span
+        ><span style="--x: 58%; --y: 39%; --delay: 980ms">A</span
+        ><span style="--x: 78%; --y: 50%; --delay: 1120ms">C</span
+        ><span style="--x: 94%; --y: 42%; --delay: 1260ms">H</span
+        ><span style="--x: 9%; --y: 69%; --delay: 1400ms">A</span
+        ><span style="--x: 31%; --y: 77%; --delay: 1540ms">R</span
+        ><span style="--x: 55%; --y: 83%; --delay: 1680ms">Y</span
+        ><span style="--x: 85%; --y: 73%; --delay: 1820ms">A</span
+        ><span style="--x: 4%; --y: 48%; --delay: 1960ms">A</span
+        ><span style="--x: 21%; --y: 88%; --delay: 2100ms">A</span
+        ><span style="--x: 39%; --y: 63%; --delay: 2240ms">M</span
+        ><span style="--x: 52%; --y: 25%; --delay: 2380ms">O</span
+        ><span style="--x: 69%; --y: 72%; --delay: 2520ms">D</span
+        ><span style="--x: 89%; --y: 27%; --delay: 2660ms">I</span
+        ><span style="--x: 12%; --y: 23%; --delay: 2800ms">T</span
+        ><span style="--x: 28%; --y: 57%; --delay: 2940ms">A</span
+        ><span style="--x: 47%; --y: 90%; --delay: 3080ms">C</span
+        ><span style="--x: 63%; --y: 55%; --delay: 3220ms">H</span
+        ><span style="--x: 76%; --y: 31%; --delay: 3360ms">A</span
+        ><span style="--x: 92%; --y: 82%; --delay: 3500ms">R</span
+        ><span style="--x: 33%; --y: 32%; --delay: 3640ms">Y</span
+        ><span style="--x: 71%; --y: 9%; --delay: 3780ms">A</span>
+      </div>
+
+      <section class="not-found-card" aria-labelledby="not-found-title">
+        <div class="not-found-topline">
+          <p class="ui-label">OFF ROUTE / 404</p>
+          <button
+            class="theme-toggle not-found-theme"
+            type="button"
+            aria-label="Switch theme"
+          >
+            <i class="fa-solid fa-sun" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <p class="not-found-code">404</p>
+        <h1 id="not-found-title">Aamodit Acharya</h1>
+        <p class="not-found-copy">
+          Sorry, but the page you were looking for might have moved, or does not
+          exist.
+        </p>
+        <p class="not-found-copy">
+          Meanwhile, enjoy today's <strong>Pokemon of the Day</strong>,
+          retrieved from
+          <a
+            href="https://pokeapi.co/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >PokeAPI</a
+          >.
+        </p>
+
+        <div class="not-found-actions">
+          <a class="not-found-home" href="index.html"
+            >RETURN HOME <i class="fa-solid fa-arrow-right-long"></i
+          ></a>
+          <p class="ui-label">SIGNAL LOST / RECALCULATING</p>
+        </div>
+      </section>
+
+      <aside class="pokemon-card" aria-live="polite">
+        <p class="ui-label">DAILY SIGNAL</p>
+        <h2>"<span id="pokemon-name">Loading</span>"</h2>
+        <img
+          id="pokemon-img"
+          src=""
+          alt=""
+          width="420"
+          height="420"
+          loading="lazy"
+        />
+        <div class="pokemon-grid">
+          <p><strong>ID</strong><span id="pokemon-id">--</span></p>
+          <p><strong>Types</strong><span id="pokemon-types">--</span></p>
+          <p><strong>Abilities</strong><span id="pokemon-abilities">--</span></p>
+          <p><strong>Height</strong><span id="pokemon-height">-- dm</span></p>
+          <p><strong>Weight</strong><span id="pokemon-weight">-- hg</span></p>
+          <p>
+            <strong>Base Experience</strong
+            ><span id="pokemon-base-experience">--</span>
+          </p>
+        </div>
+        <ul id="pokemon-stats" class="pokemon-stats"></ul>
+      </aside>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const root = document.documentElement;
+        const themeToggle = document.querySelector(".theme-toggle");
+        const favicon = document.getElementById("favicon");
+        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+        function getTheme() {
+          return root.dataset.theme === "light" ? "light" : "dark";
+        }
+
+        function applyTheme(theme, persist = true) {
+          root.dataset.theme = theme;
+          const nextTheme = theme === "dark" ? "light" : "dark";
+          themeToggle.setAttribute("aria-label", `Switch to ${nextTheme} mode`);
+          themeToggle.innerHTML =
+            theme === "dark"
+              ? '<i class="fa-solid fa-sun" aria-hidden="true"></i>'
+              : '<i class="fa-solid fa-moon" aria-hidden="true"></i>';
+          favicon.href = `assets/Images/favicons/favicon-${theme}.ico?v=2`;
+          if (persist) localStorage.setItem("theme", theme);
+        }
+
+        function initParticles() {
+          if (typeof window.particlesJS !== "function") return;
+          document.getElementById("particles-js").replaceChildren();
+          const theme = getTheme();
+          const particleColor = theme === "dark" ? "#4ab3ff" : "#005f9e";
+          window.particlesJS("particles-js", {
+            particles: {
+              number: { value: 113, density: { enable: true, value_area: 940 } },
+              color: { value: particleColor },
+              shape: { type: "circle" },
+              opacity: { value: 0.56, random: true },
+              size: { value: 3.95, random: true },
+              line_linked: {
+                enable: true,
+                distance: 186,
+                color: particleColor,
+                opacity: 0.38,
+                width: 0.9,
+              },
+              move: {
+                enable: !reducedMotion.matches,
+                speed: 1.02,
+                random: true,
+                out_mode: "out",
+              },
+            },
+            interactivity: {
+              detect_on: "canvas",
+              events: {
+                onhover: { enable: !reducedMotion.matches, mode: "repulse" },
+                onclick: { enable: false },
+                resize: true,
+              },
+              modes: { repulse: { distance: 86, duration: 0.34 } },
+            },
+            retina_detect: true,
+          });
+        }
+
+        themeToggle.addEventListener("click", () => {
+          applyTheme(getTheme() === "dark" ? "light" : "dark");
+          initParticles();
+        });
+
+        function getPokemonId() {
+          const today = new Date();
+          const start = new Date(today.getFullYear(), 0, 0);
+          const dayOfYear = Math.floor((today - start) / 86400000);
+          return (dayOfYear % 1025) + 1;
+        }
+
+        function capitalize(value) {
+          return value.charAt(0).toUpperCase() + value.slice(1);
+        }
+
+        function displayErrorMessage() {
+          document.getElementById("pokemon-name").textContent = "Signal Lost";
+          document.querySelector(".pokemon-card").classList.add("is-error");
+        }
+
+        async function fetchPokemonData() {
+          try {
+            const response = await fetch(
+              `https://pokeapi.co/api/v2/pokemon/${getPokemonId()}/`,
+            );
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const pokemon = await response.json();
+            document.getElementById("pokemon-name").textContent = capitalize(
+              pokemon.name,
+            );
+            const image =
+              pokemon.sprites.other["official-artwork"].front_default ||
+              pokemon.sprites.front_default;
+            document.getElementById("pokemon-img").src = image;
+            document.getElementById("pokemon-img").alt = pokemon.name;
+            document.getElementById("pokemon-id").textContent = pokemon.id;
+            document.getElementById("pokemon-height").textContent =
+              pokemon.height + " dm";
+            document.getElementById("pokemon-weight").textContent =
+              pokemon.weight + " hg";
+            document.getElementById("pokemon-base-experience").textContent =
+              pokemon.base_experience;
+            document.getElementById("pokemon-types").textContent = pokemon.types
+              .map((typeInfo) => capitalize(typeInfo.type.name))
+              .join(", ");
+            document.getElementById("pokemon-abilities").textContent =
+              pokemon.abilities
+                .map((abilityInfo) => capitalize(abilityInfo.ability.name))
+                .join(", ");
+
+            const stats = document.getElementById("pokemon-stats");
+            stats.replaceChildren();
+            pokemon.stats.forEach((statInfo) => {
+              const item = document.createElement("li");
+              item.innerHTML = `<strong>${capitalize(
+                statInfo.stat.name,
+              )}</strong><span>${statInfo.base_stat}</span>`;
+              stats.append(item);
+            });
+          } catch (error) {
+            console.error("Pokemon fetch error:", error);
+            displayErrorMessage();
+          }
+        }
+
+        applyTheme(getTheme(), false);
+        initParticles();
+        fetchPokemonData();
+      });
+    </script>
+  </body>
 </html>

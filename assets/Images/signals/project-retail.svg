@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 120">
+  
+  <!-- Storefront -->
+  <rect x="14" y="44" width="50" height="36" rx="2" stroke="#3498db" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Awning -->
+  <polyline points="12,44 18,34 26,44 34,34 42,44 50,34 58,44 66,34" stroke="#3498db" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Door -->
+  <rect x="32" y="60" width="12" height="20" rx="1" stroke="#3498db" stroke-width="1" fill="none"/>
+  <circle cx="42" cy="70" r="1" fill="#eeeae2"/>
+  <!-- Window -->
+  <rect x="18" y="52" width="10" height="10" rx="1" stroke="#3498db" stroke-width="1" fill="none"/>
+  <line x1="23" y1="52" x2="23" y2="62" stroke="#3498db" stroke-width="0.7"/>
+  <line x1="18" y1="57" x2="28" y2="57" stroke="#3498db" stroke-width="0.7"/>
+  <!-- Window right -->
+  <rect x="48" y="52" width="10" height="10" rx="1" stroke="#3498db" stroke-width="1" fill="none"/>
+  <line x1="53" y1="52" x2="53" y2="62" stroke="#3498db" stroke-width="0.7"/>
+  <line x1="48" y1="57" x2="58" y2="57" stroke="#3498db" stroke-width="0.7"/>
+  <!-- Prediction curve with axes -->
+  <line x1="78" y1="28" x2="78" y2="92" stroke="#3498db" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="78" y1="92" x2="162" y2="92" stroke="#3498db" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Historical data line -->
+  <polyline points="80,82 90,76 100,78 110,68 120,64 126,60" stroke="#3498db" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Forecast line (dashed, rising) -->
+  <polyline points="126,60 134,52 142,44 150,38 158,32" stroke="#eeeae2" stroke-width="1.5" fill="none" stroke-dasharray="4,3" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Confidence band -->
+  <polyline points="126,54 134,44 142,34 150,28 158,22" stroke="#3498db" stroke-width="0.7" fill="none" stroke-dasharray="2,2" opacity="0.4"/>
+  <polyline points="126,66 134,60 142,54 150,48 158,42" stroke="#3498db" stroke-width="0.7" fill="none" stroke-dasharray="2,2" opacity="0.4"/>
+  <!-- Data points -->
+  <circle cx="90" cy="76" r="2" fill="#eeeae2"/>
+  <circle cx="110" cy="68" r="2" fill="#eeeae2"/>
+  <circle cx="126" cy="60" r="2" fill="#eeeae2"/>
+  <!-- Shopping cart -->
+  <polyline points="14,94 20,94 28,88 42,88 46,94" stroke="#3498db" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="26" cy="98" r="3" stroke="#3498db" stroke-width="1.5" fill="none"/>
+  <circle cx="40" cy="98" r="3" stroke="#3498db" stroke-width="1.5" fill="none"/>
+</svg>

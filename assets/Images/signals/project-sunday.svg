@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 120">
+  <!-- Calendar Node -->
+  <rect x="18" y="22" width="24" height="24" rx="4" stroke="#3498db" stroke-width="1.5" fill="none"/>
+  <line x1="18" y1="30" x2="42" y2="30" stroke="#3498db" stroke-width="1.5"/>
+  <line x1="24" y1="18" x2="24" y2="22" stroke="#3498db" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="36" y1="18" x2="36" y2="22" stroke="#3498db" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Dots inside calendar -->
+  <circle cx="24" cy="36" r="1" fill="#eeeae2"/>
+  <circle cx="30" cy="36" r="1" fill="#eeeae2"/>
+  <circle cx="36" cy="36" r="1" fill="#eeeae2"/>
+  <circle cx="24" cy="41" r="1" fill="#eeeae2"/>
+  <circle cx="30" cy="41" r="1" fill="#eeeae2"/>
+  <circle cx="36" cy="41" r="1" fill="#3498db"/>
+
+  <!-- Email / Messaging Node -->
+  <rect x="18" y="62" width="24" height="18" rx="3" stroke="#3498db" stroke-width="1.5" fill="none"/>
+  <polyline points="18,65 30,73 42,65" stroke="#3498db" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+
+  <!-- Traffic / Location Info Node -->
+  <rect x="18" y="94" width="24" height="14" rx="2" stroke="#3498db" stroke-width="1" fill="none"/>
+  <!-- Map Pin on Route -->
+  <path d="M 23,101 L 37,101" stroke="#eeeae2" stroke-width="1" stroke-dasharray="1,1"/>
+  <circle cx="30" cy="101" r="2" fill="none" stroke="#eeeae2" stroke-width="1"/>
+
+  <!-- Connections to Central Hub -->
+  <path d="M 42,34 L 72,55" fill="none" stroke="#3498db" stroke-width="1" stroke-dasharray="3,3" stroke-linecap="round"/>
+  <path d="M 42,71 L 72,55" fill="none" stroke="#3498db" stroke-width="1" stroke-dasharray="3,3" stroke-linecap="round"/>
+  <path d="M 42,101 L 72,55" fill="none" stroke="#3498db" stroke-width="1" stroke-dasharray="3,3" stroke-linecap="round"/>
+
+  <!-- Traffic Light / Smart Hub -->
+  <circle cx="85" cy="55" r="14" stroke="#3498db" stroke-width="1.5" fill="none"/>
+  <circle cx="85" cy="48" r="2.5" fill="red" opacity="0.3"/>
+  <circle cx="85" cy="55" r="2.5" fill="orange" opacity="0.3"/>
+  <circle cx="85" cy="62" r="2.5" fill="#2ecc71"/> <!-- green light is on -->
+
+  <!-- Connection from Hub to Notification -->
+  <path d="M 99,55 L 128,55" fill="none" stroke="#eeeae2" stroke-width="1.5" stroke-dasharray="3,3" stroke-linecap="round"/>
+  <polyline points="123,51 128,55 123,59" stroke="#eeeae2" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+
+  <!-- Notification Alert Bell -->
+  <rect x="135" y="40" width="26" height="30" rx="4" stroke="#3498db" stroke-width="1.5" fill="none"/>
+  <path d="M 148,45 A 3,3 0 0,1 151,48 L 151,55 A 1.5,1.5 0 0,0 152.5,56.5 L 143.5,56.5 A 1.5,1.5 0 0,0 145,55 L 145,48 A 3,3 0 0,1 148,45 Z" fill="none" stroke="#eeeae2" stroke-width="1.5" stroke-linejoin="round"/>
+  <circle cx="148" cy="59.5" r="1" fill="#eeeae2"/>
+  <!-- Ray lines for ringing effect -->
+  <path d="M 139,47 Q 141,49 143,48" fill="none" stroke="#3498db" stroke-width="1" stroke-linecap="round"/>
+  <path d="M 157,47 Q 155,49 153,48" fill="none" stroke="#3498db" stroke-width="1" stroke-linecap="round"/>
+</svg>

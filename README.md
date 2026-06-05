@@ -1,6 +1,13 @@
-# Personal Portfolio version 1.0
-The forst version of my personal portfolio\
-Created using: HTML/CSS/JS, Bootstrap 5.1.0, jQuery, Sass\
-Also if you're reading this, give the site a 404 😅\
-\
-![Image of my second portfolio website](assets/Images/screenshot.png?raw=true)
+# Personal Portfolio
+
+My personal portfolio, kept as a simple static site with HTML, CSS, and JS.
+
+Run it locally with:
+
+```bash
+npm run serve
+```
+
+Also if you're reading this, give the site a 404.
+
+![Image of my portfolio website](assets/Images/screenshot.png?raw=true)

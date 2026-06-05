@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 120">
+  
+  <!-- Left microphone (Drake) -->
+  <rect x="22" y="32" width="14" height="24" rx="7" stroke="#3498db" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="29" y1="56" x2="29" y2="68" stroke="#3498db" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="23" y1="68" x2="35" y2="68" stroke="#3498db" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M18,48 Q18,62 29,62" stroke="#3498db" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M40,48 Q40,62 29,62" stroke="#3498db" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <!-- Mic grille lines -->
+  <line x1="24" y1="38" x2="34" y2="38" stroke="#3498db" stroke-width="0.7" opacity="0.5"/>
+  <line x1="24" y1="42" x2="34" y2="42" stroke="#3498db" stroke-width="0.7" opacity="0.5"/>
+  <line x1="24" y1="46" x2="34" y2="46" stroke="#3498db" stroke-width="0.7" opacity="0.5"/>
+  <!-- Right microphone (Kendrick) -->
+  <rect x="144" y="32" width="14" height="24" rx="7" stroke="#3498db" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="151" y1="56" x2="151" y2="68" stroke="#3498db" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="145" y1="68" x2="157" y2="68" stroke="#3498db" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M140,48 Q140,62 151,62" stroke="#3498db" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M162,48 Q162,62 151,62" stroke="#3498db" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <line x1="146" y1="38" x2="156" y2="38" stroke="#3498db" stroke-width="0.7" opacity="0.5"/>
+  <line x1="146" y1="42" x2="156" y2="42" stroke="#3498db" stroke-width="0.7" opacity="0.5"/>
+  <line x1="146" y1="46" x2="156" y2="46" stroke="#3498db" stroke-width="0.7" opacity="0.5"/>
+  <!-- Waveform left -->
+  <polyline points="48,58 52,48 56,64 60,44 64,60 68,50 72,56 76,46 80,58" stroke="#3498db" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Waveform right -->
+  <polyline points="100,58 104,46 108,62 112,42 116,60 120,48 124,54 128,44 132,58" stroke="#3498db" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+  <!-- VS text -->
+  <text x="90" y="88" font-family="monospace" font-size="11" fill="#eeeae2" text-anchor="middle" font-weight="bold">VS</text>
+  <!-- Accent dots -->
+  <circle cx="90" cy="30" r="2" fill="#eeeae2"/>
+  <circle cx="82" cy="26" r="1.5" fill="#eeeae2" opacity="0.5"/>
+  <circle cx="98" cy="26" r="1.5" fill="#eeeae2" opacity="0.5"/>
+</svg>

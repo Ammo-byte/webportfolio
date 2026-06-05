@@ -1,0 +1,18 @@
+node_modules/
+test-results/
+playwright-report/
+.DS_Store
+.cache/
+dist/
+coverage/
+npm-debug.log*
+assets/cars stuff/
+
+# Local workspace files
+.[c]odex/
+.[a]gents/
+.[c]ursor/
+.[c]ontinue/
+.[w]indsurf/
+.[c]laude/
+.[a]ider*

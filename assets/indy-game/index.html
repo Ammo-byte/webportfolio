@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Indy Skyline Survival</title>
+    <script>
+      if (window.parent !== window) {
+        document.documentElement.dataset.embed = "portfolio";
+      }
+    </script>
+    <style>
+      html[data-embed="portfolio"] #theme-button {
+        display: none;
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        html[data-embed="portfolio"] .mobile-controls {
+          display: none;
+        }
+      }
+    </style>
+    <script type="module" crossorigin src="./assets/index-BC828K-_.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DA7oWGz5.css">
+  </head>
+  <body data-theme="dark">
+    <div id="app" class="shell">
+      <header class="hud" aria-label="Game status">
+        <div class="hud__cluster hud__cluster--score">
+          <span class="hud__label">Score</span>
+          <strong id="score">000000</strong>
+        </div>
+        <div class="hud__cluster">
+          <span class="hud__label">Speed</span>
+          <strong id="speed">CRUISE</strong>
+        </div>
+        <div class="hud__cluster">
+          <span class="hud__label">Best</span>
+          <strong id="best-score">000000</strong>
+        </div>
+        <div class="hud__cluster hud__cluster--lives">
+          <span class="hud__label">Lives</span>
+          <strong id="lives" aria-label="Lives remaining">♥ ♥ ♥</strong>
+        </div>
+        <nav class="hud__actions" aria-label="Game controls">
+          <button id="pause-button" class="icon-button" type="button" aria-label="Pause game" title="Pause">Ⅱ</button>
+          <button id="mute-button" class="icon-button" type="button" aria-label="Mute music" title="Mute">♪</button>
+          <button id="theme-button" class="icon-button" type="button" aria-label="Toggle light mode" title="Theme">◐</button>
+        </nav>
+      </header>
+
+      <main id="game-root" class="game-root" aria-label="Indy racing game">
+        <div id="game-canvas" class="game-canvas"></div>
+        <section id="status-overlay" class="status-overlay" aria-live="polite">
+          <p class="status-overlay__eyebrow">Skyline Sprint</p>
+          <h1>Indy Skyline Survival</h1>
+          <p id="status-message">Loading racer...</p>
+          <button id="start-button" class="primary-button" type="button">Start Run</button>
+        </section>
+      </main>
+
+      <footer class="mobile-controls" aria-label="Mobile controls">
+        <div class="mobile-controls__drive">
+          <button class="control-button" data-action="left" type="button" aria-label="Move left">◀</button>
+          <button class="control-button control-button--jump" data-action="jump" type="button" aria-label="Jump">JUMP</button>
+          <button class="control-button" data-action="right" type="button" aria-label="Move right">▶</button>
+        </div>
+      </footer>
+    </div>
+    <script>
+      (() => {
+        function isPortfolioMessage(data) {
+          return data && data.source === "aamo-portfolio" && (
+            data.type === "pause" ||
+            (data.type === "theme" && (data.theme === "dark" || data.theme === "light"))
+          );
+        }
+
+        function applyTheme(theme) {
+          document.body.dataset.theme = theme;
+          try {
+            window.localStorage.setItem("indy-racer-theme", theme);
+          } catch (error) {
+            console.warn("Theme preference could not be stored.", error);
+          }
+        }
+
+        function pauseIfRunning() {
+          const statusOverlay = document.getElementById("status-overlay");
+          const pauseButton = document.getElementById("pause-button");
+          if (statusOverlay?.hidden && pauseButton) {
+            pauseButton.click();
+          }
+        }
+
+        window.addEventListener("message", (event) => {
+          if (event.source !== window.parent || !isPortfolioMessage(event.data)) {
+            return;
+          }
+
+          if (event.data.type === "theme") {
+            applyTheme(event.data.theme);
+          } else {
+            pauseIfRunning();
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
