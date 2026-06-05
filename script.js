@@ -1394,12 +1394,35 @@ document.addEventListener("DOMContentLoaded", () => {
         postToIndyGame({ type: "pause" });
       }
 
+      function resizeIndyGame() {
+        try {
+          const iframeWindow = indyGameIframe.contentWindow;
+          iframeWindow?.dispatchEvent(new iframeWindow.Event("resize"));
+        } catch (error) {
+          console.warn("Indy game resize could not be delivered.", error);
+        }
+      }
+
+      function scheduleIndyResize() {
+        [0, 80, 240, 600, 1200].forEach((delay) => {
+          window.setTimeout(resizeIndyGame, delay);
+        });
+      }
+
       indyGameIframe.addEventListener("load", () => {
         syncIndyTheme();
+        scheduleIndyResize();
         if (!isHomeInView || document.hidden) {
           pauseIndyGame();
         }
       });
+
+      if ("ResizeObserver" in window) {
+        const gameFrameObserver = new ResizeObserver(scheduleIndyResize);
+        gameFrameObserver.observe(gameFrame);
+      }
+
+      window.addEventListener("load", scheduleIndyResize, { once: true });
 
       const themeObserver = new MutationObserver(syncIndyTheme);
       themeObserver.observe(root, {
