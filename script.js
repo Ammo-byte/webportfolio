@@ -398,7 +398,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const getTargetTop = () => {
           const maxScroll =
             document.documentElement.scrollHeight - window.innerHeight;
-          const targetTop = target.getBoundingClientRect().top + window.scrollY;
+          const scrollMarginTop =
+            Number.parseFloat(getComputedStyle(target).scrollMarginTop) || 0;
+          const targetTop =
+            target.getBoundingClientRect().top +
+            window.scrollY -
+            scrollMarginTop;
           return Math.min(Math.max(targetTop, 0), maxScroll);
         };
 

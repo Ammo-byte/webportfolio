@@ -2977,6 +2977,12 @@ html[data-theme="light"] .hero-letter-field::before {
   overflow: visible !important;
 }
 
+@media (min-width: 901px) {
+  #about.about-v3 {
+    scroll-margin-top: -81px;
+  }
+}
+
 .about.about-v3 .section-watermark {
   display: none !important;
 }
