@@ -103,17 +103,12 @@ export const initNavigation = (): void => {
         0,
         (availableHeight - target.offsetHeight) / 2,
       );
-      const targetTop = Math.max(
-        0,
-        window.scrollY +
-          target.getBoundingClientRect().top -
-          headerHeight -
-          centerOffset,
-      );
+
+      // Apply the computed offset dynamically to leverage native scrolling without layout shift bugs
+      target.style.scrollMarginTop = `${headerHeight + centerOffset}px`;
 
       window.history.pushState(null, "", `#${sectionId}`);
-      window.scrollTo({
-        top: targetTop,
+      target.scrollIntoView({
         behavior: reducedMotion.matches ? "auto" : "smooth",
       });
 
