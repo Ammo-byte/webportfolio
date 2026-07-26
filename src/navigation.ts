@@ -42,6 +42,18 @@ export const initNavigation = (): void => {
     },
     { passive: true },
   );
+  window.addEventListener(
+    "pointermove",
+    (event) => {
+      if (event.pointerType !== "touch" && event.clientY <= 36) {
+        header?.classList.remove("hidden");
+      }
+    },
+    { passive: true },
+  );
+  header?.addEventListener("focusin", () => {
+    header.classList.remove("hidden");
+  });
 
   const observer = new IntersectionObserver(
     (entries) => {
