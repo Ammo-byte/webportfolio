@@ -72,6 +72,7 @@
         function isPortfolioMessage(data) {
           return data && data.source === "aamo-portfolio" && (
             data.type === "pause" ||
+            data.type === "resume" ||
             (data.type === "theme" && (data.theme === "dark" || data.theme === "light"))
           );
         }
@@ -93,6 +94,13 @@
           }
         }
 
+        function resumeIfPaused() {
+          const pauseButton = document.getElementById("pause-button");
+          if (pauseButton?.getAttribute("aria-label") === "Resume game") {
+            pauseButton.click();
+          }
+        }
+
         window.addEventListener("message", (event) => {
           if (event.source !== window.parent || !isPortfolioMessage(event.data)) {
             return;
@@ -100,8 +108,10 @@
 
           if (event.data.type === "theme") {
             applyTheme(event.data.theme);
-          } else {
+          } else if (event.data.type === "pause") {
             pauseIfRunning();
+          } else {
+            resumeIfPaused();
           }
         });
       })();

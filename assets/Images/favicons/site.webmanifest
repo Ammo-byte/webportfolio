@@ -3,13 +3,13 @@
   "short_name": "Aamodit",
   "icons": [
     {
-      "src": "favicon-dark.png",
+      "src": "favicon-dark-pixel.png",
       "sizes": "96x96",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "apple-touch-icon-dark.png",
+      "src": "apple-touch-icon-dark-pixel.png",
       "sizes": "180x180",
       "type": "image/png",
       "purpose": "any"

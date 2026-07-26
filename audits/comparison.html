@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Portfolio design comparison</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 28px;
+        background: #151719;
+        color: #f2eee6;
+        font: 14px/1.4 monospace;
+      }
+
+      h1 {
+        margin: 0 0 24px;
+        font-size: 18px;
+      }
+
+      section + section {
+        margin-top: 34px;
+      }
+
+      h2 {
+        margin: 0 0 12px;
+        color: #38a9f4;
+        font-size: 13px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .pair {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
+
+      figure {
+        margin: 0;
+      }
+
+      img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 1.405 / 1;
+        border: 1px solid #3a3e42;
+        background: #070809;
+        object-fit: contain;
+      }
+
+      figcaption {
+        margin-top: 7px;
+        color: #aeb1ad;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Portfolio redesign QA</h1>
+    <section>
+      <h2>Full-site visual direction</h2>
+      <div class="pair">
+        <figure>
+          <img src="reference-site.png" alt="Selected full-site design reference" />
+          <figcaption>Reference</figcaption>
+        </figure>
+        <figure>
+          <img src="home-dark-1440x1024.png" alt="Implemented desktop home" />
+          <figcaption>Implementation</figcaption>
+        </figure>
+      </div>
+    </section>
+    <section>
+      <h2>Loading screen direction</h2>
+      <div class="pair">
+        <figure>
+          <img src="reference-loader.png" alt="Selected loading design reference" />
+          <figcaption>Reference</figcaption>
+        </figure>
+        <figure>
+          <img src="loading-screen.png" alt="Implemented racing loader" />
+          <figcaption>Implementation</figcaption>
+        </figure>
+      </div>
+    </section>
+  </body>
+</html>

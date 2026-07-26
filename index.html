@@ -50,41 +50,13 @@
       })();
     </script>
     <style>
-      body.is-ready main,
-      body.is-ready .site-header,
-      body.is-ready .footer {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-        transition: opacity 1.4s cubic-bezier(0.22, 1, 0.36, 1), transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
-      }
-
-      body.is-ready #particles-js {
-        opacity: 1;
-        visibility: visible;
-        transition: opacity 1.8s ease;
-      }
-
-      body.is-loading main,
-      body.is-loading .site-header,
-      body.is-loading .footer {
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(30px);
-      }
-
-      body.is-loading #particles-js {
+      body.is-loading > :not(.site-loader) {
         opacity: 0;
         visibility: hidden;
       }
 
       .site-loader {
-        background: #080808;
-        transition: background 0.6s ease;
-      }
-
-      .site-loader.opening {
-        background: transparent !important;
+        background: #070809;
       }
 
       html[data-theme="light"] .site-loader {
@@ -106,70 +78,24 @@
         }
       </style>
     </noscript>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    />
-    <link rel="stylesheet" href="style.css?v=59" />
-    <link
-      rel="preload"
-      href="assets/indy-game/assets/index-DA7oWGz5.css"
-      as="style"
-    />
-    <link
-      rel="preload"
-      href="assets/indy-game/assets/index-BC828K-_.js"
-      as="script"
-      crossorigin
-    />
+    <link rel="stylesheet" href="style.css?v=124" />
     <link
       id="favicon"
       rel="icon"
-      type="image/x-icon"
-      href="assets/Images/favicons/favicon-dark.ico"
+      type="image/png"
+      href="assets/Images/favicons/favicon-dark-pixel.png"
     />
     <link
       id="apple-touch-icon"
       rel="apple-touch-icon"
       sizes="180x180"
-      href="assets/Images/favicons/apple-touch-icon-dark.png"
+      href="assets/Images/favicons/apple-touch-icon-dark-pixel.png"
     />
     <link rel="manifest" href="assets/Images/favicons/site.webmanifest" />
     <title>Aamodit Acharya</title>
   </head>
   <body class="is-loading">
-    <div id="particles-js" aria-hidden="true"></div>
-
-    <div class="hero-letter-field" aria-hidden="true">
-      <span style="--x: 7%; --y: 12%; --delay: 0ms">A</span
-      ><span style="--x: 24%; --y: 22%; --delay: 140ms">A</span
-      ><span style="--x: 43%; --y: 10%; --delay: 280ms">M</span
-      ><span style="--x: 61%; --y: 18%; --delay: 420ms">O</span
-      ><span style="--x: 82%; --y: 12%; --delay: 560ms">D</span
-      ><span style="--x: 16%; --y: 38%; --delay: 700ms">I</span
-      ><span style="--x: 36%; --y: 47%; --delay: 840ms">T</span
-      ><span style="--x: 58%; --y: 39%; --delay: 980ms">A</span
-      ><span style="--x: 78%; --y: 50%; --delay: 1120ms">C</span
-      ><span style="--x: 94%; --y: 42%; --delay: 1260ms">H</span
-      ><span style="--x: 9%; --y: 69%; --delay: 1400ms">A</span
-      ><span style="--x: 31%; --y: 77%; --delay: 1540ms">R</span
-      ><span style="--x: 55%; --y: 83%; --delay: 1680ms">Y</span
-      ><span style="--x: 85%; --y: 73%; --delay: 1820ms">A</span
-      ><span style="--x: 4%; --y: 48%; --delay: 1960ms">A</span
-      ><span style="--x: 21%; --y: 88%; --delay: 2100ms">A</span
-      ><span style="--x: 39%; --y: 63%; --delay: 2240ms">M</span
-      ><span style="--x: 52%; --y: 25%; --delay: 2380ms">O</span
-      ><span style="--x: 69%; --y: 72%; --delay: 2520ms">D</span
-      ><span style="--x: 89%; --y: 27%; --delay: 2660ms">I</span
-      ><span style="--x: 12%; --y: 23%; --delay: 2800ms">T</span
-      ><span style="--x: 28%; --y: 57%; --delay: 2940ms">A</span
-      ><span style="--x: 47%; --y: 90%; --delay: 3080ms">C</span
-      ><span style="--x: 63%; --y: 55%; --delay: 3220ms">H</span
-      ><span style="--x: 76%; --y: 31%; --delay: 3360ms">A</span
-      ><span style="--x: 92%; --y: 82%; --delay: 3500ms">R</span
-      ><span style="--x: 33%; --y: 32%; --delay: 3640ms">Y</span
-      ><span style="--x: 71%; --y: 9%; --delay: 3780ms">A</span>
-    </div>
+    <canvas id="particles-js" aria-hidden="true"></canvas>
 
     <div
       class="site-loader"
@@ -177,34 +103,28 @@
       role="status"
       aria-label="Loading portfolio"
     >
-      <div class="loader-grid" aria-hidden="true"></div>
-      <div class="loader-panel loader-panel-left" aria-hidden="true"></div>
-      <div class="loader-panel loader-panel-right" aria-hidden="true"></div>
-      <div class="loader-gateway" aria-hidden="true">
-        <div class="loader-orbit"></div>
-        <div class="loader-orbit loader-orbit-two"></div>
-        <img src="assets/Images/1.png" alt="Logo mark" />
+      <canvas class="loader-canvas" id="loader-canvas" aria-hidden="true"></canvas>
+      <div class="loader-logo-wrap" aria-hidden="true">
+        <img
+          class="loader-logo"
+          src="assets/Images/pixel/logo-dark.png?v=3"
+          alt=""
+          width="96"
+          height="96"
+        />
       </div>
-      <svg
-        class="loader-line"
-        aria-hidden="true"
-        viewBox="0 0 1200 360"
-        preserveAspectRatio="none"
-      >
-        <path d="M0 282 C 192 246, 315 55, 469 112 S 730 330, 1200 82" pathLength="1000"></path>
-      </svg>
       <div class="loader-start" aria-hidden="true">
-        <p>START SEQUENCE</p>
         <div class="loader-lights">
           <span></span><span></span><span></span><span></span><span></span>
         </div>
-        <strong>AA / INITIALIZED</strong>
       </div>
-      <div class="loader-readout">
+      <div class="loader-readout" aria-live="polite">
         <p>INITIALIZING <span class="loader-pulse"></span></p>
         <strong id="loader-progress">00</strong>
       </div>
       <p class="loader-sector">SECTOR 01 / SIGNAL ACQUISITION</p>
+      <span class="sr-only" id="loader-status" aria-live="polite">Loading portfolio</span>
+
       <button
         class="loader-skip"
         id="loader-skip"
@@ -227,7 +147,12 @@
       </nav>
 
       <a href="#home" class="logo" aria-label="Aamodit Acharya home">
-        <img src="assets/Images/2.png" alt="AA" />
+        <img
+          src="assets/Images/pixel/logo-dark.png?v=3"
+          alt=""
+          width="96"
+          height="96"
+        />
       </a>
 
       <nav
@@ -249,7 +174,7 @@
           type="button"
           aria-label="Switch to light mode"
         >
-          <i class="fa-solid fa-sun"></i>
+          <span class="pixel-icon" data-icon="cloud-sun" aria-hidden="true"></span>
         </button>
       </nav>
 
@@ -264,207 +189,56 @@
         <span></span>
         <span></span>
       </button>
-
-      <div class="mobile-menu" id="mobile-menu" aria-hidden="true" inert>
-        <p class="ui-label">NAVIGATION / AA</p>
-        <nav aria-label="Mobile navigation">
-          <a href="#home" class="nav-link" data-section="home"
-            ><span>01</span> Home</a
-          >
-          <a href="#about" class="nav-link" data-section="about"
-            ><span>02</span> About</a
-          >
-          <a href="#experience" class="nav-link" data-section="experience"
-            ><span>03</span> Experience</a
-          >
-          <a href="#projects" class="nav-link" data-section="projects"
-            ><span>04</span> Projects</a
-          >
-          <a href="#contact" class="nav-link" data-section="contact"
-            ><span>05</span> Contact</a
-          >
-          <a
-            href="assets/Aamodit Acharya Resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            ><span>06</span> Resume</a
-          >
-        </nav>
-        <button
-          class="mobile-theme-toggle theme-toggle"
-          type="button"
-          aria-label="Switch to light mode"
-        >
-          <i class="fa-solid fa-sun"></i>
-        </button>
-        <p class="mobile-menu-footer">AAMODIT ACHARYA / PORTFOLIO</p>
-      </div>
     </header>
 
+    <div class="mobile-menu" id="mobile-menu" aria-hidden="true" inert>
+      <p class="ui-label">NAVIGATION / AA</p>
+      <nav aria-label="Mobile navigation">
+        <a href="#home" class="nav-link" data-section="home"
+          ><span>01</span> Home</a
+        >
+        <a href="#about" class="nav-link" data-section="about"
+          ><span>02</span> About</a
+        >
+        <a href="#experience" class="nav-link" data-section="experience"
+          ><span>03</span> Experience</a
+        >
+        <a href="#projects" class="nav-link" data-section="projects"
+          ><span>04</span> Projects</a
+        >
+        <a href="#contact" class="nav-link" data-section="contact"
+          ><span>05</span> Contact</a
+        >
+        <a
+          href="assets/Aamodit Acharya Resume.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><span>06</span> Resume</a
+        >
+      </nav>
+      <button
+        class="mobile-theme-toggle theme-toggle"
+        type="button"
+        aria-label="Switch to light mode"
+      >
+        <span class="pixel-icon" data-icon="cloud-sun" aria-hidden="true"></span>
+      </button>
+      <p class="mobile-menu-footer">AAMODIT ACHARYA / PORTFOLIO</p>
+    </div>
+
     <main>
-      <section id="home" class="home section-observed">
-        <div class="hero-portrait reveal f1-game-panel">
-          <div class="game-frame indy-game-frame" id="game-frame">
-            <iframe
-              class="indy-game-iframe"
-              id="indy-game-iframe"
-              src="assets/indy-game/index.html"
-              title="Indy Skyline Survival racing game"
-              loading="eager"
-            ></iframe>
-            <!-- HUD -->
-            <div class="game-hud">
-              <div class="hud-item score-display">
-                <span class="hud-label">SCORE</span>
-                <span class="hud-value" id="game-score">000000</span>
-              </div>
-              <div class="hud-item speed-display">
-                <span class="hud-label">SPEED</span>
-                <span class="hud-value" id="game-speed">0 <span class="unit">KM/H</span></span>
-              </div>
-              <div class="hud-item lives-display">
-                <span class="hud-label">LIVES</span>
-                <span class="hud-value" id="game-lives">♡ ♡ ♡</span>
-              </div>
-              <button class="hud-mute-btn" id="game-mute-btn" type="button" aria-label="Mute sound">
-                <i class="fa-solid fa-volume-high"></i>
-              </button>
-            </div>
-
-            <!-- Viewport -->
-            <div class="game-viewport">
-              <svg id="game-svg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
-                <defs>
-                  <linearGradient id="road-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stop-color="var(--game-road-start)" stop-opacity="0.98" />
-                    <stop offset="100%" stop-color="var(--game-road-end)" stop-opacity="0.98" />
-                  </linearGradient>
-                  <filter id="game-soft-glow" x="-30%" y="-30%" width="160%" height="160%">
-                    <feGaussianBlur stdDeviation="2.2" result="blur" />
-                    <feMerge>
-                      <feMergeNode in="blur" />
-                      <feMergeNode in="SourceGraphic" />
-                    </feMerge>
-                  </filter>
-                  <pattern id="game-scanlines" width="1" height="8" patternUnits="userSpaceOnUse">
-                    <rect y="0" width="1" height="1" class="game-scanline" />
-                  </pattern>
-                </defs>
-
-                <rect class="game-sky" x="0" y="0" width="400" height="500" />
-                <rect class="game-scanline-fill" x="0" y="0" width="400" height="500" fill="url(#game-scanlines)" />
-
-                <g id="svg-stars"></g>
-                <g id="svg-scenery-back"></g>
-                <line id="svg-horizon" x1="0" y1="190" x2="400" y2="190" />
-
-                <polygon id="svg-road-surface" points="166,190 234,190 386,500 14,500" fill="url(#road-grad)" />
-                <g id="svg-grid-floor"></g>
-                <g id="svg-road-lines">
-                  <line class="road-edge road-edge-left" x1="166" y1="190" x2="14" y2="500" />
-                  <line class="road-edge road-edge-right" x1="234" y1="190" x2="386" y2="500" />
-                  <line id="lane-line-left" class="lane-line" x1="188" y1="198" x2="146" y2="500" />
-                  <line id="lane-line-right" class="lane-line" x1="212" y1="198" x2="254" y2="500" />
-                </g>
-
-                <g id="svg-scenery-front"></g>
-                <g id="svg-obstacles"></g>
-                <g id="svg-player" data-vehicle="rear-f1" transform="translate(200, 430)"></g>
-              </svg>
-
-              <!-- Start Run Overlay -->
-              <div class="game-overlay" id="overlay-start">
-                <div class="overlay-content">
-                  <h2>AA-F1 SYSTEM</h2>
-                  <p class="overlay-subtitle">TACTICAL SIMULATION V0.8</p>
-                  
-                  <div class="controls-guide">
-                    <div class="guide-item">
-                      <span class="keys"><span class="key">A</span><span class="key">D</span> / <span class="key">←</span><span class="key">→</span></span>
-                      <span class="label">MOVE VEHICLE</span>
-                    </div>
-                    <div class="guide-item">
-                      <span class="keys"><span class="key">SPACE</span> / <span class="key">W</span> / <span class="key">↑</span></span>
-                      <span class="label">JUMP OBSTACLES</span>
-                    </div>
-                  </div>
-
-                  <button class="game-btn start-btn" id="game-start-btn" type="button">INITIALIZE RUN</button>
-                </div>
-              </div>
-
-              <!-- Game Over Overlay -->
-              <div class="game-overlay hidden" id="overlay-gameover">
-                <div class="overlay-content">
-                  <h2 class="crashed-title">SYSTEM CRASHED</h2>
-                  <p class="overlay-subtitle" id="game-crash-reason">COLLISION DETECTED</p>
-                  
-                  <div class="stats-readout">
-                    <div class="stat-row">
-                      <span>SCORE:</span>
-                      <strong id="final-score">000000</strong>
-                    </div>
-                    <div class="stat-row">
-                      <span>DISTANCE:</span>
-                      <strong id="final-distance">0.00 KM</strong>
-                    </div>
-                    <div class="stat-row">
-                      <span>BEST RUN:</span>
-                      <strong id="best-score">000000</strong>
-                    </div>
-                  </div>
-
-                  <button class="game-btn restart-btn" id="game-restart-btn" type="button">REBOOT SYSTEM</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Bottom Readouts -->
-            <div class="game-bottom-hud">
-              <span class="bottom-label" id="game-track-label">TRACK 01 / FOREST</span>
-              <span class="bottom-label" id="game-distance-label">DISTANCE: 0.00 KM</span>
-            </div>
-
-            <!-- Mobile Controls -->
-            <div class="game-touch-controls" id="game-touch-controls">
-              <button class="touch-btn" id="touch-left" type="button" aria-label="Move Left">
-                <i class="fa-solid fa-chevron-left"></i>
-              </button>
-              <button class="touch-btn jump-btn" id="touch-jump" type="button" aria-label="Jump">
-                <span>JUMP</span>
-              </button>
-              <button class="touch-btn" id="touch-right" type="button" aria-label="Move Right">
-                <i class="fa-solid fa-chevron-right"></i>
-              </button>
-            </div>
-
-          </div>
-        </div>
-
+      <section id="home" class="home home--calm section-observed">
         <div class="home-content">
-          <p class="hero-kicker reveal">
-            BETWEEN NUMBERS AND THE BIGGER PICTURE
-          </p>
-          <h1 class="reveal">
-            <span>Hi, It's</span>
-            <span>Aamodit</span>
+          <p class="hero-kicker reveal">PLAYER PROFILE</p>
+          <h1 class="reveal" aria-label="Aamodit Acharya">
+            <span><span class="arcade-letter-trigger">A</span>amodit</span>
             <span>Acharya</span>
           </h1>
-          <p class="typing-text reveal">
-            I'm a&nbsp;<span id="typed-text"></span
-            ><span class="cursor">|</span>
+          <p class="typing-text hero-role reveal">
+            Applied Scientist at <span>Ramp</span>
           </p>
-          <p class="intro-paragraph reveal">
-            Glad you stumbled upon my webpage! Lets
-            <span class="highlight"><a href="#contact">connect</a></span>!
-          </p>
+          <a class="hero-connect reveal" href="#contact">Let's connect ↗</a>
         </div>
-
-        <p class="hero-status ui-label">SIGNAL / LIVE <span></span></p>
-        <a class="scroll-cue ui-label" href="#about"
-          >SCROLL TO EXPLORE <i class="fa-solid fa-arrow-down-long"></i
-        ></a>
-        <span class="hero-sector ui-label">SECTOR 01</span>
       </section>
 
       <section id="about" class="about about-v3 section-observed">
@@ -474,7 +248,7 @@
             <h2 class="about-headline">
               <span class="headline-line"><span>I LIKE TURNING</span></span>
               <span class="headline-line"><span>CHAOS INTO</span></span>
-              <span class="headline-line"><span>SOMETHING USEFUL.</span></span>
+              <span class="headline-line"><span>SOMETHING USEFUL</span></span>
             </h2>
             
             <div class="about-v3-bio">
@@ -484,12 +258,12 @@
                 I like messy problems, good people, and the point where a bunch of scattered ideas finally starts making sense.
               </p>
               <p>
-                Currently doing: incoming Data Science Intern at 
-                <a href="https://www.wealthsimple.com/" target="_blank" rel="noopener noreferrer" class="about-blue-link">Wealthsimple</a>, 
-                working with marketing data to better understand growth and customer behavior.
+                Currently: Applied Scientist at
+                <a href="https://ramp.com/" target="_blank" rel="noopener noreferrer" class="about-blue-link">Ramp</a>,
+                building automations for reimbursements.
               </p>
               <p>
-                My data science story started with arguing with friends about sports: hockey takes, F1 calls, and debates that needed more than vibes. I started pulling data, finding patterns, and using insights to prove them wrong. Somewhere in that chaos, I realized I liked turning messy questions into cleaner answers.
+                My story started with arguing with friends about sports: hockey takes, F1 calls, and debates that needed more than vibes. I started pulling data, finding patterns, and using insights to prove them wrong. Somewhere in that chaos, I realized I liked turning messy questions into cleaner answers.
               </p>
             </div>
 
@@ -500,16 +274,7 @@
           </div>
 
           <div class="about-v3-portrait-wrapper">
-            <div class="portrait-blueprint-bg"></div>
             <div class="portrait-blueprint-frame">
-              <span class="frame-trace frame-trace-top" aria-hidden="true"></span>
-              <span class="frame-trace frame-trace-right" aria-hidden="true"></span>
-              <span class="frame-trace frame-trace-bottom" aria-hidden="true"></span>
-              <span class="frame-trace frame-trace-left" aria-hidden="true"></span>
-              <span class="marker marker-tl">+</span>
-              <span class="marker marker-tr">+</span>
-              <span class="marker marker-bl">+</span>
-              <span class="marker marker-br">+</span>
               <div class="portrait-image-container">
                 <img src="assets/Images/aamo2.png?v=20260603" alt="Aamodit Acharya" />
               </div>
@@ -552,7 +317,16 @@
               <p class="ui-label shelf-category-label">WORK</p>
               <div class="experience-shelf">
                 <div class="shelf-item-group" data-index="0">
-                  <button class="shelf-item active" type="button" aria-selected="true" aria-controls="dossier-wealthsimple" id="tab-wealthsimple" data-index="0">
+                  <button class="shelf-item active" type="button" aria-selected="true" aria-controls="dossier-ramp" id="tab-ramp" data-index="0">
+                    <span class="shelf-item-tab-accent"></span>
+                    <span class="shelf-item-date">2026</span>
+                    <span class="shelf-item-role">Applied Scientist</span>
+                    <span class="shelf-item-company">Ramp</span>
+                  </button>
+                  <div class="mobile-details-drawer"></div>
+                </div>
+                <div class="shelf-item-group" data-index="1">
+                  <button class="shelf-item" type="button" aria-selected="false" aria-controls="dossier-wealthsimple" id="tab-wealthsimple" data-index="1">
                     <span class="shelf-item-tab-accent"></span>
                     <span class="shelf-item-date">2026</span>
                     <span class="shelf-item-role">Data Science Intern</span>
@@ -560,8 +334,8 @@
                   </button>
                   <div class="mobile-details-drawer"></div>
                 </div>
-                <div class="shelf-item-group" data-index="1">
-                  <button class="shelf-item" type="button" aria-selected="false" aria-controls="dossier-mash" id="tab-mash" data-index="1">
+                <div class="shelf-item-group" data-index="2">
+                  <button class="shelf-item" type="button" aria-selected="false" aria-controls="dossier-mash" id="tab-mash" data-index="2">
                     <span class="shelf-item-tab-accent"></span>
                     <span class="shelf-item-date">2025</span>
                     <span class="shelf-item-role">Data Science Intern</span>
@@ -569,8 +343,8 @@
                   </button>
                   <div class="mobile-details-drawer"></div>
                 </div>
-                <div class="shelf-item-group" data-index="2">
-                  <button class="shelf-item" type="button" aria-selected="false" aria-controls="dossier-statsig" id="tab-statsig" data-index="2">
+                <div class="shelf-item-group" data-index="3">
+                  <button class="shelf-item" type="button" aria-selected="false" aria-controls="dossier-statsig" id="tab-statsig" data-index="3">
                     <span class="shelf-item-tab-accent"></span>
                     <span class="shelf-item-date">2025</span>
                     <span class="shelf-item-role">Data Science Intern</span>
@@ -578,8 +352,8 @@
                   </button>
                   <div class="mobile-details-drawer"></div>
                 </div>
-                <div class="shelf-item-group" data-index="3">
-                  <button class="shelf-item" type="button" aria-selected="false" aria-controls="dossier-td-2024" id="tab-td-2024" data-index="3">
+                <div class="shelf-item-group" data-index="4">
+                  <button class="shelf-item" type="button" aria-selected="false" aria-controls="dossier-td-2024" id="tab-td-2024" data-index="4">
                     <span class="shelf-item-tab-accent"></span>
                     <span class="shelf-item-date">2024</span>
                     <span class="shelf-item-role">Data Science Intern</span>
@@ -587,8 +361,8 @@
                   </button>
                   <div class="mobile-details-drawer"></div>
                 </div>
-                <div class="shelf-item-group" data-index="4">
-                  <button class="shelf-item" type="button" aria-selected="false" aria-controls="dossier-td-2023" id="tab-td-2023" data-index="4">
+                <div class="shelf-item-group" data-index="5">
+                  <button class="shelf-item" type="button" aria-selected="false" aria-controls="dossier-td-2023" id="tab-td-2023" data-index="5">
                     <span class="shelf-item-tab-accent"></span>
                     <span class="shelf-item-date">2023</span>
                     <span class="shelf-item-role">Data Science Intern</span>
@@ -596,8 +370,8 @@
                   </button>
                   <div class="mobile-details-drawer"></div>
                 </div>
-                <div class="shelf-item-group" data-index="5">
-                  <button class="shelf-item" type="button" aria-selected="false" aria-controls="dossier-desjardins" id="tab-desjardins" data-index="5">
+                <div class="shelf-item-group" data-index="6">
+                  <button class="shelf-item" type="button" aria-selected="false" aria-controls="dossier-desjardins" id="tab-desjardins" data-index="6">
                     <span class="shelf-item-tab-accent"></span>
                     <span class="shelf-item-date">2022</span>
                     <span class="shelf-item-role">Data Science Intern</span>
@@ -613,68 +387,79 @@
               <div class="dossier-panel">
                 <div class="dossier-shadow-page dossier-shadow-page-1" aria-hidden="true"></div>
                 <div class="dossier-shadow-page dossier-shadow-page-2" aria-hidden="true"></div>
-                <div class="dossier-card active" id="dossier-wealthsimple" data-index="0">
+                <div class="dossier-card active" id="dossier-ramp" data-index="0">
                   <div class="dossier-header">
                     <span class="dossier-label ui-label">ACTIVE ROLE</span>
+                    <h3 class="dossier-title">Applied Scientist</h3>
+                    <a class="dossier-company" href="https://ramp.com/" target="_blank" rel="noopener noreferrer" aria-label="Open Ramp homepage">@ Ramp</a>
+                    <p class="dossier-meta">2026 to Present</p>
+                  </div>
+
+                  <div class="dossier-body">
+                    <p class="dossier-desc">Building automations for reimbursements, turning operational workflows into reliable product systems.</p>
+                  </div>
+
+                  <div class="dossier-visual">
+                    <canvas class="experience-canvas" data-scene="automation" role="img" aria-label="A reimbursement claim, receipt, and policy pass through an automated workflow and produce a completed reimbursement"></canvas>
+                  </div>
+
+                  <div class="dossier-impact">
+                    <p class="ui-label section-label">CURRENT FOCUS</p>
+                    <div class="impact-grid">
+                      <div class="impact-item">
+                        <span class="pixel-icon" data-icon="file-text" aria-hidden="true"></span>
+                        <span class="impact-text">Reimbursement automation</span>
+                      </div>
+                      <div class="impact-item">
+                        <span class="pixel-icon" data-icon="repeat" aria-hidden="true"></span>
+                        <span class="impact-text">Workflow orchestration</span>
+                      </div>
+                      <div class="impact-item">
+                        <span class="pixel-icon" data-icon="zap" aria-hidden="true"></span>
+                        <span class="impact-text">Applied science in production</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="dossier-tech">
+                    <p class="ui-label section-label">DOMAIN</p>
+                    <div class="tech-tags">
+                      <span class="tech-tag">Reimbursements</span>
+                      <span class="tech-tag">Automation</span>
+                      <span class="tech-tag">Applied Science</span>
+                      <span class="tech-tag">Workflow Systems</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="dossier-card" id="dossier-wealthsimple" data-index="1">
+                  <div class="dossier-header">
                     <h3 class="dossier-title">Data Science Intern</h3>
-                    <span class="dossier-company">@ Wealthsimple</span>
+                    <a class="dossier-company" href="https://www.wealthsimple.com/en-ca" target="_blank" rel="noopener noreferrer" aria-label="Open Wealthsimple homepage">@ Wealthsimple</a>
                     <p class="dossier-meta">Jan 2026 to Apr 2026 &mdash; Toronto, Ontario</p>
                   </div>
                   
                   <div class="dossier-body">
-                    <p class="dossier-desc">Incoming at Wealthsimple on the Marketing Data team. Working with analytics to support growth and understand customer behavior.</p>
+                    <p class="dossier-desc">Built production Marketing Data systems across Braze and Airflow: push-token observability, a daily attribute catalogue, and an AI-assisted DAG debugging agent.</p>
                   </div>
         
                   <div class="dossier-visual">
-                    <svg class="role-diagram exp-scene exp-scene-growth" viewBox="0 0 420 170" role="img" aria-label="Animated marketing growth funnel">
-                      <defs>
-                        <path id="growth-flow-path" d="M 38 88 C 92 88, 110 54, 155 54 S 238 80, 272 80 S 327 63, 382 44" />
-                      </defs>
-                      <rect class="scene-panel scene-faint-fill" x="14" y="20" width="392" height="128" rx="10" />
-                      <g class="scene-packets">
-                        <circle class="scene-token" r="4">
-                          <animateMotion dur="5.8s" repeatCount="indefinite" path="M 38 88 C 92 88, 110 54, 155 54 S 238 80, 272 80 S 321 63, 374 44" />
-                        </circle>
-                        <circle class="scene-token scene-token-soft" r="3">
-                          <animateMotion dur="5.8s" begin="1.9s" repeatCount="indefinite" path="M 38 88 C 92 88, 110 54, 155 54 S 238 80, 272 80 S 321 63, 374 44" />
-                        </circle>
-                      </g>
-                      <g class="scene-float-slow">
-                        <path class="scene-outline scene-blue-soft scene-block" d="M 46 40 L 150 40 L 128 92 L 68 92 Z" />
-                        <path class="scene-outline scene-block" d="M 68 92 L 128 92 L 118 120 L 78 120 Z" />
-                        <text x="98" y="31" text-anchor="middle" class="scene-label">ACQUISITION</text>
-                      </g>
-                      <path class="scene-flow" d="M 150 67 C 190 67, 205 82, 242 82" />
-                      <g>
-                        <rect class="scene-outline scene-block" x="246" y="48" width="82" height="68" rx="8" />
-                        <path class="scene-blue scene-line-grow" d="M 258 96 C 280 94, 284 76, 302 78 S 310 62, 318 60" />
-                        <rect class="scene-fill-blue scene-bar scene-bar-a" x="265" y="90" width="8" height="16" rx="2" />
-                        <rect class="scene-fill-blue scene-bar scene-bar-b" x="281" y="82" width="8" height="24" rx="2" />
-                        <rect class="scene-fill-blue scene-bar scene-bar-c" x="297" y="70" width="8" height="36" rx="2" />
-                        <text x="287" y="132" text-anchor="middle" class="scene-label">GROWTH</text>
-                      </g>
-                      <g>
-                        <rect class="scene-outline scene-blue scene-block" x="338" y="32" width="42" height="54" rx="8" />
-                        <circle class="scene-fill-blue" cx="359" cy="76" r="3" />
-                      </g>
-                      <path class="scene-guide" d="M 38 88 C 92 88, 110 54, 155 54 S 238 80, 272 80 S 321 63, 374 44" />
-                    </svg>
+                    <canvas class="experience-canvas" data-scene="growth" role="img" aria-label="Braze push-token registration signals pass through a marketing data pipeline and produce a 25 percent campaign engagement lift"></canvas>
                   </div>
         
                   <div class="dossier-impact">
                     <p class="ui-label section-label">KEY IMPACT</p>
                     <div class="impact-grid">
                       <div class="impact-item">
-                        <i class="fa-solid fa-chart-pie" aria-hidden="true"></i>
-                        <span class="impact-text">Marketing analytics</span>
+                        <span class="pixel-icon" data-icon="chart" aria-hidden="true"></span>
+                        <span class="impact-text">25% higher marketing campaign engagement</span>
                       </div>
                       <div class="impact-item">
-                        <i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i>
-                        <span class="impact-text">Growth insights</span>
+                        <span class="pixel-icon" data-icon="search" aria-hidden="true"></span>
+                        <span class="impact-text">75% less manual attribute investigation</span>
                       </div>
                       <div class="impact-item">
-                        <i class="fa-solid fa-users" aria-hidden="true"></i>
-                        <span class="impact-text">Customer behavior analysis</span>
+                        <span class="pixel-icon" data-icon="terminal" aria-hidden="true"></span>
+                        <span class="impact-text">30% less on-call debugging time</span>
                       </div>
                     </div>
                   </div>
@@ -682,18 +467,20 @@
                   <div class="dossier-tech">
                     <p class="ui-label section-label">TECH STACK</p>
                     <div class="tech-tags">
-                      <span class="tech-tag">Marketing Analytics</span>
-                      <span class="tech-tag">Growth</span>
-                      <span class="tech-tag">Customer Behavior</span>
-                      <span class="tech-tag">SQL</span>
-                      <span class="tech-tag">Python</span>
+                      <span class="tech-tag">Airflow</span>
+                      <span class="tech-tag">Braze</span>
+                      <span class="tech-tag">dbt</span>
+                      <span class="tech-tag">Hightouch</span>
+                      <span class="tech-tag">Sourcegraph</span>
+                      <span class="tech-tag">Claude</span>
+                      <span class="tech-tag">Semgrep</span>
                     </div>
                   </div>
                 </div>
-                <div class="dossier-card" id="dossier-mash" data-index="1">
+                <div class="dossier-card" id="dossier-mash" data-index="2">
                   <div class="dossier-header">
                     <h3 class="dossier-title">Data Science Intern</h3>
-                    <span class="dossier-company">@ Mash</span>
+                    <a class="dossier-company" href="https://mash.com/" target="_blank" rel="noopener noreferrer" aria-label="Open Mash homepage">@ Mash</a>
                     <p class="dossier-meta">Sept 2025 to Dec 2025 &mdash; Toronto, Ontario</p>
                   </div>
                   
@@ -702,56 +489,22 @@
                   </div>
         
                   <div class="dossier-visual">
-                    <svg class="role-diagram exp-scene exp-scene-rag" viewBox="0 0 420 170" role="img" aria-label="Animated RAG search pipeline">
-                      <rect class="scene-panel scene-faint-fill" x="14" y="22" width="392" height="126" rx="10" />
-                      <g class="scene-packets">
-                        <circle class="scene-token" r="4">
-                          <animateMotion dur="5.4s" repeatCount="indefinite" path="M 54 53 L 122 53 L 122 83 L 174 83 L 244 84 L 318 84 L 360 84" />
-                        </circle>
-                        <circle class="scene-token scene-token-soft" r="3">
-                          <animateMotion dur="5.4s" begin="1.8s" repeatCount="indefinite" path="M 54 97 L 122 97 L 122 83 L 174 83 L 244 84 L 318 84 L 360 84" />
-                        </circle>
-                      </g>
-                      <g class="scene-stack">
-                        <rect class="scene-outline scene-block" x="28" y="38" width="62" height="30" rx="5" />
-                        <text x="59" y="57" text-anchor="middle" class="scene-label">SLACK</text>
-                        <rect class="scene-outline scene-block" x="28" y="82" width="62" height="30" rx="5" />
-                        <text x="59" y="101" text-anchor="middle" class="scene-label">DOCS</text>
-                      </g>
-                      <path class="scene-flow" d="M 90 53 L 122 53 L 122 83 L 148 83" />
-                      <path class="scene-flow scene-flow-delay" d="M 90 97 L 122 97 L 122 83 L 148 83" />
-                      <g>
-                        <path class="scene-outline scene-blue scene-block" d="M 148 62 C 148 49 200 49 200 62 L 200 106 C 200 119 148 119 148 106 Z" />
-                        <path class="scene-outline" d="M 148 62 C 148 75 200 75 200 62" />
-                        <path class="scene-outline" d="M 148 84 C 148 96 200 96 200 84" />
-                        <text x="174" y="88" text-anchor="middle" class="scene-label scene-label-tight scene-blue-text">VECTOR DB</text>
-                      </g>
-                      <path class="scene-guide" d="M 200 84 L 244 84" />
-                      <rect class="scene-outline scene-block" x="244" y="56" width="74" height="56" rx="7" />
-                      <path class="scene-blue scene-scan" d="M 254 72 L 308 72" />
-                      <text x="281" y="86" text-anchor="middle" class="scene-label scene-label-tight">RERANK</text>
-                      <text x="281" y="98" text-anchor="middle" class="scene-label scene-label-tight scene-muted-text">COHERE</text>
-                      <path class="scene-guide" d="M 318 84 L 334 84" />
-                      <rect class="scene-outline scene-blue scene-block" x="334" y="48" width="54" height="74" rx="7" />
-                      <line class="scene-outline" x1="344" y1="66" x2="378" y2="66" />
-                      <line class="scene-outline" x1="344" y1="82" x2="372" y2="82" />
-                      <line class="scene-outline" x1="344" y1="98" x2="364" y2="98" />
-                    </svg>
+                    <canvas class="experience-canvas" data-scene="rag" role="img" aria-label="A user question enters a RAG database, retrieves three ranked documents, and produces a verified answer"></canvas>
                   </div>
         
                   <div class="dossier-impact">
                     <p class="ui-label section-label">KEY IMPACT</p>
                     <div class="impact-grid">
                       <div class="impact-item">
-                        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                        <span class="pixel-icon" data-icon="search" aria-hidden="true"></span>
                         <span class="impact-text">Better answer relevance (45%)</span>
                       </div>
                       <div class="impact-item">
-                        <i class="fa-solid fa-eye" aria-hidden="true"></i>
+                        <span class="pixel-icon" data-icon="eye" aria-hidden="true"></span>
                         <span class="impact-text">Multimodal search coverage (+50%)</span>
                       </div>
                       <div class="impact-item">
-                        <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+                        <span class="pixel-icon" data-icon="shield" aria-hidden="true"></span>
                         <span class="impact-text">Lower hallucination rate (-30%)</span>
                       </div>
                     </div>
@@ -770,10 +523,10 @@
                     </div>
                   </div>
                 </div>
-                <div class="dossier-card" id="dossier-statsig" data-index="2">
+                <div class="dossier-card" id="dossier-statsig" data-index="3">
                   <div class="dossier-header">
                     <h3 class="dossier-title">Data Science Intern</h3>
-                    <span class="dossier-company">@ Statsig</span>
+                    <a class="dossier-company" href="https://www.statsig.com/" target="_blank" rel="noopener noreferrer" aria-label="Open Statsig homepage">@ Statsig</a>
                     <p class="dossier-meta">May 2025 to Aug 2025 &mdash; Bellevue, WA</p>
                   </div>
                   
@@ -782,63 +535,22 @@
                   </div>
         
                   <div class="dossier-visual">
-                    <svg class="role-diagram exp-scene exp-scene-compute" viewBox="0 0 420 170" role="img" aria-label="Animated experimentation metrics engine">
-                      <rect class="scene-panel scene-faint-fill" x="14" y="22" width="392" height="126" rx="10" />
-                      <g class="scene-packets">
-                        <circle class="scene-token" r="3.5">
-                          <animateMotion dur="5.2s" repeatCount="indefinite" path="M 58 76 L 126 76 L 220 76 L 258 56 L 312 56 L 366 80" />
-                        </circle>
-                      </g>
-                      <text x="58" y="36" text-anchor="middle" class="scene-label">5B EVENTS</text>
-                      <g class="scene-event-cloud">
-                        <circle class="scene-fill-blue scene-twinkle" cx="38" cy="68" r="3" />
-                        <circle class="scene-fill-muted scene-twinkle scene-delay-a" cx="62" cy="58" r="2.5" />
-                        <circle class="scene-fill-muted scene-twinkle scene-delay-b" cx="80" cy="78" r="2.5" />
-                        <circle class="scene-fill-blue scene-twinkle scene-delay-c" cx="54" cy="92" r="3" />
-                      </g>
-                      <path class="scene-flow" d="M 88 76 L 126 76" />
-                      <rect class="scene-outline scene-blue scene-block" x="126" y="42" width="94" height="70" rx="9" />
-                      <text x="173" y="67" text-anchor="middle" class="scene-label scene-label-tight">PYSPARK</text>
-                      <text x="173" y="84" text-anchor="middle" class="scene-label scene-label-tight scene-blue-text">BIGQUERY</text>
-                      <g class="scene-gear scene-gear-a">
-                        <circle class="scene-outline" cx="151" cy="98" r="8" />
-                        <path class="scene-outline" d="M151 86 L151 90 M151 106 L151 110 M139 98 L143 98 M159 98 L163 98" />
-                      </g>
-                      <g class="scene-gear scene-gear-b">
-                        <circle class="scene-outline" cx="195" cy="98" r="8" />
-                        <path class="scene-outline" d="M195 86 L195 90 M195 106 L195 110 M183 98 L187 98 M203 98 L207 98" />
-                      </g>
-                      <path class="scene-flow" d="M 220 76 L 258 76" />
-                      <g class="scene-float-slow">
-                        <rect class="scene-outline scene-block" x="258" y="38" width="54" height="34" rx="4" />
-                        <path class="scene-outline" d="M268 45 L268 65 M280 45 L280 65 M292 45 L292 65" />
-                        <text x="285" y="30" text-anchor="middle" class="scene-label">HLL++</text>
-                        <rect class="scene-outline scene-block" x="258" y="90" width="54" height="34" rx="4" />
-                        <path class="scene-blue scene-wave" d="M267 110 Q276 98 285 112 T303 104" />
-                      </g>
-                      <path class="scene-flow scene-flow-delay" d="M 312 56 L 340 80" />
-                      <path class="scene-flow scene-flow-delay" d="M 312 108 L 340 80" />
-                      <rect class="scene-outline scene-blue scene-block" x="340" y="42" width="50" height="76" rx="8" />
-                      <rect class="scene-fill-blue scene-bar scene-bar-a" x="352" y="88" width="7" height="20" rx="2" />
-                      <rect class="scene-fill-blue scene-bar scene-bar-b" x="366" y="72" width="7" height="36" rx="2" />
-                      <rect class="scene-fill-muted scene-bar scene-bar-c" x="380" y="82" width="7" height="26" rx="2" />
-                      <text x="365" y="135" text-anchor="middle" class="scene-label">METRICS</text>
-                    </svg>
+                    <canvas class="experience-canvas" data-scene="compute" role="img" aria-label="Five billion events compress into HLL registers and produce an 82 percent faster aggregate query"></canvas>
                   </div>
         
                   <div class="dossier-impact">
                     <p class="ui-label section-label">KEY IMPACT</p>
                     <div class="impact-grid">
                       <div class="impact-item">
-                        <i class="fa-solid fa-cubes" aria-hidden="true"></i>
+                        <span class="pixel-icon" data-icon="box" aria-hidden="true"></span>
                         <span class="impact-text">Scalable experimentation metrics</span>
                       </div>
                       <div class="impact-item">
-                        <i class="fa-solid fa-gauge-high" aria-hidden="true"></i>
+                        <span class="pixel-icon" data-icon="chart" aria-hidden="true"></span>
                         <span class="impact-text">Faster segmentation (25% latency cut)</span>
                       </div>
                       <div class="impact-item">
-                        <i class="fa-solid fa-database" aria-hidden="true"></i>
+                        <span class="pixel-icon" data-icon="database" aria-hidden="true"></span>
                         <span class="impact-text">Reliable high-cardinality modeling</span>
                       </div>
                     </div>
@@ -858,10 +570,10 @@
                     </div>
                   </div>
                 </div>
-                <div class="dossier-card" id="dossier-td-2024" data-index="3">
+                <div class="dossier-card" id="dossier-td-2024" data-index="4">
                   <div class="dossier-header">
                     <h3 class="dossier-title">Data Science Intern</h3>
-                    <span class="dossier-company">@ TD Bank</span>
+                    <a class="dossier-company" href="https://www.td.com/" target="_blank" rel="noopener noreferrer" aria-label="Open TD Bank homepage">@ TD Bank</a>
                     <p class="dossier-meta">Jan 2024 to Apr 2024 &mdash; Montreal, QC</p>
                   </div>
                   
@@ -870,45 +582,22 @@
                   </div>
         
                   <div class="dossier-visual">
-                    <svg class="role-diagram exp-scene exp-scene-retention" viewBox="0 0 420 170" role="img" aria-label="Animated retention risk metric pipeline">
-                      <rect class="scene-panel scene-faint-fill" x="14" y="22" width="392" height="126" rx="10" />
-                      <g class="scene-packets">
-                        <circle class="scene-token" r="4">
-                          <animateMotion dur="5.6s" repeatCount="indefinite" path="M 62 76 L 136 76 L 246 76 L 338 76" />
-                        </circle>
-                      </g>
-                      <path class="scene-outline scene-block" d="M 36 54 C 36 42 90 42 90 54 L 90 100 C 90 112 36 112 36 100 Z" />
-                      <path class="scene-outline" d="M 36 54 C 36 66 90 66 90 54" />
-                      <path class="scene-outline" d="M 36 78 C 36 90 90 90 90 78" />
-                      <text x="63" y="130" text-anchor="middle" class="scene-label">HADOOP</text>
-                      <path class="scene-flow" d="M 90 76 L 136 76" />
-                      <rect class="scene-outline scene-blue scene-block" x="136" y="42" width="110" height="70" rx="8" />
-                      <text x="191" y="61" text-anchor="middle" class="scene-label scene-label-tight">IMPALA SQL</text>
-                      <line class="scene-blue scene-scan" x1="150" y1="76" x2="232" y2="76" />
-                      <line class="scene-outline" x1="150" y1="91" x2="214" y2="91" />
-                      <text x="191" y="130" text-anchor="middle" class="scene-label">FEATURES</text>
-                      <path class="scene-flow" d="M 246 76 L 292 76" />
-                      <rect class="scene-outline scene-blue scene-block" x="292" y="38" width="92" height="78" rx="8" />
-                      <path class="scene-blue scene-line-grow" d="M 306 58 L 330 64 L 346 94 L 372 78" />
-                      <circle class="scene-alert" cx="346" cy="94" r="9" />
-                      <path class="scene-alert-mark" d="M346 88 L346 94 M346 99 L346 99" />
-                      <text x="338" y="132" text-anchor="middle" class="scene-label">RISK SIGNAL</text>
-                    </svg>
+                    <canvas class="experience-canvas" data-scene="retention" role="img" aria-label="Database and web signals produce customer cancellation-risk scores and a retention action"></canvas>
                   </div>
         
                   <div class="dossier-impact">
                     <p class="ui-label section-label">KEY IMPACT</p>
                     <div class="impact-grid">
                       <div class="impact-item">
-                        <i class="fa-solid fa-user-xmark" aria-hidden="true"></i>
+                        <span class="pixel-icon" data-icon="users" aria-hidden="true"></span>
                         <span class="impact-text">Customer retention signal (+22% retention)</span>
                       </div>
                       <div class="impact-item">
-                        <i class="fa-solid fa-bolt" aria-hidden="true"></i>
+                        <span class="pixel-icon" data-icon="zap" aria-hidden="true"></span>
                         <span class="impact-text">Faster data refresh (97% speedup)</span>
                       </div>
                       <div class="impact-item">
-                        <i class="fa-solid fa-cloud-arrow-down" aria-hidden="true"></i>
+                        <span class="pixel-icon" data-icon="cloud" aria-hidden="true"></span>
                         <span class="impact-text">Underwriting market signal collection</span>
                       </div>
                     </div>
@@ -927,10 +616,10 @@
                     </div>
                   </div>
                 </div>
-                <div class="dossier-card" id="dossier-td-2023" data-index="4">
+                <div class="dossier-card" id="dossier-td-2023" data-index="5">
                   <div class="dossier-header">
                     <h3 class="dossier-title">Data Science Intern</h3>
-                    <span class="dossier-company">@ TD Bank</span>
+                    <a class="dossier-company" href="https://www.td.com/" target="_blank" rel="noopener noreferrer" aria-label="Open TD Bank homepage">@ TD Bank</a>
                     <p class="dossier-meta">May 2023 to Aug 2023 &mdash; Toronto, ON</p>
                   </div>
                   
@@ -939,48 +628,22 @@
                   </div>
         
                   <div class="dossier-visual">
-                    <svg class="role-diagram exp-scene exp-scene-forecast" viewBox="0 0 420 170" role="img" aria-label="Animated forecasting service deployment">
-                      <rect class="scene-panel scene-faint-fill" x="14" y="22" width="392" height="126" rx="10" />
-                      <g class="scene-packets">
-                        <circle class="scene-token" r="3.5">
-                          <animateMotion dur="5.8s" repeatCount="indefinite" path="M 63 82 L 132 82 L 254 82 L 342 82" />
-                        </circle>
-                      </g>
-                      <g>
-                        <rect class="scene-outline scene-block" x="32" y="48" width="62" height="28" rx="5" />
-                        <text x="63" y="66" text-anchor="middle" class="scene-label">PANDAS</text>
-                        <rect class="scene-outline scene-block" x="32" y="88" width="62" height="28" rx="5" />
-                        <text x="63" y="106" text-anchor="middle" class="scene-label">NUMPY</text>
-                      </g>
-                      <path class="scene-flow" d="M 94 82 L 132 82" />
-                      <rect class="scene-outline scene-blue scene-block" x="132" y="42" width="122" height="80" rx="10" />
-                      <rect class="scene-outline scene-float-a scene-block" x="148" y="56" width="42" height="28" rx="5" />
-                      <text x="169" y="74" text-anchor="middle" class="scene-label scene-label-tight scene-blue-text">DOCKER</text>
-                      <rect class="scene-outline scene-float-b scene-block" x="202" y="56" width="38" height="28" rx="5" />
-                      <text x="221" y="74" text-anchor="middle" class="scene-label scene-blue-text">POD</text>
-                      <path class="scene-outline" d="M 156 100 L 232 100 M 156 108 L 210 108" />
-                      <text x="193" y="138" text-anchor="middle" class="scene-label">SERVICES</text>
-                      <path class="scene-flow" d="M 254 82 L 296 82" />
-                      <rect class="scene-outline scene-blue scene-block" x="296" y="42" width="92" height="80" rx="10" />
-                      <path class="scene-blue scene-line-grow forecast-line" d="M 310 98 L 326 70 L 342 88 L 358 58 L 378 96" />
-                      <path class="scene-flow forecast-extension" d="M 376 96 L 386 80" />
-                      <text x="342" y="138" text-anchor="middle" class="scene-label">FORECAST</text>
-                    </svg>
+                    <canvas class="experience-canvas" data-scene="forecast" role="img" aria-label="Historical data passes through deployed containers and produces a forecast with a faster processing cycle"></canvas>
                   </div>
         
                   <div class="dossier-impact">
                     <p class="ui-label section-label">KEY IMPACT</p>
                     <div class="impact-grid">
                       <div class="impact-item">
-                        <i class="fa-solid fa-hourglass-half" aria-hidden="true"></i>
+                        <span class="pixel-icon" data-icon="date-time" aria-hidden="true"></span>
                         <span class="impact-text">Faster forecasting cycles (67% speedup)</span>
                       </div>
                       <div class="impact-item">
-                        <i class="fa-solid fa-cubes" aria-hidden="true"></i>
+                        <span class="pixel-icon" data-icon="box" aria-hidden="true"></span>
                         <span class="impact-text">Reliable containerized modeling pipelines</span>
                       </div>
                       <div class="impact-item">
-                        <i class="fa-solid fa-percent" aria-hidden="true"></i>
+                        <span class="pixel-icon" data-icon="target" aria-hidden="true"></span>
                         <span class="impact-text">25% boost in closing-rate predictions</span>
                       </div>
                     </div>
@@ -999,10 +662,10 @@
                     </div>
                   </div>
                 </div>
-                <div class="dossier-card" id="dossier-desjardins" data-index="5">
+                <div class="dossier-card" id="dossier-desjardins" data-index="6">
                   <div class="dossier-header">
                     <h3 class="dossier-title">Data Science Intern</h3>
-                    <span class="dossier-company">@ Desjardins</span>
+                    <a class="dossier-company" href="https://www.desjardins.com/" target="_blank" rel="noopener noreferrer" aria-label="Open Desjardins homepage">@ Desjardins</a>
                     <p class="dossier-meta">Sept 2022 to Dec 2022 &mdash; Toronto, ON</p>
                   </div>
                   
@@ -1011,54 +674,22 @@
                   </div>
         
                   <div class="dossier-visual">
-                    <svg class="role-diagram exp-scene exp-scene-audit" viewBox="0 0 420 170" role="img" aria-label="Animated audit and discrepancy review">
-                      <rect class="scene-panel scene-faint-fill" x="14" y="22" width="392" height="126" rx="10" />
-                      <g class="scene-packets">
-                        <circle class="scene-token" r="3.5">
-                          <animateMotion dur="6s" repeatCount="indefinite" path="M 67 58 L 146 82 L 198 82 L 270 82 L 360 68" />
-                        </circle>
-                        <circle class="scene-token scene-token-soft" r="3">
-                          <animateMotion dur="6s" begin="2s" repeatCount="indefinite" path="M 67 104 L 146 82 L 198 82 L 270 82 L 360 68" />
-                        </circle>
-                      </g>
-                      <rect class="scene-outline scene-block" x="30" y="42" width="74" height="32" rx="5" />
-                      <text x="67" y="62" text-anchor="middle" class="scene-label">RADAR</text>
-                      <rect class="scene-outline scene-block" x="30" y="88" width="74" height="32" rx="5" />
-                      <text x="67" y="108" text-anchor="middle" class="scene-label">R MODEL</text>
-                      <path class="scene-flow" d="M 104 58 L 146 82" />
-                      <path class="scene-flow scene-flow-delay" d="M 104 104 L 146 82" />
-                      <path class="scene-outline scene-blue scene-block" d="M 146 82 L 172 58 L 198 82 L 172 106 Z" />
-                      <text x="172" y="86" text-anchor="middle" class="scene-label scene-blue-text">SAS</text>
-                      <path class="scene-flow" d="M 198 82 L 248 82" />
-                      <g>
-                        <circle class="scene-outline scene-block" cx="270" cy="82" r="22" />
-                        <path class="scene-alert-mark" d="M270 70 L270 84 M270 94 L270 94" />
-                        <text x="270" y="125" text-anchor="middle" class="scene-label">DIFF</text>
-                      </g>
-                      <path class="scene-flow" d="M 292 82 L 330 82" />
-                      <g>
-                        <rect class="scene-outline scene-block" x="330" y="48" width="58" height="58" rx="4" />
-                        <line class="scene-outline" x1="359" y1="48" x2="359" y2="106" />
-                        <line class="scene-outline" x1="330" y1="77" x2="388" y2="77" />
-                        <rect class="scene-fill-blue scene-grid-highlight" x="359" y="48" width="29" height="29" rx="2" />
-                        <text x="359" y="125" text-anchor="middle" class="scene-label">SEGMENTS</text>
-                      </g>
-                    </svg>
+                    <canvas class="experience-canvas" data-scene="audit" role="img" aria-label="Radar and R matrices are compared row by row and reconciled into a verified match"></canvas>
                   </div>
         
                   <div class="dossier-impact">
                     <p class="ui-label section-label">KEY IMPACT</p>
                     <div class="impact-grid">
                       <div class="impact-item">
-                        <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+                        <span class="pixel-icon" data-icon="warning-diamond" aria-hidden="true"></span>
                         <span class="impact-text">Fraud discrepancy reporting (30% accuracy lift)</span>
                       </div>
                       <div class="impact-item">
-                        <i class="fa-solid fa-magnifying-glass-chart" aria-hidden="true"></i>
+                        <span class="pixel-icon" data-icon="search" aria-hidden="true"></span>
                         <span class="impact-text">Segmentation risk review (10 alignment factors)</span>
                       </div>
                       <div class="impact-item">
-                        <i class="fa-solid fa-rotate" aria-hidden="true"></i>
+                        <span class="pixel-icon" data-icon="repeat" aria-hidden="true"></span>
                         <span class="impact-text">Radar to R script mathematical verification</span>
                       </div>
                     </div>
@@ -1087,13 +718,7 @@
                 <div class="mini-list-row">
                   <button class="mini-list-header" type="button" aria-expanded="false">
                     <span class="mini-icon-cell">
-                      <svg class="mini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M12 2v20M2 12h20M6 6l12 12M6 18L18 6"/>
-                        <circle cx="6" cy="6" r="2" />
-                        <circle cx="18" cy="6" r="2" />
-                        <circle cx="6" cy="18" r="2" />
-                        <circle cx="18" cy="18" r="2" />
-                      </svg>
+                      <span class="pixel-icon mini-icon" data-icon="send" aria-hidden="true"></span>
                     </span>
                     <span class="mini-text-cell">
                       <strong class="mini-item-name">UW Aerial Robotics</strong>
@@ -1101,9 +726,7 @@
                     </span>
                     <span class="mini-meta-cell">2022 to 2023</span>
                     <span class="mini-chevron-cell">
-                      <svg class="mini-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                      </svg>
+                      <span class="pixel-icon mini-chevron" data-icon="chevron-down" aria-hidden="true"></span>
                     </span>
                   </button>
                   <div class="mini-list-details">
@@ -1113,10 +736,7 @@
                 <div class="mini-list-row">
                   <button class="mini-list-header" type="button" aria-expanded="false">
                     <span class="mini-icon-cell">
-                      <svg class="mini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-                      </svg>
+                      <span class="pixel-icon mini-icon" data-icon="book-open" aria-hidden="true"></span>
                     </span>
                     <span class="mini-text-cell">
                       <strong class="mini-item-name">Act Sci Club</strong>
@@ -1124,9 +744,7 @@
                     </span>
                     <span class="mini-meta-cell">2022</span>
                     <span class="mini-chevron-cell">
-                      <svg class="mini-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                      </svg>
+                      <span class="pixel-icon mini-chevron" data-icon="chevron-down" aria-hidden="true"></span>
                     </span>
                   </button>
                   <div class="mini-list-details">
@@ -1136,10 +754,7 @@
                 <div class="mini-list-row">
                   <button class="mini-list-header" type="button" aria-expanded="false">
                     <span class="mini-icon-cell">
-                      <svg class="mini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <line x1="22" y1="2" x2="11" y2="13"/>
-                        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-                      </svg>
+                      <span class="pixel-icon mini-icon" data-icon="settings-cog" aria-hidden="true"></span>
                     </span>
                     <span class="mini-text-cell">
                       <strong class="mini-item-name">Kraftwerx</strong>
@@ -1147,9 +762,7 @@
                     </span>
                     <span class="mini-meta-cell">2017 to 2021</span>
                     <span class="mini-chevron-cell">
-                      <svg class="mini-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                      </svg>
+                      <span class="pixel-icon mini-chevron" data-icon="chevron-down" aria-hidden="true"></span>
                     </span>
                   </button>
                   <div class="mini-list-details">
@@ -1165,10 +778,7 @@
                 <div class="mini-list-row">
                   <button class="mini-list-header" type="button" aria-expanded="false">
                     <span class="mini-icon-cell">
-                      <svg class="mini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <circle cx="12" cy="8" r="7" />
-                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
-                      </svg>
+                      <span class="pixel-icon mini-icon" data-icon="target" aria-hidden="true"></span>
                     </span>
                     <span class="mini-text-cell">
                       <strong class="mini-item-name">Machine Learning Cert</strong>
@@ -1176,9 +786,7 @@
                     </span>
                     <span class="mini-meta-cell">2024</span>
                     <span class="mini-chevron-cell">
-                      <svg class="mini-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                      </svg>
+                      <span class="pixel-icon mini-chevron" data-icon="chevron-down" aria-hidden="true"></span>
                     </span>
                   </button>
                   <div class="mini-list-details">
@@ -1188,10 +796,7 @@
                 <div class="mini-list-row">
                   <button class="mini-list-header" type="button" aria-expanded="false">
                     <span class="mini-icon-cell">
-                      <svg class="mini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <circle cx="12" cy="8" r="7" />
-                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
-                      </svg>
+                      <span class="pixel-icon mini-icon" data-icon="target" aria-hidden="true"></span>
                     </span>
                     <span class="mini-text-cell">
                       <strong class="mini-item-name">Exam P</strong>
@@ -1199,9 +804,7 @@
                     </span>
                     <span class="mini-meta-cell">2024</span>
                     <span class="mini-chevron-cell">
-                      <svg class="mini-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                      </svg>
+                      <span class="pixel-icon mini-chevron" data-icon="chevron-down" aria-hidden="true"></span>
                     </span>
                   </button>
                   <div class="mini-list-details">
@@ -1211,10 +814,7 @@
                 <div class="mini-list-row">
                   <button class="mini-list-header" type="button" aria-expanded="false">
                     <span class="mini-icon-cell">
-                      <svg class="mini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <circle cx="12" cy="8" r="7" />
-                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
-                      </svg>
+                      <span class="pixel-icon mini-icon" data-icon="target" aria-hidden="true"></span>
                     </span>
                     <span class="mini-text-cell">
                       <strong class="mini-item-name">Exam FM</strong>
@@ -1222,9 +822,7 @@
                     </span>
                     <span class="mini-meta-cell">2023</span>
                     <span class="mini-chevron-cell">
-                      <svg class="mini-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                      </svg>
+                      <span class="pixel-icon mini-chevron" data-icon="chevron-down" aria-hidden="true"></span>
                     </span>
                   </button>
                   <div class="mini-list-details">
@@ -1243,12 +841,12 @@
         <p class="section-index ui-label reveal">04 / SELECTED PROJECTS</p>
         <div class="projects-heading reveal">
           <h2 class="section-title">Projects</h2>
-          <p>CLICK CARD TO FIND OUT MORE</p>
+          <p>SELECT A SIGNAL / OPEN TO EXPLORE</p>
         </div>
 
         <div class="coverflow reveal" aria-roledescription="carousel" aria-label="Project showcase">
           <button class="coverflow-nav coverflow-prev" type="button" aria-label="Previous project">
-            <i class="fa-solid fa-chevron-left"></i>
+            <span class="pixel-icon" data-icon="chevron-left" aria-hidden="true"></span>
           </button>
 
           <div class="coverflow-viewport">
@@ -1256,7 +854,7 @@
 
               <article class="coverflow-card" data-index="0">
                 <button class="coverflow-cover" type="button" aria-label="View What Game? details">
-                  <img src="assets/Images/signals/project-game.svg" alt="" decoding="async" />
+                  <img src="/assets/Images/pixel/projects/project-game-dark.png" data-project-art="project-game" alt="" width="360" height="240" loading="lazy" decoding="async" />
                   <span class="coverflow-cover-label">
                     <span class="coverflow-num">01</span>
                     <span class="coverflow-cover-title">What Game?</span>
@@ -1266,13 +864,13 @@
                   <h3>What Game?</h3>
                   <p>Developed a Python and Streamlit app using cosine similarity with scikit-learn to recommend games based on IGDB API data, enhanced with seaborn visualizations.</p>
                   <div class="coverflow-tags"><span>Python</span><span>scikit‑learn</span></div>
-                  <a href="https://github.com/Ammo-byte/What_Game" target="_blank" rel="noopener noreferrer" class="coverflow-link" aria-label="View on GitHub"><i class="fab fa-github"></i></a>
+                  <a href="https://github.com/Ammo-byte/What_Game" target="_blank" rel="noopener noreferrer" class="coverflow-link" aria-label="View on GitHub"><span class="pixel-icon" data-icon="git-branch" aria-hidden="true"></span></a>
                 </div>
               </article>
 
               <article class="coverflow-card" data-index="1">
                 <button class="coverflow-cover" type="button" aria-label="View What Image? details">
-                  <img src="assets/Images/signals/project-image.svg" alt="" decoding="async" />
+                  <img src="/assets/Images/pixel/projects/project-image-dark.png" data-project-art="project-image" alt="" width="360" height="240" loading="lazy" decoding="async" />
                   <span class="coverflow-cover-label">
                     <span class="coverflow-num">02</span>
                     <span class="coverflow-cover-title">What Image?</span>
@@ -1282,13 +880,13 @@
                   <h3>What Image?</h3>
                   <p>Built an image captioning model in Python using CNNs for image feature extraction and RNNs (LSTMs) for generating text captions, leveraging PyTorch to construct and train this multimodal architecture.</p>
                   <div class="coverflow-tags"><span>Python</span><span>PyTorch</span></div>
-                  <a href="https://github.com/Ammo-byte/What_Image" target="_blank" rel="noopener noreferrer" class="coverflow-link" aria-label="View on GitHub"><i class="fab fa-github"></i></a>
+                  <a href="https://github.com/Ammo-byte/What_Image" target="_blank" rel="noopener noreferrer" class="coverflow-link" aria-label="View on GitHub"><span class="pixel-icon" data-icon="git-branch" aria-hidden="true"></span></a>
                 </div>
               </article>
 
               <article class="coverflow-card" data-index="2">
                 <button class="coverflow-cover" type="button" aria-label="View Drake vs Kendrick Analysis details">
-                  <img src="assets/Images/signals/project-music.svg" alt="" decoding="async" />
+                  <img src="/assets/Images/pixel/projects/project-music-dark.png" data-project-art="project-music" alt="" width="360" height="240" loading="lazy" decoding="async" />
                   <span class="coverflow-cover-label">
                     <span class="coverflow-num">03</span>
                     <span class="coverflow-cover-title">Drake vs Kendrick</span>
@@ -1298,13 +896,13 @@
                   <h3>Drake vs Kendrick Analysis</h3>
                   <p>Conducted a comparison of Kendrick Lamar and Drake's song popularity in R using k-Nearest Neighbors (kNN) classification and exploratory data analysis to analyze play distributions and distinct artist features.</p>
                   <div class="coverflow-tags"><span>R</span><span>kNN</span></div>
-                  <a href="https://github.com/Ammo-byte/Drizzy_vs_Kdot" target="_blank" rel="noopener noreferrer" class="coverflow-link" aria-label="View on GitHub"><i class="fab fa-github"></i></a>
+                  <a href="https://github.com/Ammo-byte/Drizzy_vs_Kdot" target="_blank" rel="noopener noreferrer" class="coverflow-link" aria-label="View on GitHub"><span class="pixel-icon" data-icon="git-branch" aria-hidden="true"></span></a>
                 </div>
               </article>
 
               <article class="coverflow-card" data-index="3">
                 <button class="coverflow-cover" type="button" aria-label="View GameStop Stock Analysis details">
-                  <img src="assets/Images/signals/project-stock.svg" alt="" decoding="async" />
+                  <img src="/assets/Images/pixel/projects/project-stock-dark.png" data-project-art="project-stock" alt="" width="360" height="240" loading="lazy" decoding="async" />
                   <span class="coverflow-cover-label">
                     <span class="coverflow-num">04</span>
                     <span class="coverflow-cover-title">GameStop Stock</span>
@@ -1314,13 +912,13 @@
                   <h3>GameStop Stock Analysis</h3>
                   <p>Modeled GameStop (GME) stock volatility in R with linear regression, influence metrics, and robust regression (using gradient descent) to address outliers and highlight influential trading days.</p>
                   <div class="coverflow-tags"><span>R</span><span>Robust Reg.</span></div>
-                  <a href="https://github.com/Ammo-byte/GME_Analysis" target="_blank" rel="noopener noreferrer" class="coverflow-link" aria-label="View on GitHub"><i class="fab fa-github"></i></a>
+                  <a href="https://github.com/Ammo-byte/GME_Analysis" target="_blank" rel="noopener noreferrer" class="coverflow-link" aria-label="View on GitHub"><span class="pixel-icon" data-icon="git-branch" aria-hidden="true"></span></a>
                 </div>
               </article>
 
               <article class="coverflow-card" data-index="4">
                 <button class="coverflow-cover" type="button" aria-label="View Edmonton Oilers Analysis details">
-                  <img src="assets/Images/signals/project-hockey.svg" alt="" decoding="async" />
+                  <img src="/assets/Images/pixel/projects/project-hockey-dark.png" data-project-art="project-hockey" alt="" width="360" height="240" loading="lazy" decoding="async" />
                   <span class="coverflow-cover-label">
                     <span class="coverflow-num">05</span>
                     <span class="coverflow-cover-title">Edmonton Oilers</span>
@@ -1330,13 +928,13 @@
                   <h3>Edmonton Oilers Analysis</h3>
                   <p>Assessed Edmonton Oilers' goal-scoring patterns in R with Poisson-based MLE and MDE for goal distribution, applying the Horvitz-Thompson estimator to evaluate bias, variance, and MSE in home vs. away goal averages.</p>
                   <div class="coverflow-tags"><span>R</span><span>MLE</span></div>
-                  <a href="https://github.com/Ammo-byte/Edmonton_Oilers_Analysis" target="_blank" rel="noopener noreferrer" class="coverflow-link" aria-label="View on GitHub"><i class="fab fa-github"></i></a>
+                  <a href="https://github.com/Ammo-byte/Edmonton_Oilers_Analysis" target="_blank" rel="noopener noreferrer" class="coverflow-link" aria-label="View on GitHub"><span class="pixel-icon" data-icon="git-branch" aria-hidden="true"></span></a>
                 </div>
               </article>
 
               <article class="coverflow-card" data-index="5">
                 <button class="coverflow-cover" type="button" aria-label="View Sunday details">
-                  <img src="assets/Images/signals/project-sunday.svg" alt="" decoding="async">
+                  <img src="/assets/Images/pixel/projects/project-sunday-dark.png" data-project-art="project-sunday" alt="" width="360" height="240" loading="lazy" decoding="async" />
                   <span class="coverflow-cover-label">
                     <span class="coverflow-num">06</span>
                     <span class="coverflow-cover-title">Sunday</span>
@@ -1346,13 +944,13 @@
                   <h3>Sunday</h3>
                   <p>Designed and built a smart notification pipeline that integrates Google Calendar events, email updates, and real-time traffic information to deliver context-aware, timely alerts.</p>
                   <div class="coverflow-tags"><span>Python</span><span>APIs</span><span>Automation</span></div>
-                  <a href="https://github.com/Ammo-byte/SundayProj" target="_blank" rel="noopener noreferrer" class="coverflow-link" aria-label="View on GitHub"><i class="fab fa-github"></i></a>
+                  <a href="https://github.com/Ammo-byte/SundayProj" target="_blank" rel="noopener noreferrer" class="coverflow-link" aria-label="View on GitHub"><span class="pixel-icon" data-icon="git-branch" aria-hidden="true"></span></a>
                 </div>
               </article>
 
               <article class="coverflow-card coverflow-card--wip" data-index="6">
                 <button class="coverflow-cover" type="button" aria-label="View Mart Metrics details">
-                  <img src="assets/Images/signals/project-retail.svg" alt="" decoding="async" />
+                  <img src="/assets/Images/pixel/projects/project-retail-dark.png" data-project-art="project-retail" alt="" width="360" height="240" loading="lazy" decoding="async" />
                   <span class="coverflow-cover-label">
                     <span class="coverflow-num">07</span>
                     <span class="coverflow-cover-title">Mart Metrics</span>
@@ -1370,7 +968,7 @@
           </div>
 
           <button class="coverflow-nav coverflow-next" type="button" aria-label="Next project">
-            <i class="fa-solid fa-chevron-right"></i>
+            <span class="pixel-icon" data-icon="chevron-right" aria-hidden="true"></span>
           </button>
 
           <div class="coverflow-dots"></div>
@@ -1391,45 +989,72 @@
               href="assets/Aamodit Acharya Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Download Resume"
+              aria-label="Open resume PDF"
             >
-              <i class="fas fa-file-alt"></i>
+              <span class="contact-icon-frame" aria-hidden="true">
+                <span class="pixel-icon" data-icon="file-text"></span>
+              </span>
+              <span class="contact-copy">
+                <span class="contact-label">Resume</span>
+                <span class="contact-meta">View PDF</span>
+              </span>
+              <span class="contact-action" aria-hidden="true">↗</span>
             </a>
             <a
               href="https://github.com/Ammo-byte"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="GitHub Profile"
+              aria-label="Open GitHub profile"
             >
-              <i class="fab fa-github"></i>
+              <span class="contact-icon-frame" aria-hidden="true">
+                <span class="pixel-icon" data-icon="terminal"></span>
+              </span>
+              <span class="contact-copy">
+                <span class="contact-label">GitHub</span>
+                <span class="contact-meta">Code profile</span>
+              </span>
+              <span class="contact-action" aria-hidden="true">↗</span>
             </a>
             <button
               id="email"
               class="contact-email-action"
               type="button"
-              aria-label="Send Email"
+              aria-label="Open email options"
             >
-              <i class="fas fa-envelope"></i>
+              <span class="contact-icon-frame" aria-hidden="true">
+                <span class="pixel-icon" data-icon="mail"></span>
+              </span>
+              <span class="contact-copy">
+                <span class="contact-label">Email</span>
+                <span class="contact-meta">Direct message</span>
+              </span>
+              <span class="contact-action" aria-hidden="true">+</span>
             </button>
             <a
               href="https://www.linkedin.com/in/aamodit-acharya/"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="LinkedIn Profile"
+              aria-label="Open LinkedIn profile"
             >
-              <i class="fab fa-linkedin"></i>
+              <span class="contact-icon-frame" aria-hidden="true">
+                <span class="pixel-icon" data-icon="contact"></span>
+              </span>
+              <span class="contact-copy">
+                <span class="contact-label">LinkedIn</span>
+                <span class="contact-meta">Work network</span>
+              </span>
+              <span class="contact-action" aria-hidden="true">↗</span>
             </a>
           </div>
         </div>
         <a href="#home" class="return-top ui-label"
-          >RETURN TO TOP <i class="fa-solid fa-arrow-up-long"></i
-        ></a>
+          >RETURN TO TOP <span class="pixel-icon" data-icon="arrow-up" aria-hidden="true"></span></a>
       </section>
     </main>
 
     <footer id="footer" class="footer">
       <p>Built with manic precision and a touch of chaos.</p>
-      <span class="ui-label">AA / 2026</span>
+      <span class="ui-label" id="arcade-clue">AA / 2026</span>
     </footer>
 
     <div
@@ -1450,7 +1075,7 @@
           data-modal-close
           aria-label="Close email dialog"
         >
-          <i class="fa-solid fa-xmark"></i>
+          <span class="pixel-icon" data-icon="close" aria-hidden="true"></span>
         </button>
         <p class="ui-label">CHANNEL / EMAIL</p>
         <h2 id="email-modal-title">Want to send an email to me?</h2>
@@ -1464,9 +1089,42 @@
       </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="script.js?v=45"></script>
+    <dialog
+      class="arcade-modal"
+      id="arcade-modal"
+      aria-labelledby="arcade-modal-title"
+    >
+      <section class="arcade-shell">
+        <header class="arcade-shell-header">
+          <div>
+            <p class="ui-label">SECTOR 00 / ARCADE UNLOCKED</p>
+            <h2 id="arcade-modal-title">Indy Skyline Survival</h2>
+          </div>
+          <button
+            class="arcade-close"
+            type="button"
+            data-arcade-close
+            aria-label="Close arcade"
+          >
+            <span class="pixel-icon" data-icon="close" aria-hidden="true"></span>
+          </button>
+        </header>
+        <div class="game-frame indy-game-frame arcade-game-frame" id="game-frame">
+          <iframe
+            class="indy-game-iframe"
+            id="indy-game-iframe"
+            data-src="assets/indy-game/index.html"
+            title="Indy Skyline Survival racing game"
+            loading="lazy"
+          ></iframe>
+        </div>
+        <footer class="arcade-shell-footer">
+          <span>ARROWS / A D TO STEER</span>
+          <span>ESC TO CLOSE</span>
+        </footer>
+      </section>
+    </dialog>
+
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
