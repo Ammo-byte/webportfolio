@@ -1,4 +1,4 @@
-import { body } from "./core";
+import { body, reducedMotion } from "./core";
 
 export const initNavigation = (): void => {
   const header = document.querySelector<HTMLElement>("#site-header");
@@ -13,6 +13,60 @@ export const initNavigation = (): void => {
     ),
   );
   let previousScroll = window.scrollY;
+  let activeFrame = 0;
+  let navigationTarget: string | null = null;
+  let navigationTimer = 0;
+
+  const setActiveSection = (sectionId: string): void => {
+    navLinks.forEach((link) => {
+      const active = link.dataset.section === sectionId;
+      link.classList.toggle("active", active);
+      if (active) {
+        link.setAttribute("aria-current", "page");
+      } else {
+        link.removeAttribute("aria-current");
+      }
+    });
+  };
+
+  const updateActiveSection = (): void => {
+    activeFrame = 0;
+    if (navigationTarget) {
+      setActiveSection(navigationTarget);
+      return;
+    }
+
+    const headerHeight = header?.offsetHeight ?? 0;
+    const focusLine =
+      headerHeight + (window.innerHeight - headerHeight) * 0.34;
+    const current =
+      sections.find((section) => {
+        const bounds = section.getBoundingClientRect();
+        return bounds.top <= focusLine && bounds.bottom > focusLine;
+      }) ??
+      sections.reduce((closest, section) => {
+        const distance = Math.abs(
+          section.getBoundingClientRect().top - focusLine,
+        );
+        return distance < closest.distance
+          ? { distance, section }
+          : closest;
+      }, { distance: Number.POSITIVE_INFINITY, section: sections[0] }).section;
+
+    if (current) setActiveSection(current.id);
+  };
+
+  const scheduleActiveSection = (): void => {
+    if (activeFrame) return;
+    activeFrame = window.requestAnimationFrame(updateActiveSection);
+  };
+
+  const releaseNavigationTarget = (): void => {
+    if (!navigationTarget) return;
+    navigationTarget = null;
+    window.clearTimeout(navigationTimer);
+    scheduleActiveSection();
+  };
 
   const setMenu = (open: boolean): void => {
     menuButton?.setAttribute("aria-expanded", String(open));
@@ -29,6 +83,47 @@ export const initNavigation = (): void => {
   document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((link) => {
     link.addEventListener("click", () => setMenu(false));
   });
+  navLinks.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const sectionId = link.dataset.section;
+      const target = sectionId
+        ? document.getElementById(sectionId)
+        : null;
+      if (!sectionId || !target) return;
+
+      event.preventDefault();
+      navigationTarget = sectionId;
+      setActiveSection(sectionId);
+      setMenu(false);
+      header?.classList.remove("hidden");
+
+      const headerHeight = header?.offsetHeight ?? 0;
+      const availableHeight = window.innerHeight - headerHeight;
+      const centerOffset = Math.max(
+        0,
+        (availableHeight - target.offsetHeight) / 2,
+      );
+      const targetTop = Math.max(
+        0,
+        window.scrollY +
+          target.getBoundingClientRect().top -
+          headerHeight -
+          centerOffset,
+      );
+
+      window.history.pushState(null, "", `#${sectionId}`);
+      window.scrollTo({
+        top: targetTop,
+        behavior: reducedMotion.matches ? "auto" : "smooth",
+      });
+
+      window.clearTimeout(navigationTimer);
+      navigationTimer = window.setTimeout(
+        releaseNavigationTarget,
+        reducedMotion.matches ? 0 : 3000,
+      );
+    });
+  });
   window.addEventListener(
     "scroll",
     () => {
@@ -36,9 +131,12 @@ export const initNavigation = (): void => {
       const movingDown = currentScroll > previousScroll && currentScroll > 180;
       header?.classList.toggle(
         "hidden",
-        movingDown && !body.classList.contains("menu-open"),
+        movingDown &&
+          !navigationTarget &&
+          !body.classList.contains("menu-open"),
       );
       previousScroll = currentScroll;
+      scheduleActiveSection();
     },
     { passive: true },
   );
@@ -54,21 +152,14 @@ export const initNavigation = (): void => {
   header?.addEventListener("focusin", () => {
     header.classList.remove("hidden");
   });
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      const current = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (!current) return;
-      navLinks.forEach((link) => {
-        link.classList.toggle(
-          "active",
-          link.dataset.section === current.target.id,
-        );
-      });
-    },
-    { rootMargin: "-30% 0px -55%", threshold: [0.1, 0.35, 0.7] },
-  );
-  sections.forEach((section) => observer.observe(section));
+  window.addEventListener("resize", scheduleActiveSection, { passive: true });
+  window.addEventListener("scrollend", releaseNavigationTarget, {
+    passive: true,
+  });
+  window.addEventListener("wheel", releaseNavigationTarget, { passive: true });
+  window.addEventListener("touchstart", releaseNavigationTarget, {
+    passive: true,
+  });
+  window.addEventListener("popstate", scheduleActiveSection);
+  updateActiveSection();
 };
