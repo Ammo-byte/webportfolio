@@ -91,26 +91,10 @@ export const initNavigation = (): void => {
         : null;
       if (!sectionId || !target) return;
 
-      event.preventDefault();
       navigationTarget = sectionId;
       setActiveSection(sectionId);
       setMenu(false);
       header?.classList.remove("hidden");
-
-      const headerHeight = header?.offsetHeight ?? 0;
-      const availableHeight = window.innerHeight - headerHeight;
-      const centerOffset = Math.max(
-        0,
-        (availableHeight - target.offsetHeight) / 2,
-      );
-
-      // Apply the computed offset dynamically to leverage native scrolling without layout shift bugs
-      target.style.scrollMarginTop = `${headerHeight + centerOffset}px`;
-
-      window.history.pushState(null, "", `#${sectionId}`);
-      target.scrollIntoView({
-        behavior: reducedMotion.matches ? "auto" : "smooth",
-      });
 
       window.clearTimeout(navigationTimer);
       navigationTimer = window.setTimeout(
