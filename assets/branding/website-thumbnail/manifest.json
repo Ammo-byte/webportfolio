@@ -1,0 +1,14 @@
+{
+  "asset": "website-thumbnail.png",
+  "use": "Website link preview and Open Graph image",
+  "width": 1200,
+  "height": 630,
+  "format": "PNG",
+  "template": "template.html",
+  "sourceBackground": "../linkedin-banner/background-source.png",
+  "logoSource": "../../Images/pixel/logo-dark.png",
+  "text": [
+    "AAMODIT ACHARYA",
+    "APPLIED SCIENTIST @ RAMP"
+  ]
+}

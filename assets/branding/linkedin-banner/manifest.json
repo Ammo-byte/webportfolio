@@ -1,0 +1,15 @@
+{
+  "asset": "linkedin-banner.png",
+  "platform": "LinkedIn personal profile",
+  "width": 1584,
+  "height": 396,
+  "format": "PNG",
+  "sourceBackground": "background-source.png",
+  "logoSource": "../../Images/pixel/logo-dark.png",
+  "logoPlacement": {
+    "left": 1168,
+    "top": 134,
+    "width": 128,
+    "height": 128
+  }
+}
