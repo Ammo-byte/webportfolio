@@ -615,9 +615,9 @@ const forecastSpec: ExperienceSceneSpec = {
       { x: 69, y: 30 },
     ];
     const forecastPoints = [
-      { x: 146, y: 54 },
-      { x: 157, y: 48 },
-      { x: 167, y: 42 },
+      { x: 146, y: 42 },
+      { x: 157, y: 39 },
+      { x: 167, y: 35 },
       { x: 178, y: 32 },
       { x: 185, y: 29 },
       { x: 190, y: 27 },
@@ -660,13 +660,29 @@ const forecastSpec: ExperienceSceneSpec = {
         context,
         [
           { x: 118, y: 42 },
-          { x: 128, y: 42 },
-          { x: 137, y: 49 },
-          { x: 146, y: 54 },
+          { x: 146, y: 42 },
         ],
         clusterProgress,
         colors,
         2,
+      );
+      progressivePath(
+        context,
+        [
+          { x: 131, y: 42 },
+          { x: 131, y: 36 },
+        ],
+        clusterProgress,
+        colors,
+      );
+      progressivePath(
+        context,
+        [
+          { x: 131, y: 42 },
+          { x: 131, y: 47 },
+        ],
+        clusterProgress,
+        colors,
       );
       withAlpha(context, forecast, () => {
         drawPixelText(context, "FORECAST", 151, 7, colors.blue);
