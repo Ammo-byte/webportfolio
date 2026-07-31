@@ -975,27 +975,6 @@ section {
   min-width: 0;
 }
 
-.shelf-connector-line {
-  position: absolute;
-  top: var(--connector-y, 48px);
-  right: 100%;
-  width: clamp(42px, 6vw, 84px);
-  height: 1px;
-  background: var(--blue);
-  opacity: 0;
-  transform: scaleX(0);
-  transform-origin: right center;
-  transition:
-    top var(--medium) var(--step-4),
-    opacity var(--fast) var(--step-4),
-    transform var(--medium) var(--step-4);
-}
-
-.shelf-connector-line.visible {
-  opacity: 0.75;
-  transform: scaleX(1);
-}
-
 .dossier-panel {
   position: relative;
   min-height: 620px;
@@ -1147,8 +1126,8 @@ section {
   color: var(--blue);
 }
 
-.dossier-card.pixel-wipe-in {
-  animation: dossier-wipe 320ms var(--step-6);
+.dossier-card.dossier-enter {
+  animation: dossier-enter 280ms ease-out;
 }
 
 .dossier-impact {
@@ -2224,13 +2203,15 @@ section {
   }
 }
 
-@keyframes dossier-wipe {
+@keyframes dossier-enter {
   0% {
-    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+    transform: translateY(6px);
   }
 
   100% {
-    clip-path: inset(0);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

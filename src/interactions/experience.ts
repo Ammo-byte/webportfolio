@@ -13,8 +13,6 @@ export const initExperience = (): void => {
     document.querySelectorAll<HTMLElement>(".mobile-details-drawer"),
   );
   const panel = document.querySelector<HTMLElement>(".dossier-panel");
-  const connector =
-    document.querySelector<HTMLElement>(".shelf-connector-line");
   let activeIndex = 0;
 
   if (!shelf || !panel || !buttons.length || buttons.length !== cards.length) {
@@ -23,22 +21,9 @@ export const initExperience = (): void => {
 
   const animateCard = (card: HTMLElement): void => {
     if (reducedMotion.matches) return;
-    card.classList.remove("pixel-wipe-in");
+    card.classList.remove("dossier-enter");
     void card.offsetWidth;
-    card.classList.add("pixel-wipe-in");
-  };
-
-  const positionConnector = (): void => {
-    if (mobileLayout.matches || !connector) {
-      connector?.classList.remove("visible");
-      return;
-    }
-    const button = buttons[activeIndex];
-    connector.style.setProperty(
-      "--connector-y",
-      `${button.offsetTop + button.offsetHeight / 2}px`,
-    );
-    connector.classList.add("visible");
+    card.classList.add("dossier-enter");
   };
 
   const activate = (index: number, focus = false): void => {
@@ -68,7 +53,6 @@ export const initExperience = (): void => {
         detail: { index: activeIndex },
       }),
     );
-    window.requestAnimationFrame(positionConnector);
     if (focus) buttons[activeIndex].focus();
   };
 
@@ -123,6 +107,5 @@ export const initExperience = (): void => {
   });
 
   mobileLayout.addEventListener("change", arrange);
-  window.addEventListener("resize", positionConnector);
   arrange();
 };

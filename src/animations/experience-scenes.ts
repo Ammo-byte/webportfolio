@@ -6,14 +6,13 @@ import {
   drawContainer,
   drawCustomerCard,
   drawDatabase,
-  drawFlowArrow,
   drawMetricCard,
   drawPerson,
   drawPixelText,
   drawRankedDocument,
   drawRegisterBank,
   drawSourceCard,
-  drawSpeechBubble,
+  drawMessageCard,
   drawTarget,
   drawTextChip,
   fadeAfter,
@@ -81,12 +80,6 @@ const automationSpec: ExperienceSceneSpec = {
       );
     });
     drawDatabase(context, 68, 16, 60, 52, colors.faint, "FLOW");
-    drawFlowArrow(
-      context,
-      { x: 129, y: 42 },
-      { x: 144, y: 42 },
-      colors.faint,
-    );
     drawMetricCard(
       context,
       145,
@@ -140,7 +133,7 @@ const automationSpec: ExperienceSceneSpec = {
           colors.blue,
           complete,
         );
-        if (complete > 0.72) drawCheck(context, 185, 13, colors.blue);
+        if (complete > 0.72) drawCheck(context, 185, 56, colors.blue);
       });
     });
   },
@@ -212,12 +205,6 @@ const growthSpec: ExperienceSceneSpec = {
         },
       );
     });
-    drawFlowArrow(
-      context,
-      { x: 126, y: 42 },
-      { x: 140, y: 42 },
-      colors.faint,
-    );
     withAlpha(context, activeAlpha, () => {
       sources.forEach((source, index) => {
         withAlpha(
@@ -317,7 +304,7 @@ const ragSpec: ExperienceSceneSpec = {
     );
 
     drawPixelText(context, "QUESTION", 7, 15, colors.faint);
-    drawSpeechBubble(context, 5, 25, 43, 29, colors.faint, "left");
+    drawMessageCard(context, 5, 25, 43, 29, colors.faint);
     drawPixelText(context, "Q", 20, 32, colors.faint, 2);
     drawDatabase(context, 67, 19, 41, 43, colors.faint, "RAG");
     documentPositions.forEach((document) => {
@@ -326,7 +313,7 @@ const ragSpec: ExperienceSceneSpec = {
     withAlpha(context, activeAlpha, () => {
       withAlpha(context, query, () => {
         drawPixelText(context, "QUESTION", 7, 15, colors.blue);
-        drawSpeechBubble(context, 5, 25, 43, 29, colors.blue, "left");
+        drawMessageCard(context, 5, 25, 43, 29, colors.blue);
         drawPixelText(context, "Q", 20, 32, colors.blue, 2);
       });
       progressivePath(context, queryPath, query, colors, 2);
@@ -369,7 +356,7 @@ const ragSpec: ExperienceSceneSpec = {
       }
       withAlpha(context, answer, () => {
         drawPixelText(context, "ANSWER", 163, 14, colors.blue);
-        drawSpeechBubble(context, 158, 25, 46, 34, colors.blue, "right");
+        drawMessageCard(context, 158, 25, 46, 34, colors.blue);
         [0, 1, 2].forEach((row) => {
           const rowProgress = progressBetween(
             answer,
@@ -389,7 +376,7 @@ const ragSpec: ExperienceSceneSpec = {
         });
       });
       withAlpha(context, progressBetween(answer, 0.7, 1), () => {
-        drawCheck(context, 184, 27, colors.blue);
+        drawCheck(context, 184, 52, colors.blue);
       });
     });
   },
@@ -578,9 +565,11 @@ const retentionSpec: ExperienceSceneSpec = {
           context,
           [
             { x: 87, y: 58 },
-            { x: 130, y: 58 },
-            { x: 139, y: 48 },
-            { x: 149, y: 48 },
+            { x: 89, y: 58 },
+            { x: 89, y: 42 },
+            { x: 135, y: 42 },
+            { x: 143, y: 50 },
+            { x: 149, y: 50 },
           ],
           retain,
           colors,
@@ -630,8 +619,8 @@ const forecastSpec: ExperienceSceneSpec = {
       { x: 157, y: 48 },
       { x: 167, y: 42 },
       { x: 178, y: 32 },
-      { x: 188, y: 26 },
-      { x: 196, y: 20 },
+      { x: 185, y: 29 },
+      { x: 190, y: 27 },
     ];
 
     drawPixelText(context, "HISTORY", 9, 7, colors.faint);
@@ -691,7 +680,7 @@ const forecastSpec: ExperienceSceneSpec = {
         );
       }
       withAlpha(context, forecast, () => {
-        drawTarget(context, 196, 20, colors.blue);
+        drawTarget(context, 190, 27, colors.blue);
       });
       withAlpha(context, progressBetween(forecast, 0.55, 1), () => {
         drawTextChip(context, 151, 66, "67% FASTER", colors.blue);
@@ -731,18 +720,6 @@ const auditSpec: ExperienceSceneSpec = {
       colors.faint,
       0,
     );
-    drawFlowArrow(
-      context,
-      { x: 78, y: 42 },
-      { x: 91, y: 42 },
-      colors.faint,
-    );
-    drawFlowArrow(
-      context,
-      { x: 132, y: 42 },
-      { x: 119, y: 42 },
-      colors.faint,
-    );
     box(context, 91, 29, 28, 26, colors.faint);
     drawPixelText(context, "SCAN", 97, 40, colors.faint);
 
@@ -767,10 +744,26 @@ const auditSpec: ExperienceSceneSpec = {
           models,
         );
       });
+      progressivePath(
+        context,
+        [
+          { x: 78, y: 42 },
+          { x: 90, y: 42 },
+        ],
+        compare,
+        colors,
+      );
+      progressivePath(
+        context,
+        [
+          { x: 132, y: 42 },
+          { x: 120, y: 42 },
+        ],
+        compare,
+        colors,
+      );
       if (compare > 0 && verified === 0) {
         const activeRow = Math.min(4, Math.floor(compare * 5));
-        const scanY = rowYs[activeRow];
-        line(context, { x: 6, y: scanY }, { x: 204, y: scanY }, colors.blue);
         rowYs.forEach((rowY, index) => {
           if (index > activeRow) return;
           drawPixelText(

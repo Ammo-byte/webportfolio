@@ -90,17 +90,6 @@ export const line = (
   }
 };
 
-export const polyline = (
-  context: CanvasRenderingContext2D,
-  points: PixelPoint[],
-  color: string,
-  thickness = 1,
-): void => {
-  points.slice(0, -1).forEach((point, index) => {
-    line(context, point, points[index + 1], color, thickness);
-  });
-};
-
 export const box = (
   context: CanvasRenderingContext2D,
   x: number,
@@ -163,18 +152,13 @@ export const progressivePath = (
   pathProgress: number,
   colors: ScenePalette,
   thickness = 1,
-  showHead = true,
 ): void => {
-  polyline(context, nodes, colors.faint);
   const points = rasterPath(nodes);
   const visibleCount = Math.round(points.length * clamp(pathProgress));
   context.fillStyle = colors.blue;
   points.slice(0, visibleCount).forEach((point) => {
     context.fillRect(point.x, point.y, thickness, thickness);
   });
-  if (!showHead || pathProgress <= 0 || pathProgress >= 1) return;
-  const head = points[Math.min(points.length - 1, visibleCount)];
-  context.fillRect(head.x - 1, head.y - 1, 3 + thickness, 3 + thickness);
 };
 
 export const progressivePolyline = (
@@ -184,7 +168,6 @@ export const progressivePolyline = (
   colors: ScenePalette,
   thickness = 2,
 ): void => {
-  polyline(context, points, colors.faint);
   const path = rasterPath(points);
   const visibleCount = Math.round(path.length * clamp(lineProgress));
   context.fillStyle = colors.blue;
@@ -201,10 +184,10 @@ export const progressiveDashedPath = (
 ): void => {
   const path = rasterPath(points);
   const visibleCount = Math.round(path.length * clamp(pathProgress));
-  path.forEach((point, index) => {
+  path.slice(0, visibleCount).forEach((point, index) => {
     if (index % 6 >= 3) return;
-    context.fillStyle = index < visibleCount ? colors.blue : colors.faint;
-    context.fillRect(point.x, point.y, index < visibleCount ? 2 : 1, 1);
+    context.fillStyle = colors.blue;
+    context.fillRect(point.x, point.y, 2, 1);
   });
 };
 
@@ -305,28 +288,6 @@ export const drawTextChip = (
   drawPixelText(context, text, x + 3, y + 3, color, scale);
 };
 
-export const drawFlowArrow = (
-  context: CanvasRenderingContext2D,
-  from: PixelPoint,
-  to: PixelPoint,
-  color: string,
-): void => {
-  line(context, from, to, color);
-  const direction = Math.sign(to.x - from.x) || 1;
-  line(
-    context,
-    { x: to.x - direction * 4, y: to.y - 3 },
-    to,
-    color,
-  );
-  line(
-    context,
-    { x: to.x - direction * 4, y: to.y + 3 },
-    to,
-    color,
-  );
-};
-
 export const drawPerson = (
   context: CanvasRenderingContext2D,
   x: number,
@@ -354,28 +315,15 @@ export const drawSourceCard = (
   box(context, x + 25, y + 9, 3, 2, color, true);
 };
 
-export const drawSpeechBubble = (
+export const drawMessageCard = (
   context: CanvasRenderingContext2D,
   x: number,
   y: number,
   width: number,
   height: number,
   color: string,
-  tail: "left" | "right",
 ): void => {
   box(context, x, y, width, height, color, false, 2);
-  const tailX = tail === "left" ? x + 9 : x + width - 9;
-  const direction = tail === "left" ? -1 : 1;
-  polyline(
-    context,
-    [
-      { x: tailX - direction * 4, y: y + height - 1 },
-      { x: tailX + direction * 4, y: y + height + 5 },
-      { x: tailX + direction * 7, y: y + height - 1 },
-    ],
-    color,
-    2,
-  );
 };
 
 export const drawDatabase = (
@@ -387,15 +335,7 @@ export const drawDatabase = (
   color: string,
   label?: string,
 ): void => {
-  box(context, x + 3, y, width - 6, 3, color, true);
-  box(context, x, y + 3, width, height - 6, color, false, 2);
-  box(context, x + 3, y + height - 3, width - 6, 3, color, true);
-  line(
-    context,
-    { x: x + 2, y: y + Math.floor(height / 2) },
-    { x: x + width - 3, y: y + Math.floor(height / 2) },
-    color,
-  );
+  box(context, x, y, width, height, color, false, 2);
   if (label) {
     const labelX = x + Math.floor((width - pixelTextWidth(label)) / 2);
     drawPixelText(context, label, labelX, y + 8, color);
