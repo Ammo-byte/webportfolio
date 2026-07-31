@@ -1,5 +1,3 @@
-import "@fontsource/pixelify-sans/400.css";
-import "@fontsource/pixelify-sans/500.css";
 import "@fontsource/silkscreen/400.css";
 
 import { PixelField } from "./animations/particles";

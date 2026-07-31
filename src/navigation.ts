@@ -1,5 +1,47 @@
 import { body, reducedMotion } from "./core";
 
+const getLayoutBounds = (
+  element: HTMLElement,
+): { top: number; bottom: number } => {
+  const rect = element.getBoundingClientRect();
+  const transform = window.getComputedStyle(element).transform;
+  const translateY =
+    transform === "none" ? 0 : new DOMMatrixReadOnly(transform).m42;
+  return { top: rect.top - translateY, bottom: rect.bottom - translateY };
+};
+
+export const scrollSectionIntoView = (
+  target: HTMLElement,
+  behavior: ScrollBehavior,
+): void => {
+  const headerHeight =
+    document.querySelector<HTMLElement>("#site-header")?.offsetHeight ?? 0;
+  const availableHeight = Math.max(0, window.innerHeight - headerHeight);
+  const focusElements = Array.from(
+    target.querySelectorAll<HTMLElement>("[data-nav-focus]"),
+  );
+  const initialBounds = getLayoutBounds(focusElements[0] ?? target);
+  const focusBounds = focusElements.reduce(
+    (bounds, element) => {
+      const rect = getLayoutBounds(element);
+      return {
+        top: Math.min(bounds.top, rect.top),
+        bottom: Math.max(bounds.bottom, rect.bottom),
+      };
+    },
+    { top: initialBounds.top, bottom: initialBounds.bottom },
+  );
+  const focusHeight = focusBounds.bottom - focusBounds.top;
+  const centerOffset = (availableHeight - focusHeight) / 2;
+  const focusTop = Math.max(headerHeight + 16, headerHeight + centerOffset);
+  const targetTop = Math.max(
+    0,
+    window.scrollY + focusBounds.top - focusTop,
+  );
+
+  window.scrollTo({ top: targetTop, behavior });
+};
+
 export const initNavigation = (): void => {
   const header = document.querySelector<HTMLElement>("#site-header");
   const menuButton = document.querySelector<HTMLButtonElement>("#menu-toggle");
@@ -16,6 +58,7 @@ export const initNavigation = (): void => {
   let activeFrame = 0;
   let navigationTarget: string | null = null;
   let navigationTimer = 0;
+  let historyTimer = 0;
 
   const setActiveSection = (sectionId: string): void => {
     navLinks.forEach((link) => {
@@ -91,10 +134,22 @@ export const initNavigation = (): void => {
         : null;
       if (!sectionId || !target) return;
 
+      event.preventDefault();
       navigationTarget = sectionId;
       setActiveSection(sectionId);
       setMenu(false);
       header?.classList.remove("hidden");
+
+      scrollSectionIntoView(
+        target,
+        reducedMotion.matches ? "auto" : "smooth",
+      );
+
+      // Delay pushState to prevent Safari from aborting the smooth scroll halfway
+      window.clearTimeout(historyTimer);
+      historyTimer = window.setTimeout(() => {
+        window.history.pushState(null, "", `#${sectionId}`);
+      }, 800);
 
       window.clearTimeout(navigationTimer);
       navigationTimer = window.setTimeout(

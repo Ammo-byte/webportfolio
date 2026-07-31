@@ -1,5 +1,3 @@
-import "@fontsource/pixelify-sans/400.css";
-import "@fontsource/pixelify-sans/500.css";
 import "@fontsource/silkscreen/400.css";
 
 import { initArcade } from "./arcade";
@@ -12,14 +10,14 @@ import { initAccordions } from "./interactions/accordions";
 import { initCarousel } from "./interactions/carousel";
 import { initExperience } from "./interactions/experience";
 import { initEmailModal } from "./modals";
-import { initNavigation } from "./navigation";
+import { initNavigation, scrollSectionIntoView } from "./navigation";
 import { initReveals } from "./reveals";
 import { initTheme } from "./theme";
 
 const alignInitialSection = (): void => {
   if (!window.location.hash) return;
-  const target = document.querySelector<HTMLElement>(window.location.hash);
-  target?.scrollIntoView({ behavior: "auto", block: "start" });
+  const target = document.getElementById(window.location.hash.slice(1));
+  if (target) scrollSectionIntoView(target, "auto");
 };
 
 document.addEventListener("DOMContentLoaded", () => {

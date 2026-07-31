@@ -2,7 +2,7 @@
 
 ## System
 
-- Pixelify Sans drives display text and Silkscreen drives body, labels, metadata, controls, dialogs, the game shell, and the 404 page.
+- Determination drives display text and Silkscreen drives body, labels, metadata, controls, dialogs, the game shell, and the 404 page.
 - All interface icons are locally generated 24×24 pixel PNG masks from one MIT-licensed source.
 - Shared CSS palette tokens feed the DOM, loader Canvas, Experience Canvas, and fluid particle Canvas.
 - Dark mode uses raised charcoal project and dossier surfaces, while light mode uses warm cream surfaces with dark ink.
