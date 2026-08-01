@@ -788,6 +788,12 @@ section {
   background: var(--surface-raised);
 }
 
+.portrait-image-container picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .portrait-image-container img {
   width: 100%;
   height: 100%;

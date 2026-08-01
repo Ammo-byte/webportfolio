@@ -276,7 +276,27 @@
           <div class="about-v3-portrait-wrapper">
             <div class="portrait-blueprint-frame">
               <div class="portrait-image-container">
-                <img src="assets/Images/aamo2.png?v=20260603" alt="Aamodit Acharya" />
+                <picture>
+                  <source
+                    type="image/avif"
+                    srcset="assets/Images/aamo2-480.avif 480w, assets/Images/aamo2-800.avif 800w"
+                    sizes="(max-width: 760px) calc(100vw - 44px), 390px"
+                  />
+                  <source
+                    type="image/webp"
+                    srcset="assets/Images/aamo2-480.webp 480w, assets/Images/aamo2-800.webp 800w"
+                    sizes="(max-width: 760px) calc(100vw - 44px), 390px"
+                  />
+                  <img
+                    src="assets/Images/aamo2-800.webp"
+                    alt="Aamodit Acharya"
+                    width="1122"
+                    height="1402"
+                    loading="lazy"
+                    decoding="async"
+                    fetchpriority="low"
+                  />
+                </picture>
               </div>
             </div>
             <div class="vertical-name-tag">AAMODIT . ACHARYA</div>

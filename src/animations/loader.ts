@@ -231,13 +231,16 @@ export const initLoader = (): void => {
     new URLSearchParams(window.location.search).get("loader") === "preview";
   const seen =
     !preview && Boolean(readStorage(sessionStorage, "portfolioLoaderSeen"));
+  if (seen) {
+    finish();
+    loader.classList.add("complete");
+    return;
+  }
   const duration = reducedMotion.matches
     ? 80
     : preview
       ? 3600
-      : seen
-        ? 1800
-        : 3000;
+      : 1100;
   const start = performance.now();
 
   const tick = (time: number): void => {
@@ -266,7 +269,10 @@ export const initLoader = (): void => {
     if (linear < 1) {
       frame = window.requestAnimationFrame(tick);
     } else {
-      window.setTimeout(finish, reducedMotion.matches ? 0 : 420);
+      window.setTimeout(
+        finish,
+        reducedMotion.matches ? 0 : preview ? 420 : 160,
+      );
     }
   };
 

@@ -24,6 +24,7 @@ interface PointerState {
 export class PixelField implements ParticleController {
   private readonly canvas: HTMLCanvasElement | null;
   private readonly context: CanvasRenderingContext2D | null;
+  private accumulatedFrameTime = 0;
   private frame = 0;
   private lastFrameTime = 0;
   private palette = readThemePalette();
@@ -60,6 +61,7 @@ export class PixelField implements ParticleController {
     reducedMotion.addEventListener("change", () => {
       this.stop();
       this.resize();
+      if (!reducedMotion.matches) this.start();
     });
     this.start();
   }
@@ -106,6 +108,7 @@ export class PixelField implements ParticleController {
   private drawPixelLink(
     particle: NetworkParticle,
     other: NetworkParticle,
+    distance: number,
     opacity: number,
     pulsing: boolean,
   ): void {
@@ -114,7 +117,6 @@ export class PixelField implements ParticleController {
 
     const dx = other.x - particle.x;
     const dy = other.y - particle.y;
-    const distance = Math.hypot(dx, dy);
     const spacing = pulsing ? 4 : 5;
     const steps = Math.max(1, Math.floor(distance / spacing));
     const pixelSize = 2;
@@ -137,8 +139,8 @@ export class PixelField implements ParticleController {
 
     const width = window.innerWidth;
     const height = window.innerHeight;
-    const ratio = Math.min(window.devicePixelRatio || 1, 2);
     const mobile = width < 620;
+    const ratio = mobile ? 1 : Math.min(window.devicePixelRatio || 1, 2);
     const configuredCount = mobile ? 35 : 71;
     const densityCount = Math.round(
       ((width * height) / 1000) * (configuredCount / 800),
@@ -168,15 +170,25 @@ export class PixelField implements ParticleController {
 
   private stop(): void {
     this.running = false;
+    this.accumulatedFrameTime = 0;
     this.lastFrameTime = 0;
     window.cancelAnimationFrame(this.frame);
   }
 
   private drawFrame(time: number): void {
     if (!this.running) return;
-    const elapsed = this.lastFrameTime ? time - this.lastFrameTime : 16.667;
+    const mobile = window.innerWidth < 620;
+    const frameInterval = 1000 / (mobile ? 30 : 45);
+    const elapsed = this.lastFrameTime
+      ? time - this.lastFrameTime
+      : frameInterval;
     this.lastFrameTime = time;
-    this.render(time, elapsed);
+    this.accumulatedFrameTime += Math.min(elapsed, 100);
+    if (this.accumulatedFrameTime >= frameInterval) {
+      const renderElapsed = this.accumulatedFrameTime;
+      this.accumulatedFrameTime %= frameInterval;
+      this.render(time, renderElapsed);
+    }
     this.frame = window.requestAnimationFrame(this.drawFrame);
   }
 
@@ -200,8 +212,9 @@ export class PixelField implements ParticleController {
         if (this.pointer.active && !mobile) {
           const dx = particle.x - this.pointer.x;
           const dy = particle.y - this.pointer.y;
-          const distance = Math.hypot(dx, dy);
-          if (distance > 0 && distance < 82) {
+          const distanceSquared = dx * dx + dy * dy;
+          if (distanceSquared > 0 && distanceSquared < 82 * 82) {
+            const distance = Math.sqrt(distanceSquared);
             const force = (1 - distance / 82) * 0.16 * movement;
             particle.x += (dx / distance) * force;
             particle.y += (dy / distance) * force;
@@ -219,6 +232,7 @@ export class PixelField implements ParticleController {
       }
     });
 
+    const linkDistanceSquared = linkDistance * linkDistance;
     for (let index = 0; index < this.particles.length; index += 1) {
       const particle = this.particles[index];
       for (
@@ -227,14 +241,15 @@ export class PixelField implements ParticleController {
         otherIndex += 1
       ) {
         const other = this.particles[otherIndex];
-        const distance = Math.hypot(
-          particle.x - other.x,
-          particle.y - other.y,
-        );
-        if (distance >= linkDistance) continue;
+        const dx = particle.x - other.x;
+        const dy = particle.y - other.y;
+        const distanceSquared = dx * dx + dy * dy;
+        if (distanceSquared >= linkDistanceSquared) continue;
+        const distance = Math.sqrt(distanceSquared);
         this.drawPixelLink(
           particle,
           other,
+          distance,
           (1 - distance / linkDistance) * linkOpacity,
           pulsing,
         );
