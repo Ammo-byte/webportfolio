@@ -1,7 +1,6 @@
 import {
   body,
   currentTheme,
-  mobileLayout,
   reducedMotion,
   writeStorage,
   type GameBridge,
@@ -42,6 +41,7 @@ export const initArcade = (
     logo.focus();
   };
   const open = (): void => {
+    if (dialog.open) return;
     writeStorage(sessionStorage, "portfolioArcadeUnlocked", "1");
     game.load();
     dialog.showModal();
@@ -71,7 +71,7 @@ export const initArcade = (
       close();
       return;
     }
-    if (event.key.toLowerCase() !== "a" || event.repeat) return;
+    if (dialog.open || event.key.toLowerCase() !== "a" || event.repeat) return;
     keyCount += 1;
     signal(keyCount);
     window.clearTimeout(keyTimer);
@@ -82,7 +82,6 @@ export const initArcade = (
     if (keyCount === 3) unlock();
   });
   letterTrigger.addEventListener("click", (event) => {
-    if (!mobileLayout.matches) return;
     event.preventDefault();
     tapCount += 1;
     signal(tapCount, letterTrigger);

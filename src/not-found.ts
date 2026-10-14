@@ -96,6 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
   );
   const toggle = document.querySelector<HTMLButtonElement>(".theme-toggle");
   const favicon = document.querySelector<HTMLLinkElement>("#favicon");
+  const appleIcon = document.querySelector<HTMLLinkElement>("#apple-touch-icon");
 
   const applyTheme = (theme: Theme, persist = false): void => {
     root.dataset.theme = theme;
@@ -104,7 +105,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const icon = toggle?.querySelector<HTMLElement>("[data-icon]");
     if (icon) icon.dataset.icon = theme === "dark" ? "cloud-sun" : "moon";
     if (favicon) {
-      favicon.href = `/assets/Images/favicons/favicon-${theme}-pixel.png`;
+      favicon.href = `/assets/Images/favicons/favicon-${theme}.png?v=wordmark`;
+    }
+    if (appleIcon) {
+      appleIcon.href = `/assets/Images/favicons/apple-touch-icon-${theme}.png?v=wordmark`;
     }
     hydratePixelIcons();
     particles.setTheme(theme);

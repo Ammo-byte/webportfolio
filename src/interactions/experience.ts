@@ -26,20 +26,30 @@ export const initExperience = (): void => {
     card.classList.add("dossier-enter");
   };
 
+  const setCardVisible = (card: HTMLElement, visible: boolean): void => {
+    card.classList.toggle("active", visible);
+    card.hidden = !visible;
+    card.inert = !visible;
+    card.setAttribute("aria-hidden", String(!visible));
+  };
+
   const activate = (index: number, focus = false): void => {
     activeIndex = (index + buttons.length) % buttons.length;
     buttons.forEach((button, buttonIndex) => {
       const selected = buttonIndex === activeIndex;
       button.classList.toggle("active", selected);
-      button.setAttribute("aria-selected", String(selected));
-      button.tabIndex = selected ? 0 : -1;
-      button.setAttribute(
-        "aria-expanded",
-        mobileLayout.matches ? String(selected) : "false",
-      );
+      if (mobileLayout.matches) {
+        button.removeAttribute("aria-selected");
+        button.setAttribute("aria-expanded", String(selected));
+        button.tabIndex = 0;
+      } else {
+        button.setAttribute("aria-selected", String(selected));
+        button.removeAttribute("aria-expanded");
+        button.tabIndex = selected ? 0 : -1;
+      }
     });
     cards.forEach((card, cardIndex) => {
-      card.classList.toggle("active", cardIndex === activeIndex);
+      setCardVisible(card, cardIndex === activeIndex);
     });
     drawers.forEach((drawer, drawerIndex) => {
       drawer.classList.toggle(
@@ -59,12 +69,22 @@ export const initExperience = (): void => {
   const arrange = (): void => {
     if (mobileLayout.matches) {
       shelf.removeAttribute("role");
+      shelf.removeAttribute("aria-orientation");
       buttons.forEach((button) => button.removeAttribute("role"));
-      cards.forEach((card, index) => drawers[index]?.append(card));
+      cards.forEach((card, index) => {
+        card.setAttribute("role", "region");
+        card.setAttribute("aria-labelledby", buttons[index].id);
+        drawers[index]?.append(card);
+      });
     } else {
       shelf.setAttribute("role", "tablist");
+      shelf.setAttribute("aria-orientation", "vertical");
       buttons.forEach((button) => button.setAttribute("role", "tab"));
-      cards.forEach((card) => panel.append(card));
+      cards.forEach((card, index) => {
+        card.setAttribute("role", "tabpanel");
+        card.setAttribute("aria-labelledby", buttons[index].id);
+        panel.append(card);
+      });
       drawers.forEach((drawer) => drawer.classList.remove("is-open"));
     }
     activate(activeIndex);
@@ -76,7 +96,7 @@ export const initExperience = (): void => {
         const open = button.getAttribute("aria-expanded") !== "true";
         button.setAttribute("aria-expanded", String(open));
         button.classList.toggle("active", open);
-        cards[index].classList.toggle("active", open);
+        setCardVisible(cards[index], open);
         drawers[index]?.classList.toggle("is-open", open);
         if (open) {
           window.dispatchEvent(

@@ -6,13 +6,7 @@ import {
   type ParticleController,
   type Theme,
 } from "./core";
-import { projectArtworkSource } from "./data/projects";
 import { hydratePixelIcons } from "./icons";
-
-const logoSources: Record<Theme, string> = {
-  dark: "/assets/Images/pixel/logo-dark.png?v=3",
-  light: "/assets/Images/pixel/logo-light.png?v=3",
-};
 
 export const initTheme = (
   particles: ParticleController,
@@ -21,12 +15,6 @@ export const initTheme = (
   const toggles = Array.from(
     document.querySelectorAll<HTMLButtonElement>(".theme-toggle"),
   );
-  const logoImages = Array.from(
-    document.querySelectorAll<HTMLImageElement>(".logo img, .loader-logo"),
-  );
-  const projectImages = Array.from(
-    document.querySelectorAll<HTMLImageElement>("[data-project-art]"),
-  );
   const favicon = document.querySelector<HTMLLinkElement>("#favicon");
   const appleIcon =
     document.querySelector<HTMLLinkElement>("#apple-touch-icon");
@@ -34,12 +22,6 @@ export const initTheme = (
   const applyTheme = (theme: Theme, persist = false): void => {
     root.dataset.theme = theme;
     const nextTheme: Theme = theme === "dark" ? "light" : "dark";
-    logoImages.forEach((image) => {
-      image.src = logoSources[theme];
-    });
-    projectImages.forEach((image) => {
-      image.src = projectArtworkSource(image.dataset.projectArt ?? "", theme);
-    });
     toggles.forEach((toggle) => {
       toggle.setAttribute("aria-label", `Switch to ${nextTheme} mode`);
       const icon = toggle.querySelector<HTMLElement>("[data-icon]");
@@ -47,11 +29,11 @@ export const initTheme = (
     });
     hydratePixelIcons();
     if (favicon) {
-      favicon.href = `/assets/Images/favicons/favicon-${theme}-pixel.png`;
+      favicon.href = `/assets/Images/favicons/favicon-${theme}.png?v=wordmark`;
     }
     if (appleIcon) {
       appleIcon.href =
-        `/assets/Images/favicons/apple-touch-icon-${theme}-pixel.png`;
+        `/assets/Images/favicons/apple-touch-icon-${theme}.png?v=wordmark`;
     }
     particles.setTheme(theme);
     game.setTheme(theme);

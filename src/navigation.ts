@@ -1,14 +1,4 @@
-import { body, reducedMotion } from "./core";
-
-const getLayoutBounds = (
-  element: HTMLElement,
-): { top: number; bottom: number } => {
-  const rect = element.getBoundingClientRect();
-  const transform = window.getComputedStyle(element).transform;
-  const translateY =
-    transform === "none" ? 0 : new DOMMatrixReadOnly(transform).m42;
-  return { top: rect.top - translateY, bottom: rect.bottom - translateY };
-};
+import { body, getFocusable, mobileLayout, reducedMotion } from "./core";
 
 export const scrollSectionIntoView = (
   target: HTMLElement,
@@ -16,30 +6,10 @@ export const scrollSectionIntoView = (
 ): void => {
   const headerHeight =
     document.querySelector<HTMLElement>("#site-header")?.offsetHeight ?? 0;
-  const availableHeight = Math.max(0, window.innerHeight - headerHeight);
-  const focusElements = Array.from(
-    target.querySelectorAll<HTMLElement>("[data-nav-focus]"),
-  );
-  const initialBounds = getLayoutBounds(focusElements[0] ?? target);
-  const focusBounds = focusElements.reduce(
-    (bounds, element) => {
-      const rect = getLayoutBounds(element);
-      return {
-        top: Math.min(bounds.top, rect.top),
-        bottom: Math.max(bounds.bottom, rect.bottom),
-      };
-    },
-    { top: initialBounds.top, bottom: initialBounds.bottom },
-  );
-  const focusHeight = focusBounds.bottom - focusBounds.top;
-  const centerOffset = (availableHeight - focusHeight) / 2;
-  const focusTop = Math.max(headerHeight + 16, headerHeight + centerOffset);
-  const targetTop = Math.max(
-    0,
-    window.scrollY + focusBounds.top - focusTop,
-  );
-
-  window.scrollTo({ top: targetTop, behavior });
+  const top = target.id === "home"
+    ? 0
+    : window.scrollY + target.getBoundingClientRect().top - headerHeight - 28;
+  window.scrollTo({ top: Math.max(0, top), behavior });
 };
 
 export const initNavigation = (): void => {
@@ -54,11 +24,15 @@ export const initNavigation = (): void => {
       "main > section[id], #experience",
     ),
   );
-  let previousScroll = window.scrollY;
   let activeFrame = 0;
   let navigationTarget: string | null = null;
   let navigationTimer = 0;
   let historyTimer = 0;
+  let menuOpen = false;
+  const backgroundRegions = Array.from(
+    document.querySelectorAll<HTMLElement>("main, body > footer"),
+  );
+  const previousInert = new Map<HTMLElement, boolean>();
 
   const setActiveSection = (sectionId: string): void => {
     navLinks.forEach((link) => {
@@ -112,16 +86,69 @@ export const initNavigation = (): void => {
   };
 
   const setMenu = (open: boolean): void => {
-    menuButton?.setAttribute("aria-expanded", String(open));
-    menuButton?.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-    menu?.setAttribute("aria-hidden", String(!open));
-    menu?.classList.toggle("open", open);
-    if (menu) menu.inert = !open;
+    if (!menu || !menuButton) return;
+    open = open && mobileLayout.matches;
+    const wasOpen = menuOpen;
+    menuOpen = open;
+    if (open && !wasOpen) {
+      backgroundRegions.forEach((region) => {
+        previousInert.set(region, region.inert);
+        region.inert = true;
+      });
+    } else if (!open && wasOpen) {
+      const returnTarget = mobileLayout.matches
+        ? menuButton
+        : header?.querySelector<HTMLElement>(".logo");
+      returnTarget?.focus({ preventScroll: true });
+      previousInert.forEach((inert, region) => {
+        region.inert = inert;
+      });
+      previousInert.clear();
+    }
+    menuButton.setAttribute("aria-expanded", String(open));
+    menuButton.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    menu.setAttribute("aria-hidden", String(!open));
+    menu.classList.toggle("open", open);
+    menu.inert = !open;
     body.classList.toggle("menu-open", open);
+    if (open && !wasOpen) {
+      window.requestAnimationFrame(() => {
+        if (!menuOpen) return;
+        menu.querySelector<HTMLAnchorElement>("a[href]")?.focus({
+          preventScroll: true,
+        });
+      });
+    }
   };
 
   menuButton?.addEventListener("click", () => {
     setMenu(menuButton.getAttribute("aria-expanded") !== "true");
+  });
+  document.addEventListener("keydown", (event) => {
+    if (
+      !menuOpen || !menu || !menuButton ||
+      body.matches(".modal-open, .arcade-open")
+    ) return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setMenu(false);
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const focusable = [menuButton, ...getFocusable(menu)]
+      .filter((element) => element.tabIndex >= 0);
+    const currentIndex = focusable.indexOf(
+      document.activeElement as HTMLElement,
+    );
+    const nextIndex = currentIndex === -1
+      ? (event.shiftKey ? focusable.length - 1 : 0)
+      : (currentIndex + (event.shiftKey ? -1 : 1) + focusable.length) %
+        focusable.length;
+    event.preventDefault();
+    focusable[nextIndex]?.focus({ preventScroll: true });
+  });
+  mobileLayout.addEventListener("change", () => {
+    if (!mobileLayout.matches && menuOpen) setMenu(false);
   });
   document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((link) => {
     link.addEventListener("click", () => setMenu(false));
@@ -161,15 +188,6 @@ export const initNavigation = (): void => {
   window.addEventListener(
     "scroll",
     () => {
-      const currentScroll = window.scrollY;
-      const movingDown = currentScroll > previousScroll && currentScroll > 180;
-      header?.classList.toggle(
-        "hidden",
-        movingDown &&
-          !navigationTarget &&
-          !body.classList.contains("menu-open"),
-      );
-      previousScroll = currentScroll;
       scheduleActiveSection();
     },
     { passive: true },

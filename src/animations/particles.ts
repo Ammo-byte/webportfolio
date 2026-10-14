@@ -21,9 +21,19 @@ interface PointerState {
   y: number;
 }
 
+export interface PixelFieldOptions {
+  restrained?: boolean;
+  container?: HTMLElement;
+}
+
 export class PixelField implements ParticleController {
   private readonly canvas: HTMLCanvasElement | null;
   private readonly context: CanvasRenderingContext2D | null;
+  private readonly restrained: boolean;
+  private readonly container: HTMLElement | null;
+  private readonly finePointer = window.matchMedia(
+    "(hover: hover) and (pointer: fine)",
+  );
   private accumulatedFrameTime = 0;
   private frame = 0;
   private lastFrameTime = 0;
@@ -33,10 +43,17 @@ export class PixelField implements ParticleController {
   private pulseUntil = 0;
   private resizeTimer = 0;
   private running = false;
+  private paused = false;
+  private inView = true;
+  private overlayOpen = false;
+  private width = 0;
+  private height = 0;
 
-  constructor(canvas: HTMLCanvasElement | null) {
+  constructor(canvas: HTMLCanvasElement | null, options: PixelFieldOptions = {}) {
     this.canvas = canvas;
     this.context = canvas?.getContext("2d") ?? null;
+    this.restrained = options.restrained ?? false;
+    this.container = options.container ?? null;
     this.resize = this.resize.bind(this);
     this.drawFrame = this.drawFrame.bind(this);
 
@@ -49,7 +66,20 @@ export class PixelField implements ParticleController {
     });
     window.addEventListener("pointermove", (event) => {
       if (event.pointerType === "touch") return;
-      this.pointer = { active: true, x: event.clientX, y: event.clientY };
+      if (this.restrained) {
+        if (!this.finePointer.matches) return;
+        const rect = this.canvas?.getBoundingClientRect();
+        if (!rect) return;
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        this.pointer = {
+          active: x >= 0 && x <= this.width && y >= 0 && y <= this.height,
+          x,
+          y,
+        };
+      } else {
+        this.pointer = { active: true, x: event.clientX, y: event.clientY };
+      }
     });
     window.addEventListener("pointerout", (event) => {
       if (!event.relatedTarget) this.pointer.active = false;
@@ -63,7 +93,50 @@ export class PixelField implements ParticleController {
       this.resize();
       if (!reducedMotion.matches) this.start();
     });
+    if (this.restrained) this.observeAvailability();
     this.start();
+  }
+
+  private observeAvailability(): void {
+    const container = this.container ?? this.canvas;
+    if (container) {
+      const rect = container.getBoundingClientRect();
+      this.inView = rect.bottom > 0 && rect.top < window.innerHeight;
+      const observer = new IntersectionObserver((entries) => {
+        this.inView = entries.some((entry) => entry.isIntersecting);
+        this.refreshAvailability();
+      });
+      observer.observe(container);
+      const resizeObserver = new ResizeObserver(this.resize);
+      resizeObserver.observe(container);
+    }
+    const updateOverlays = (): void => {
+      this.overlayOpen = document.body.matches(
+        ".menu-open, .modal-open, .arcade-open",
+      );
+      this.refreshAvailability();
+    };
+    const observer = new MutationObserver(updateOverlays);
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    updateOverlays();
+    window.addEventListener(
+      "scroll",
+      () => { this.pointer.active = false; },
+      { passive: true },
+    );
+    this.finePointer.addEventListener("change", () => {
+      this.pointer.active = false;
+    });
+  }
+
+  private refreshAvailability(): void {
+    if (this.paused || !this.inView || this.overlayOpen || document.hidden) {
+      this.stop();
+    }
+    else this.start();
   }
 
   setTheme(_theme: Theme): void {
@@ -77,6 +150,7 @@ export class PixelField implements ParticleController {
   }
 
   pause(paused: boolean): void {
+    if (this.restrained) this.paused = paused;
     if (paused) {
       this.stop();
       this.render(performance.now());
@@ -91,7 +165,9 @@ export class PixelField implements ParticleController {
     mobile: boolean,
   ): NetworkParticle {
     const angle = Math.random() * Math.PI * 2;
-    const speed = Math.random() * (mobile ? 0.15 : 0.225);
+    const speed = this.restrained
+      ? 0.025 + Math.random() * 0.018
+      : Math.random() * (mobile ? 0.15 : 0.225);
     const sizes = mobile ? [2, 2, 3] : [2, 3, 3, 4];
 
     return {
@@ -99,9 +175,13 @@ export class PixelField implements ParticleController {
       y: Math.random() * height,
       vx: Math.cos(angle) * speed,
       vy: Math.sin(angle) * speed,
-      size: sizes[Math.floor(Math.random() * sizes.length)],
-      opacity: 0.17 + Math.random() * (mobile ? 0.14 : 0.26),
-      hollow: Math.random() < 0.16,
+      size: this.restrained
+        ? 1.5 + Math.random() * 1.4
+        : sizes[Math.floor(Math.random() * sizes.length)],
+      opacity: this.restrained
+        ? 0.16 + Math.random() * 0.2
+        : 0.17 + Math.random() * (mobile ? 0.14 : 0.26),
+      hollow: !this.restrained && Math.random() < 0.16,
     };
   }
 
@@ -137,18 +217,31 @@ export class PixelField implements ParticleController {
   private resize(): void {
     if (!this.context || !this.canvas) return;
 
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    const width =
+      this.restrained && this.container
+        ? Math.max(1, this.container.clientWidth)
+        : window.innerWidth;
+    const height =
+      this.restrained && this.container
+        ? Math.max(1, this.container.clientHeight)
+        : window.innerHeight;
+    this.width = width;
+    this.height = height;
     const mobile = width < 620;
-    const ratio = mobile ? 1 : Math.min(window.devicePixelRatio || 1, 2);
+    const ratio =
+      mobile && !this.restrained
+        ? 1
+        : Math.min(window.devicePixelRatio || 1, 2);
     const configuredCount = mobile ? 35 : 71;
     const densityCount = Math.round(
       ((width * height) / 1000) * (configuredCount / 800),
     );
-    const count = Math.min(
-      mobile ? 48 : 147,
-      Math.max(mobile ? 23 : 55, densityCount),
-    );
+    const count = this.restrained
+      ? Math.max(18, Math.min(30, Math.round(width / 50)))
+      : Math.min(
+          mobile ? 48 : 147,
+          Math.max(mobile ? 23 : 55, densityCount),
+        );
 
     this.canvas.width = Math.round(width * ratio);
     this.canvas.height = Math.round(height * ratio);
@@ -164,6 +257,10 @@ export class PixelField implements ParticleController {
 
   private start(): void {
     if (this.running || !this.context || reducedMotion.matches) return;
+    if (
+      this.restrained &&
+      (this.paused || !this.inView || this.overlayOpen || document.hidden)
+    ) return;
     this.running = true;
     this.frame = window.requestAnimationFrame(this.drawFrame);
   }
@@ -178,7 +275,7 @@ export class PixelField implements ParticleController {
   private drawFrame(time: number): void {
     if (!this.running) return;
     const mobile = window.innerWidth < 620;
-    const frameInterval = 1000 / (mobile ? 30 : 45);
+    const frameInterval = 1000 / (mobile || this.restrained ? 30 : 45);
     const elapsed = this.lastFrameTime
       ? time - this.lastFrameTime
       : frameInterval;
@@ -196,8 +293,8 @@ export class PixelField implements ParticleController {
     const context = this.context;
     if (!context) return;
 
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    const width = this.restrained ? this.width : window.innerWidth;
+    const height = this.restrained ? this.height : window.innerHeight;
     const movement = Math.min(Math.max(elapsed, 0), 32) / 16.667;
     const mobile = width < 620;
     const pulsing = time < this.pulseUntil;
@@ -205,7 +302,8 @@ export class PixelField implements ParticleController {
     const linkOpacity = pulsing ? 0.38 : mobile ? 0.17 : 0.27;
 
     context.clearRect(0, 0, width, height);
-    context.imageSmoothingEnabled = false;
+    context.imageSmoothingEnabled = this.restrained;
+    if (this.restrained && reducedMotion.matches) return;
 
     this.particles.forEach((particle) => {
       if (!reducedMotion.matches) {
@@ -215,11 +313,16 @@ export class PixelField implements ParticleController {
           const distanceSquared = dx * dx + dy * dy;
           if (distanceSquared > 0 && distanceSquared < 82 * 82) {
             const distance = Math.sqrt(distanceSquared);
-            const force = (1 - distance / 82) * 0.16 * movement;
+            const force =
+              (1 - distance / 82) *
+              (this.restrained ? 0.018 : 0.16) *
+              movement;
             particle.x += (dx / distance) * force;
             particle.y += (dy / distance) * force;
-            particle.vx += (dx / distance) * force * 0.035;
-            particle.vy += (dy / distance) * force * 0.035;
+            if (!this.restrained) {
+              particle.vx += (dx / distance) * force * 0.035;
+              particle.vy += (dy / distance) * force * 0.035;
+            }
           }
         }
 
@@ -232,31 +335,47 @@ export class PixelField implements ParticleController {
       }
     });
 
-    const linkDistanceSquared = linkDistance * linkDistance;
-    for (let index = 0; index < this.particles.length; index += 1) {
-      const particle = this.particles[index];
-      for (
-        let otherIndex = index + 1;
-        otherIndex < this.particles.length;
-        otherIndex += 1
-      ) {
-        const other = this.particles[otherIndex];
-        const dx = particle.x - other.x;
-        const dy = particle.y - other.y;
-        const distanceSquared = dx * dx + dy * dy;
-        if (distanceSquared >= linkDistanceSquared) continue;
-        const distance = Math.sqrt(distanceSquared);
-        this.drawPixelLink(
-          particle,
-          other,
-          distance,
-          (1 - distance / linkDistance) * linkOpacity,
-          pulsing,
-        );
+    if (!this.restrained) {
+      const linkDistanceSquared = linkDistance * linkDistance;
+      for (let index = 0; index < this.particles.length; index += 1) {
+        const particle = this.particles[index];
+        for (
+          let otherIndex = index + 1;
+          otherIndex < this.particles.length;
+          otherIndex += 1
+        ) {
+          const other = this.particles[otherIndex];
+          const dx = particle.x - other.x;
+          const dy = particle.y - other.y;
+          const distanceSquared = dx * dx + dy * dy;
+          if (distanceSquared >= linkDistanceSquared) continue;
+          const distance = Math.sqrt(distanceSquared);
+          this.drawPixelLink(
+            particle,
+            other,
+            distance,
+            (1 - distance / linkDistance) * linkOpacity,
+            pulsing,
+          );
+        }
       }
     }
 
     this.particles.forEach((particle) => {
+      if (this.restrained) {
+        context.beginPath();
+        context.arc(
+          particle.x,
+          particle.y,
+          particle.size * (pulsing ? 0.58 : 0.5),
+          0,
+          Math.PI * 2,
+        );
+        context.fillStyle = this.palette.blue;
+        context.globalAlpha = particle.opacity * (pulsing ? 1.2 : 1);
+        context.fill();
+        return;
+      }
       const size = Math.round(particle.size * (pulsing ? 1.35 : 1));
       const x = Math.round(particle.x - size / 2);
       const y = Math.round(particle.y - size / 2);

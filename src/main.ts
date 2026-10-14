@@ -1,13 +1,16 @@
-import "@fontsource/silkscreen/400.css";
+import "@fontsource/inter/latin-400.css";
+import "@fontsource/inter/latin-500.css";
+import "@fontsource/inter/latin-600.css";
+import "@fontsource/instrument-serif/latin-400.css";
+import "@fontsource/instrument-serif/latin-400-italic.css";
 
 import { initArcade } from "./arcade";
 import { initExperienceScenes } from "./animations/experience";
-import { initLoader } from "./animations/loader";
-import { PixelField } from "./animations/particles";
+import { initBackgroundField } from "./animations/background";
+import { initPageMotion } from "./animations/page-motion";
 import { initGameBridge } from "./game";
 import { hydratePixelIcons } from "./icons";
 import { initAccordions } from "./interactions/accordions";
-import { initCarousel } from "./interactions/carousel";
 import { initExperience } from "./interactions/experience";
 import { initEmailModal } from "./modals";
 import { initNavigation, scrollSectionIntoView } from "./navigation";
@@ -21,21 +24,20 @@ const alignInitialSection = (): void => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  const particles = new PixelField(
-    document.querySelector<HTMLCanvasElement>("#particles-js"),
+  const background = initBackgroundField(
+    document.querySelector<HTMLCanvasElement>("#site-background"),
   );
   const game = initGameBridge();
   hydratePixelIcons();
-  initTheme(particles, game);
-  initLoader();
+  initTheme(background, game);
   initNavigation();
   initReveals();
   initExperience();
+  initPageMotion();
   initExperienceScenes();
   initAccordions();
-  initCarousel();
   initEmailModal();
-  initArcade(particles, game);
+  initArcade(background, game);
 
   if (window.location.hash) {
     document.fonts?.ready.then(alignInitialSection);

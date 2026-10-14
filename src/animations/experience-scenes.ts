@@ -8,7 +8,7 @@ import {
   drawDatabase,
   drawMetricCard,
   drawPerson,
-  drawPixelText,
+  drawSceneText,
   drawRankedDocument,
   drawRegisterBank,
   drawSourceCard,
@@ -22,7 +22,7 @@ import {
   progressivePolyline,
   progressBetween,
   withAlpha,
-  type PixelPoint,
+  type ScenePoint,
   type ScenePalette,
 } from "./experience-primitives";
 
@@ -47,6 +47,95 @@ const phaseAt = (
   if (frame >= thirdPhase) return 2;
   if (frame >= secondPhase) return 1;
   return 0;
+};
+
+const reportingSpec: ExperienceSceneSpec = {
+  durationFrames: 95,
+  staticFrame: 80,
+  phaseAt: (frame) => phaseAt(frame, 23, 55, 89),
+  render: (context, frame, colors) => {
+    const data = progressBetween(frame, 0, 22);
+    const analyze = progressBetween(frame, 23, 54);
+    const report = progressBetween(frame, 55, 73);
+    const activeAlpha = fadeAfter(frame, 89, 94);
+
+    const drawData = (color: string): void => {
+      drawMessageCard(context, 6, 19, 48, 47, color);
+      drawSceneText(context, "DATA", 12, 26, color);
+      [39, 47, 55].forEach((y) => {
+        line(context, { x: 12, y }, { x: 48, y }, color);
+      });
+      line(context, { x: 24, y: 37 }, { x: 24, y: 58 }, color);
+    };
+
+    drawData(colors.faint);
+    drawDatabase(context, 80, 20, 55, 46, colors.faint, "ANALYZE");
+    drawMessageCard(context, 157, 13, 47, 58, colors.faint);
+    drawSceneText(context, "REPORT", 164, 21, colors.faint);
+
+    withAlpha(context, activeAlpha, () => {
+      withAlpha(context, data, () => drawData(colors.blue));
+      progressivePath(
+        context,
+        [
+          { x: 54, y: 43 },
+          { x: 66, y: 43 },
+          { x: 72, y: 37 },
+          { x: 80, y: 37 },
+        ],
+        analyze,
+        colors,
+        2,
+      );
+      withAlpha(context, analyze, () => {
+        drawDatabase(context, 80, 20, 55, 46, colors.blue, "ANALYZE");
+        [92, 105, 118].forEach((x, index) => {
+          withAlpha(
+            context,
+            progressBetween(analyze, index * 0.18, 0.62 + index * 0.12),
+            () => box(context, x, 49, 4, 4, colors.blue, true),
+          );
+        });
+      });
+      progressivePath(
+        context,
+        [
+          { x: 135, y: 43 },
+          { x: 144, y: 43 },
+          { x: 150, y: 37 },
+          { x: 157, y: 37 },
+        ],
+        report,
+        colors,
+        2,
+      );
+      withAlpha(context, report, () => {
+        drawMessageCard(context, 157, 13, 47, 58, colors.blue);
+        drawSceneText(context, "REPORT", 164, 21, colors.blue);
+        [31, 25, 31].forEach((width, row) => {
+          const rowProgress = progressBetween(
+            report,
+            row * 0.15,
+            0.66 + row * 0.1,
+          );
+          if (rowProgress > 0) {
+            box(
+              context,
+              164,
+              34 + row * 7,
+              width * rowProgress,
+              2,
+              colors.blue,
+              true,
+            );
+          }
+        });
+      });
+      withAlpha(context, progressBetween(report, 0.72, 1), () => {
+        drawCheck(context, 179, 59, colors.blue);
+      });
+    });
+  },
 };
 
 const automationSpec: ExperienceSceneSpec = {
@@ -101,7 +190,7 @@ const automationSpec: ExperienceSceneSpec = {
       });
       withAlpha(context, automate, () => {
         drawDatabase(context, 68, 16, 60, 52, colors.blue, "FLOW");
-        drawPixelText(context, "AUTO", 90, 35, colors.blue);
+        drawSceneText(context, "AUTO", 90, 35, colors.blue);
         [78, 93, 108].forEach((x, index) => {
           withAlpha(
             context,
@@ -158,7 +247,7 @@ const growthSpec: ExperienceSceneSpec = {
       { label: "LIVE", y: 31, people: 3 },
       { label: "REACH", y: 57, people: 2 },
     ];
-    const sourcePaths: PixelPoint[][] = [
+    const sourcePaths: ScenePoint[][] = [
       [
         { x: 40, y: 15 },
         { x: 52, y: 15 },
@@ -193,7 +282,7 @@ const growthSpec: ExperienceSceneSpec = {
     });
     cohorts.forEach((cohort) => {
       box(context, 72, cohort.y, 53, 22, colors.faint);
-      drawPixelText(context, cohort.label, 76, cohort.y + 4, colors.faint);
+      drawSceneText(context, cohort.label, 76, cohort.y + 4, colors.faint);
       Array.from({ length: cohort.people }, (_, index) => index).forEach(
         (personIndex) => {
           drawPerson(
@@ -221,7 +310,7 @@ const growthSpec: ExperienceSceneSpec = {
         );
         withAlpha(context, cohortProgress, () => {
           box(context, 72, cohort.y, 53, 22, colors.blue);
-          drawPixelText(context, cohort.label, 76, cohort.y + 4, colors.blue);
+          drawSceneText(context, cohort.label, 76, cohort.y + 4, colors.blue);
           Array.from({ length: cohort.people }, (_, index) => index).forEach(
             (personIndex) => {
               withAlpha(
@@ -256,7 +345,7 @@ const growthSpec: ExperienceSceneSpec = {
         2,
       );
       withAlpha(context, insight, () => {
-        drawPixelText(context, "+25%", 159, 6, colors.blue);
+        drawSceneText(context, "+25%", 159, 6, colors.blue);
         line(context, { x: 143, y: 66 }, { x: 202, y: 66 }, colors.blue);
         line(context, { x: 143, y: 66 }, { x: 143, y: 13 }, colors.blue);
         progressivePolyline(context, chartPoints, insight, colors, 2);
@@ -288,14 +377,14 @@ const ragSpec: ExperienceSceneSpec = {
       { x: 122, y: 31 },
       { x: 116, y: 58 },
     ];
-    const documentPaths: PixelPoint[][] = documentPositions.map(
+    const documentPaths: ScenePoint[][] = documentPositions.map(
       (document, index) => [
         { x: 108, y: 35 + index * 4 },
         { x: 112, y: 35 + index * 4 },
         { x: document.x, y: document.y + 11 },
       ],
     );
-    const evidencePaths: PixelPoint[][] = documentPositions.map(
+    const evidencePaths: ScenePoint[][] = documentPositions.map(
       (document, index) => [
         { x: document.x + 22, y: document.y + 11 },
         { x: 149, y: document.y + 11 },
@@ -303,18 +392,18 @@ const ragSpec: ExperienceSceneSpec = {
       ],
     );
 
-    drawPixelText(context, "QUESTION", 7, 15, colors.faint);
+    drawSceneText(context, "QUESTION", 7, 15, colors.faint);
     drawMessageCard(context, 5, 25, 43, 29, colors.faint);
-    drawPixelText(context, "Q", 20, 32, colors.faint, 2);
+    drawSceneText(context, "Q", 20, 32, colors.faint, 2);
     drawDatabase(context, 67, 19, 41, 43, colors.faint, "RAG");
     documentPositions.forEach((document) => {
       box(context, document.x, document.y, 22, 22, colors.faint);
     });
     withAlpha(context, activeAlpha, () => {
       withAlpha(context, query, () => {
-        drawPixelText(context, "QUESTION", 7, 15, colors.blue);
+        drawSceneText(context, "QUESTION", 7, 15, colors.blue);
         drawMessageCard(context, 5, 25, 43, 29, colors.blue);
-        drawPixelText(context, "Q", 20, 32, colors.blue, 2);
+        drawSceneText(context, "Q", 20, 32, colors.blue, 2);
       });
       progressivePath(context, queryPath, query, colors, 2);
       withAlpha(context, retrieve, () => {
@@ -355,7 +444,7 @@ const ragSpec: ExperienceSceneSpec = {
         });
       }
       withAlpha(context, answer, () => {
-        drawPixelText(context, "ANSWER", 163, 14, colors.blue);
+        drawSceneText(context, "ANSWER", 163, 14, colors.blue);
         drawMessageCard(context, 158, 25, 46, 34, colors.blue);
         [0, 1, 2].forEach((row) => {
           const rowProgress = progressBetween(
@@ -368,7 +457,7 @@ const ragSpec: ExperienceSceneSpec = {
             context,
             165,
             34 + row * 6,
-            Math.round((30 - row * 5) * rowProgress),
+            (30 - row * 5) * rowProgress,
             2,
             colors.blue,
             true,
@@ -382,7 +471,7 @@ const ragSpec: ExperienceSceneSpec = {
   },
 };
 
-const eventPoints: PixelPoint[] = Array.from({ length: 48 }, (_, index) => ({
+const eventPoints: ScenePoint[] = Array.from({ length: 48 }, (_, index) => ({
   x: 10 + (index % 8) * 6,
   y: 19 + Math.floor(index / 8) * 8 + ((index * 3) % 3),
 }));
@@ -397,7 +486,7 @@ const computeSpec: ExperienceSceneSpec = {
     const metric = progressBetween(frame, 52, 69);
     const activeAlpha = fadeAfter(frame, 85, 90);
     const registerHeights = [9, 18, 12, 25, 15, 22, 11];
-    const compressionPaths: PixelPoint[][] = [
+    const compressionPaths: ScenePoint[][] = [
       [
         { x: 59, y: 26 },
         { x: 68, y: 26 },
@@ -418,14 +507,14 @@ const computeSpec: ExperienceSceneSpec = {
       ],
     ];
 
-    drawPixelText(context, "5B EVENTS", 9, 7, colors.faint);
+    drawSceneText(context, "5B EVENTS", 9, 7, colors.faint);
     box(context, 6, 15, 53, 58, colors.faint);
     eventPoints.forEach((point) => {
       box(context, point.x, point.y, 2, 2, colors.faint, true);
     });
     drawRegisterBank(context, 82, 17, registerHeights, 0, colors.faint);
     withAlpha(context, activeAlpha, () => {
-      drawPixelText(context, "5B EVENTS", 9, 7, colors.blue);
+      drawSceneText(context, "5B EVENTS", 9, 7, colors.blue);
       eventPoints.forEach((point, index) => {
         const pointProgress = progressBetween(
           events,
@@ -500,7 +589,7 @@ const retentionSpec: ExperienceSceneSpec = {
       { x: 53, y: 46, label: "C3", score: 0.91 },
       { x: 91, y: 46, label: "C4", score: 0.41 },
     ];
-    const sourcePaths: PixelPoint[][] = [
+    const sourcePaths: ScenePoint[][] = [
       [
         { x: 40, y: 20 },
         { x: 45, y: 20 },
@@ -517,7 +606,7 @@ const retentionSpec: ExperienceSceneSpec = {
 
     drawSourceCard(context, 6, 12, "DB", colors.faint);
     drawSourceCard(context, 6, 56, "WEB", colors.faint);
-    drawPixelText(context, "RISK SCORE", 64, 4, colors.faint);
+    drawSceneText(context, "RISK SCORE", 64, 4, colors.faint);
     customerCards.forEach((customer) => {
       drawCustomerCard(
         context,
@@ -623,16 +712,16 @@ const forecastSpec: ExperienceSceneSpec = {
       { x: 190, y: 27 },
     ];
 
-    drawPixelText(context, "HISTORY", 9, 7, colors.faint);
+    drawSceneText(context, "HISTORY", 9, 7, colors.faint);
     line(context, { x: 7, y: 62 }, { x: 72, y: 62 }, colors.faint);
     line(context, { x: 7, y: 62 }, { x: 7, y: 19 }, colors.faint);
     drawContainer(context, 84, 29, 34, 26, colors.faint);
     drawContainer(context, 121, 19, 20, 17, colors.faint);
     drawContainer(context, 121, 48, 20, 17, colors.faint);
-    drawPixelText(context, "DEPLOY", 91, 65, colors.faint);
+    drawSceneText(context, "DEPLOY", 91, 65, colors.faint);
     withAlpha(context, activeAlpha, () => {
       withAlpha(context, history, () => {
-        drawPixelText(context, "HISTORY", 9, 7, colors.blue);
+        drawSceneText(context, "HISTORY", 9, 7, colors.blue);
       });
       progressivePolyline(context, historyPoints, history, colors, 2);
       progressivePath(
@@ -649,7 +738,7 @@ const forecastSpec: ExperienceSceneSpec = {
       );
       withAlpha(context, deploy, () => {
         drawContainer(context, 84, 29, 34, 26, colors.blue);
-        drawPixelText(context, "DEPLOY", 91, 65, colors.blue);
+        drawSceneText(context, "DEPLOY", 91, 65, colors.blue);
       });
       const clusterProgress = progressBetween(deploy, 0.42, 1);
       withAlpha(context, clusterProgress, () => {
@@ -685,7 +774,7 @@ const forecastSpec: ExperienceSceneSpec = {
         colors,
       );
       withAlpha(context, forecast, () => {
-        drawPixelText(context, "FORECAST", 151, 7, colors.blue);
+        drawSceneText(context, "FORECAST", 151, 7, colors.blue);
       });
       if (forecast > 0) {
         progressiveDashedPath(
@@ -737,7 +826,9 @@ const auditSpec: ExperienceSceneSpec = {
       0,
     );
     box(context, 91, 29, 28, 26, colors.faint);
-    drawPixelText(context, "SCAN", 97, 40, colors.faint);
+    withAlpha(context, 1 - progressBetween(compare, 0, 0.18), () => {
+      drawSceneText(context, "SCAN", 97, 40, colors.faint);
+    });
 
     withAlpha(context, activeAlpha, () => {
       withAlpha(context, models, () => {
@@ -782,7 +873,7 @@ const auditSpec: ExperienceSceneSpec = {
         const activeRow = Math.min(4, Math.floor(compare * 5));
         rowYs.forEach((rowY, index) => {
           if (index > activeRow) return;
-          drawPixelText(
+          drawSceneText(
             context,
             index === 2 ? "DIFF" : "OK",
             index === 2 ? 97 : 101,
@@ -792,13 +883,11 @@ const auditSpec: ExperienceSceneSpec = {
         });
       }
       if (verified > 0) {
-        const reconciled = Math.round(
-          rValues[2] + (radarValues[2] - rValues[2]) * verified,
-        );
+        const reconciled = rValues[2] + (radarValues[2] - rValues[2]) * verified;
         box(context, 147, rowYs[2] - 1, reconciled, 3, colors.blue, true);
         withAlpha(context, progressBetween(verified, 0.42, 1), () => {
           box(context, 91, 29, 28, 26, colors.blue, false, 2);
-          drawPixelText(context, "MATCH", 95, 34, colors.blue);
+          drawSceneText(context, "MATCH", 95, 34, colors.blue);
           drawCheck(context, 99, 45, colors.blue);
         });
       }
@@ -810,6 +899,7 @@ export const experienceSceneSpecs: Record<
   ExperienceSceneName,
   ExperienceSceneSpec
 > = {
+  reporting: reportingSpec,
   automation: automationSpec,
   audit: auditSpec,
   compute: computeSpec,

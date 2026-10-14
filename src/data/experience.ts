@@ -1,5 +1,11 @@
 export const experienceScenes = [
   {
+    name: "reporting",
+    label:
+      "Financial data passes through financial intelligence analysis to produce a financial report",
+    phases: ["DATA", "ANALYZE", "REPORT"],
+  },
+  {
     name: "automation",
     label:
       "A reimbursement claim, receipt, and policy pass through an automated workflow and produce a completed reimbursement",

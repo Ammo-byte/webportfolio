@@ -8,14 +8,15 @@ export interface ScenePalette {
   surface: string;
 }
 
-export interface PixelPoint {
+export interface ScenePoint {
   x: number;
   y: number;
 }
 
 export const SCENE_WIDTH = 210;
 export const SCENE_HEIGHT = 85;
-export const SCENE_FPS = 20;
+// Scene timings use this rate; rendering follows the browser refresh rate.
+export const SCENE_FPS = 30;
 
 export const readScenePalette = (): ScenePalette => {
   const colors = readThemePalette();
@@ -38,7 +39,10 @@ export const progressBetween = (
   frame: number,
   start: number,
   end: number,
-): number => clamp((frame - start) / (end - start));
+): number => {
+  const progress = clamp((frame - start) / (end - start));
+  return progress * progress * (3 - 2 * progress);
+};
 
 export const fadeAfter = (
   frame: number,
@@ -52,42 +56,26 @@ export const withAlpha = (
   draw: () => void,
 ): void => {
   context.save();
-  context.globalAlpha = clamp(alpha);
+  context.globalAlpha *= clamp(alpha);
   draw();
   context.restore();
 };
 
 export const line = (
   context: CanvasRenderingContext2D,
-  from: PixelPoint,
-  to: PixelPoint,
+  from: ScenePoint,
+  to: ScenePoint,
   color: string,
   thickness = 1,
 ): void => {
-  context.fillStyle = color;
-  let x = Math.round(from.x);
-  let y = Math.round(from.y);
-  const targetX = Math.round(to.x);
-  const targetY = Math.round(to.y);
-  const dx = Math.abs(targetX - x);
-  const sx = x < targetX ? 1 : -1;
-  const dy = -Math.abs(targetY - y);
-  const sy = y < targetY ? 1 : -1;
-  let error = dx + dy;
-
-  while (true) {
-    context.fillRect(x, y, thickness, thickness);
-    if (x === targetX && y === targetY) break;
-    const doubled = error * 2;
-    if (doubled >= dy) {
-      error += dy;
-      x += sx;
-    }
-    if (doubled <= dx) {
-      error += dx;
-      y += sy;
-    }
-  }
+  context.beginPath();
+  context.strokeStyle = color;
+  context.lineWidth = Math.max(0.75, thickness * 0.65);
+  context.lineCap = "round";
+  context.lineJoin = "round";
+  context.moveTo(from.x, from.y);
+  context.lineTo(to.x, to.y);
+  context.stroke();
 };
 
 export const box = (
@@ -100,95 +88,93 @@ export const box = (
   fill = false,
   thickness = 1,
 ): void => {
-  context.fillStyle = color;
+  if (width <= 0 || height <= 0) return;
+  const strokeWidth = Math.max(0.75, thickness * 0.65);
+  const inset = fill ? 0 : strokeWidth / 2;
+  context.beginPath();
+  context.roundRect(
+    x + inset,
+    y + inset,
+    Math.max(0, width - inset * 2),
+    Math.max(0, height - inset * 2),
+    Math.min(fill ? 1.5 : 3.5, width / 4, height / 4),
+  );
   if (fill) {
-    context.fillRect(x, y, width, height);
-    return;
+    context.fillStyle = color;
+    context.fill();
+  } else {
+    context.strokeStyle = color;
+    context.lineWidth = strokeWidth;
+    context.stroke();
   }
-  context.fillRect(x, y, width, thickness);
-  context.fillRect(x, y + height - thickness, width, thickness);
-  context.fillRect(x, y, thickness, height);
-  context.fillRect(x + width - thickness, y, thickness, height);
 };
 
-const rasterSegment = (from: PixelPoint, to: PixelPoint): PixelPoint[] => {
-  const points: PixelPoint[] = [];
-  let x = Math.round(from.x);
-  let y = Math.round(from.y);
-  const targetX = Math.round(to.x);
-  const targetY = Math.round(to.y);
-  const dx = Math.abs(targetX - x);
-  const sx = x < targetX ? 1 : -1;
-  const dy = -Math.abs(targetY - y);
-  const sy = y < targetY ? 1 : -1;
-  let error = dx + dy;
-
-  while (true) {
-    points.push({ x, y });
-    if (x === targetX && y === targetY) break;
-    const doubled = error * 2;
-    if (doubled >= dy) {
-      error += dy;
-      x += sx;
-    }
-    if (doubled <= dx) {
-      error += dx;
-      y += sy;
-    }
-  }
-  return points;
-};
-
-const rasterPath = (nodes: PixelPoint[]): PixelPoint[] =>
-  nodes.flatMap((node, index) => {
-    if (index === nodes.length - 1) return [];
-    const points = rasterSegment(node, nodes[index + 1]);
-    return index ? points.slice(1) : points;
+const strokeProgress = (
+  context: CanvasRenderingContext2D,
+  points: ScenePoint[],
+  progress: number,
+  color: string,
+  thickness: number,
+  dashed = false,
+): void => {
+  if (points.length < 2 || progress <= 0) return;
+  const lengths = points
+    .slice(1)
+    .map((point, index) =>
+      Math.hypot(point.x - points[index].x, point.y - points[index].y),
+    );
+  let remaining =
+    lengths.reduce((sum, length) => sum + length, 0) * clamp(progress);
+  context.save();
+  context.beginPath();
+  context.strokeStyle = color;
+  context.lineWidth = Math.max(0.75, thickness * 0.65);
+  context.lineCap = "round";
+  context.lineJoin = "round";
+  if (dashed) context.setLineDash([2.5, 2.5]);
+  context.moveTo(points[0].x, points[0].y);
+  lengths.forEach((length, index) => {
+    if (remaining <= 0 || !length) return;
+    const segment = Math.min(1, remaining / length);
+    const from = points[index];
+    const to = points[index + 1];
+    context.lineTo(
+      from.x + (to.x - from.x) * segment,
+      from.y + (to.y - from.y) * segment,
+    );
+    remaining -= length;
   });
+  context.stroke();
+  context.restore();
+};
 
 export const progressivePath = (
   context: CanvasRenderingContext2D,
-  nodes: PixelPoint[],
+  nodes: ScenePoint[],
   pathProgress: number,
   colors: ScenePalette,
   thickness = 1,
 ): void => {
-  const points = rasterPath(nodes);
-  const visibleCount = Math.round(points.length * clamp(pathProgress));
-  context.fillStyle = colors.blue;
-  points.slice(0, visibleCount).forEach((point) => {
-    context.fillRect(point.x, point.y, thickness, thickness);
-  });
+  strokeProgress(context, nodes, pathProgress, colors.blue, thickness);
 };
 
 export const progressivePolyline = (
   context: CanvasRenderingContext2D,
-  points: PixelPoint[],
+  points: ScenePoint[],
   lineProgress: number,
   colors: ScenePalette,
   thickness = 2,
 ): void => {
-  const path = rasterPath(points);
-  const visibleCount = Math.round(path.length * clamp(lineProgress));
-  context.fillStyle = colors.blue;
-  path.slice(0, visibleCount).forEach((point) => {
-    context.fillRect(point.x, point.y, thickness, thickness);
-  });
+  strokeProgress(context, points, lineProgress, colors.blue, thickness);
 };
 
 export const progressiveDashedPath = (
   context: CanvasRenderingContext2D,
-  points: PixelPoint[],
+  points: ScenePoint[],
   pathProgress: number,
   colors: ScenePalette,
 ): void => {
-  const path = rasterPath(points);
-  const visibleCount = Math.round(path.length * clamp(pathProgress));
-  path.slice(0, visibleCount).forEach((point, index) => {
-    if (index % 6 >= 3) return;
-    context.fillStyle = colors.blue;
-    context.fillRect(point.x, point.y, 2, 1);
-  });
+  strokeProgress(context, points, pathProgress, colors.blue, 1.5, true);
 };
 
 export const drawPanel = (
@@ -198,58 +184,12 @@ export const drawPanel = (
   context.clearRect(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
   context.fillStyle = colors.surface;
   context.fillRect(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
-  box(context, 1, 1, SCENE_WIDTH - 2, SCENE_HEIGHT - 2, colors.faint);
 };
 
-const PIXEL_GLYPHS: Readonly<Record<string, readonly string[]>> = {
-  " ": ["000", "000", "000", "000", "000"],
-  "+": ["000", "010", "111", "010", "000"],
-  "-": ["000", "000", "111", "000", "000"],
-  ".": ["000", "000", "000", "000", "010"],
-  "/": ["001", "001", "010", "100", "100"],
-  "%": ["101", "001", "010", "100", "101"],
-  "0": ["111", "101", "101", "101", "111"],
-  "1": ["010", "110", "010", "010", "111"],
-  "2": ["110", "001", "010", "100", "111"],
-  "3": ["110", "001", "010", "001", "110"],
-  "4": ["101", "101", "111", "001", "001"],
-  "5": ["111", "100", "110", "001", "110"],
-  "6": ["011", "100", "111", "101", "111"],
-  "7": ["111", "001", "010", "010", "010"],
-  "8": ["111", "101", "111", "101", "111"],
-  "9": ["111", "101", "111", "001", "110"],
-  A: ["010", "101", "111", "101", "101"],
-  B: ["110", "101", "110", "101", "110"],
-  C: ["011", "100", "100", "100", "011"],
-  D: ["110", "101", "101", "101", "110"],
-  E: ["111", "100", "110", "100", "111"],
-  F: ["111", "100", "110", "100", "100"],
-  G: ["011", "100", "101", "101", "011"],
-  H: ["101", "101", "111", "101", "101"],
-  I: ["111", "010", "010", "010", "111"],
-  J: ["001", "001", "001", "101", "010"],
-  K: ["101", "101", "110", "101", "101"],
-  L: ["100", "100", "100", "100", "111"],
-  M: ["101", "111", "111", "101", "101"],
-  N: ["101", "111", "111", "111", "101"],
-  O: ["010", "101", "101", "101", "010"],
-  P: ["110", "101", "110", "100", "100"],
-  Q: ["010", "101", "101", "111", "011"],
-  R: ["110", "101", "110", "101", "101"],
-  S: ["011", "100", "010", "001", "110"],
-  T: ["111", "010", "010", "010", "010"],
-  U: ["101", "101", "101", "101", "111"],
-  V: ["101", "101", "101", "101", "010"],
-  W: ["101", "101", "111", "111", "101"],
-  X: ["101", "101", "010", "101", "101"],
-  Y: ["101", "101", "010", "010", "010"],
-  Z: ["111", "001", "010", "100", "111"],
-};
-
-export const pixelTextWidth = (text: string, scale = 1): number =>
+export const sceneTextWidth = (text: string, scale = 1): number =>
   Math.max(0, (text.length * 4 - 1) * scale);
 
-export const drawPixelText = (
+export const drawSceneText = (
   context: CanvasRenderingContext2D,
   text: string,
   x: number,
@@ -257,21 +197,17 @@ export const drawPixelText = (
   color: string,
   scale = 1,
 ): void => {
+  context.save();
   context.fillStyle = color;
-  [...text.toUpperCase()].forEach((character, characterIndex) => {
-    const glyph = PIXEL_GLYPHS[character] ?? PIXEL_GLYPHS[" "];
-    glyph.forEach((row, rowIndex) => {
-      [...row].forEach((pixel, columnIndex) => {
-        if (pixel !== "1") return;
-        context.fillRect(
-          x + (characterIndex * 4 + columnIndex) * scale,
-          y + rowIndex * scale,
-          scale,
-          scale,
-        );
-      });
-    });
-  });
+  context.font = `600 ${6.5 * scale}px -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif`;
+  context.textBaseline = "top";
+  context.fillText(
+    text.toUpperCase(),
+    x,
+    y - 0.5 * scale,
+    sceneTextWidth(text, scale),
+  );
+  context.restore();
 };
 
 export const drawTextChip = (
@@ -282,10 +218,10 @@ export const drawTextChip = (
   color: string,
   scale = 1,
 ): void => {
-  const width = pixelTextWidth(text, scale) + 6;
+  const width = sceneTextWidth(text, scale) + 6;
   const height = 5 * scale + 6;
   box(context, x, y, width, height, color);
-  drawPixelText(context, text, x + 3, y + 3, color, scale);
+  drawSceneText(context, text, x + 3, y + 3, color, scale);
 };
 
 export const drawPerson = (
@@ -296,10 +232,24 @@ export const drawPerson = (
   scale = 1,
 ): void => {
   context.fillStyle = color;
-  context.fillRect(x + scale, y, 3 * scale, 3 * scale);
-  context.fillRect(x, y + 4 * scale, 5 * scale, 4 * scale);
-  context.fillRect(x, y + 8 * scale, 2 * scale, 3 * scale);
-  context.fillRect(x + 3 * scale, y + 8 * scale, 2 * scale, 3 * scale);
+  context.beginPath();
+  context.arc(x + 2.5 * scale, y + 1.5 * scale, 1.5 * scale, 0, Math.PI * 2);
+  context.fill();
+  box(context, x, y + 4 * scale, 5 * scale, 4 * scale, color, true);
+  line(
+    context,
+    { x: x + scale, y: y + 7 * scale },
+    { x: x + scale, y: y + 10 * scale },
+    color,
+    1.8 * scale,
+  );
+  line(
+    context,
+    { x: x + 4 * scale, y: y + 7 * scale },
+    { x: x + 4 * scale, y: y + 10 * scale },
+    color,
+    1.8 * scale,
+  );
 };
 
 export const drawSourceCard = (
@@ -310,7 +260,7 @@ export const drawSourceCard = (
   color: string,
 ): void => {
   box(context, x, y, 34, 17, color, false, 1);
-  drawPixelText(context, label, x + 4, y + 4, color);
+  drawSceneText(context, label, x + 4, y + 4, color);
   box(context, x + 25, y + 4, 5, 2, color, true);
   box(context, x + 25, y + 9, 3, 2, color, true);
 };
@@ -337,8 +287,8 @@ export const drawDatabase = (
 ): void => {
   box(context, x, y, width, height, color, false, 2);
   if (label) {
-    const labelX = x + Math.floor((width - pixelTextWidth(label)) / 2);
-    drawPixelText(context, label, labelX, y + 8, color);
+    const labelX = x + Math.floor((width - sceneTextWidth(label)) / 2);
+    drawSceneText(context, label, labelX, y + 8, color);
   }
 };
 
@@ -350,7 +300,7 @@ export const drawRankedDocument = (
   color: string,
 ): void => {
   box(context, x, y, 22, 22, color);
-  drawPixelText(context, String(rank), x + 3, y + 3, color);
+  drawSceneText(context, String(rank), x + 3, y + 3, color);
   box(context, x + 10, y + 5, 8, 2, color, true);
   box(context, x + 4, y + 12, 14, 2, color, true);
   box(context, x + 4, y + 17, 9, 2, color, true);
@@ -365,7 +315,7 @@ export const drawRegisterBank = (
   color: string,
 ): void => {
   box(context, x, y, 52, 49, color, false, 2);
-  drawPixelText(context, "HLL", x + 4, y + 4, color);
+  drawSceneText(context, "HLL", x + 4, y + 4, color);
   line(
     context,
     { x: x + 5, y: y + 42 },
@@ -373,7 +323,7 @@ export const drawRegisterBank = (
     color,
   );
   heights.forEach((height, index) => {
-    const visibleHeight = Math.round(height * clamp(progress));
+    const visibleHeight = height * clamp(progress);
     if (!visibleHeight) return;
     box(
       context,
@@ -398,10 +348,10 @@ export const drawMetricCard = (
   progress = 1,
 ): void => {
   box(context, x, y, width, 47, color, false, 2);
-  drawPixelText(context, label, x + 5, y + 6, color);
-  const valueX = x + Math.floor((width - pixelTextWidth(value, 2)) / 2);
+  drawSceneText(context, label, x + 5, y + 6, color);
+  const valueX = x + Math.floor((width - sceneTextWidth(value, 2)) / 2);
   withAlpha(context, progress, () => {
-    drawPixelText(context, value, valueX, y + 21, color, 2);
+    drawSceneText(context, value, valueX, y + 21, color, 2);
   });
 };
 
@@ -414,7 +364,7 @@ export const drawRiskBar = (
   color: string,
 ): void => {
   box(context, x, y, width, 4, color);
-  const fillWidth = Math.round((width - 2) * clamp(progress));
+  const fillWidth = (width - 2) * clamp(progress);
   if (fillWidth) box(context, x + 1, y + 1, fillWidth, 2, color, true);
 };
 
@@ -429,7 +379,7 @@ export const drawCustomerCard = (
 ): void => {
   box(context, x, y, 34, 25, color, false, selected ? 2 : 1);
   drawPerson(context, x + 4, y + 6, color);
-  drawPixelText(context, label, x + 14, y + 5, color);
+  drawSceneText(context, label, x + 14, y + 5, color);
   drawRiskBar(context, x + 14, y + 15, 15, risk, color);
   if (selected) {
     box(context, x + 29, y + 3, 3, 3, color, true);
@@ -457,7 +407,7 @@ export const drawContainer = (
     }
   });
   if (label) {
-    drawPixelText(context, label, x + 3, y + height + 3, color);
+    drawSceneText(context, label, x + 3, y + height + 3, color);
   }
 };
 
@@ -483,9 +433,17 @@ export const drawTarget = (
   y: number,
   color: string,
 ): void => {
-  box(context, x - 12, y - 12, 25, 25, color);
-  box(context, x - 6, y - 6, 13, 13, color);
-  box(context, x - 1, y - 1, 3, 3, color, true);
+  context.strokeStyle = color;
+  context.lineWidth = 0.8;
+  [12, 6].forEach((radius) => {
+    context.beginPath();
+    context.arc(x, y, radius, 0, Math.PI * 2);
+    context.stroke();
+  });
+  context.beginPath();
+  context.arc(x, y, 1.5, 0, Math.PI * 2);
+  context.fillStyle = color;
+  context.fill();
 };
 
 export const drawComparisonMatrix = (
@@ -498,16 +456,16 @@ export const drawComparisonMatrix = (
   reveal = 1,
 ): void => {
   box(context, x, y, 72, 58, color, false, 2);
-  drawPixelText(context, label, x + 5, y + 5, color);
+  drawSceneText(context, label, x + 5, y + 5, color);
   values.forEach((value, index) => {
     const rowReveal = progressBetween(reveal, index * 0.12, 0.62 + index * 0.08);
     if (!rowReveal) return;
-    drawPixelText(context, String(index + 1), x + 5, y + 17 + index * 8, color);
+    drawSceneText(context, String(index + 1), x + 5, y + 17 + index * 8, color);
     box(
       context,
       x + 14,
       y + 18 + index * 8,
-      Math.round(value * rowReveal),
+      value * rowReveal,
       3,
       color,
       true,

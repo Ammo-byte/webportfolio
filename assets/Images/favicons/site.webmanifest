@@ -3,19 +3,19 @@
   "short_name": "Aamodit",
   "icons": [
     {
-      "src": "favicon-dark-pixel.png",
-      "sizes": "96x96",
+      "src": "/assets/Images/favicons/app-icon-dark-192.png",
+      "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "apple-touch-icon-dark-pixel.png",
-      "sizes": "180x180",
+      "src": "/assets/Images/favicons/app-icon-dark-512.png",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     }
   ],
-  "theme_color": "#080808",
-  "background_color": "#080808",
+  "theme_color": "#070809",
+  "background_color": "#070809",
   "display": "standalone"
 }

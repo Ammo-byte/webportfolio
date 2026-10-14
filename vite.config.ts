@@ -20,6 +20,10 @@ export default defineConfig({
           resolve(__dirname, "CNAME"),
           resolve(__dirname, "dist/CNAME"),
         );
+        await copyFile(
+          resolve(__dirname, "favicon.ico"),
+          resolve(__dirname, "dist/favicon.ico"),
+        );
       },
     },
   ],
