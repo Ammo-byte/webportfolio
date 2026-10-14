@@ -573,7 +573,7 @@ section { position: relative; scroll-margin-top: calc(var(--header-height) + 24p
   .about-v3-layout { grid-template-columns: 1fr; gap: 32px; }
   .about-headline { font-size: 40px; }
   .about-v3-bio { margin-top: 24px; font-size: 14px; line-height: 1.8; }
-  .about-v3-portrait-wrapper { max-width: 250px; margin: 0; }
+  .about-v3-portrait-wrapper { max-width: 250px; margin: 0 auto; text-align: center; }
   .about-indexing-strip { margin-top: 40px; }
   .indexing-container { display: grid; gap: 14px; }
   .indexing-list { font-size: 11px; gap: 9px; }
