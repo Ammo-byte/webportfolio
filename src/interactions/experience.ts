@@ -33,7 +33,7 @@ export const initExperience = (): void => {
     card.setAttribute("aria-hidden", String(!visible));
   };
 
-  const activate = (index: number, focus = false): void => {
+  const activate = (index: number, focus = false, animate = true): void => {
     activeIndex = (index + buttons.length) % buttons.length;
     buttons.forEach((button, buttonIndex) => {
       const selected = buttonIndex === activeIndex;
@@ -57,10 +57,10 @@ export const initExperience = (): void => {
         mobileLayout.matches && drawerIndex === activeIndex,
       );
     });
-    animateCard(cards[activeIndex]);
+    if (animate) animateCard(cards[activeIndex]);
     window.dispatchEvent(
       new CustomEvent("portfolio:experience-change", {
-        detail: { index: activeIndex },
+        detail: { index: activeIndex, animate },
       }),
     );
     if (focus) buttons[activeIndex].focus();
@@ -87,7 +87,7 @@ export const initExperience = (): void => {
       });
       drawers.forEach((drawer) => drawer.classList.remove("is-open"));
     }
-    activate(activeIndex);
+    activate(activeIndex, false, false);
   };
 
   buttons.forEach((button, index) => {
@@ -101,7 +101,7 @@ export const initExperience = (): void => {
         if (open) {
           window.dispatchEvent(
             new CustomEvent("portfolio:experience-change", {
-              detail: { index },
+              detail: { index, animate: true },
             }),
           );
         }

@@ -70,6 +70,7 @@ export const initExperienceScenes = (): void => {
     state.context.imageSmoothingEnabled = true;
     drawPanel(state.context, colors);
     spec.render(state.context, frame, colors);
+    if (canvas.dataset.ready !== "true") canvas.dataset.ready = "true";
     const activePhase = spec.phaseAt(frame);
     if (activePhase !== state.activePhase) {
       state.phaseElements.forEach((element, index) => {
@@ -100,7 +101,7 @@ export const initExperienceScenes = (): void => {
       context,
       phaseElements: createCaption(canvas, definition.phases),
       scene,
-      frame: canvas.closest(".dossier-card.active") ? 0 : spec.staticFrame,
+      frame: spec.staticFrame,
       startedAt: null,
       activePhase: -2,
     });
@@ -155,11 +156,13 @@ export const initExperienceScenes = (): void => {
     });
   };
 
-  const restart = (): void => {
+  const restart = (event: Event): void => {
+    const animate = (event as CustomEvent<{ animate?: boolean }>).detail?.animate !== false;
     states.forEach((state, canvas) => {
       if (!canvas.closest(".dossier-card.active")) return;
-      state.frame = 0;
+      state.frame = animate ? 0 : experienceSceneSpecs[state.scene].staticFrame;
       state.startedAt = null;
+      fitCanvas(canvas);
       drawCanvas(canvas);
     });
     startAnimation();
@@ -199,6 +202,20 @@ export const initExperienceScenes = (): void => {
     redrawAll();
   });
   window.addEventListener("portfolio:experience-change", restart);
+  document.querySelectorAll<HTMLDetailsElement>(".ramp-internship").forEach((details) => {
+    details.addEventListener("toggle", () => {
+      if (!details.open) return;
+      details.querySelectorAll<HTMLCanvasElement>(".experience-canvas").forEach((canvas) => {
+        const state = states.get(canvas);
+        if (!state) return;
+        state.frame = 0;
+        state.startedAt = null;
+        fitCanvas(canvas);
+        drawCanvas(canvas);
+      });
+      startAnimation();
+    });
+  });
   reducedMotion.addEventListener("change", () => {
     stopAnimation();
     if (reducedMotion.matches) {

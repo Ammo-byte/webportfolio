@@ -31,10 +31,10 @@ document.addEventListener("DOMContentLoaded", () => {
   hydratePixelIcons();
   initTheme(background, game);
   initNavigation();
-  initReveals();
   initExperience();
-  initPageMotion();
   initExperienceScenes();
+  initReveals();
+  initPageMotion();
   initAccordions();
   initEmailModal();
   initArcade(background, game);

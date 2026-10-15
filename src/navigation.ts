@@ -8,7 +8,7 @@ export const scrollSectionIntoView = (
     document.querySelector<HTMLElement>("#site-header")?.offsetHeight ?? 0;
   const top = target.id === "home"
     ? 0
-    : window.scrollY + target.getBoundingClientRect().top - headerHeight - 28;
+    : window.scrollY + target.getBoundingClientRect().top - headerHeight;
   window.scrollTo({ top: Math.max(0, top), behavior });
 };
 
