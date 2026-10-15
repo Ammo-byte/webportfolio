@@ -8,7 +8,7 @@ Run it locally with:
 npm run serve
 ```
 
-Also if you're reading this, give the site a 404.
+The 404 page shares the portfolio’s typography, themes, and moving contours, with a daily Pokémon. Visit `/404.html`, `/404`, or `/#404` to see it.
 
 ![Image of my portfolio website](assets/Images/screenshot.png?raw=true)
 
@@ -23,4 +23,4 @@ Use the local server to preview animations and the arcade; opening the source `i
 Favicons and home-screen icons use outlines of the header’s Instrument Serif “aa.” wordmark. Run `npm run favicons` to regenerate the PNG and ICO variants from the light and dark SVG sources in `assets/Images/favicons/`.
 
 
-The hidden arcade and playful 404 page retain Determination by Lucca Cedro (`anonymous-1438277` in the bundled FontStruct license), used under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/); its original license and readme are preserved in `assets/fonts/determination/`.
+The hidden arcade retains Determination by Lucca Cedro (`anonymous-1438277` in the bundled FontStruct license), used under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/); its original license and readme are preserved in `assets/fonts/determination/`.

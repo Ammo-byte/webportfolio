@@ -17,13 +17,23 @@ import { initNavigation, scrollSectionIntoView } from "./navigation";
 import { initReveals } from "./reveals";
 import { initTheme } from "./theme";
 
+const redirectNotFoundAlias = (): boolean => {
+  const { pathname, hash } = window.location;
+  if (!/^\/404\/?$/i.test(pathname) && !/^#\/?404\/?$/i.test(hash)) {
+    return false;
+  }
+  window.location.replace("/404.html");
+  return true;
+};
+
 const alignInitialSection = (): void => {
   if (!window.location.hash) return;
   const target = document.getElementById(window.location.hash.slice(1));
   if (target) scrollSectionIntoView(target, "auto");
 };
 
-document.addEventListener("DOMContentLoaded", () => {
+const initializePage = (): void => {
+  if (redirectNotFoundAlias()) return;
   const background = initBackgroundField(
     document.querySelector<HTMLCanvasElement>("#site-background"),
   );
@@ -43,4 +53,15 @@ document.addEventListener("DOMContentLoaded", () => {
     document.fonts?.ready.then(alignInitialSection);
     window.setTimeout(alignInitialSection, 360);
   }
+};
+
+window.addEventListener("hashchange", () => {
+  redirectNotFoundAlias();
 });
+if (!redirectNotFoundAlias()) {
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializePage, { once: true });
+  } else {
+    initializePage();
+  }
+}

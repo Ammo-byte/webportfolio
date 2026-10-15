@@ -1,6 +1,10 @@
-import "@fontsource/silkscreen/400.css";
+import "@fontsource/inter/latin-400.css";
+import "@fontsource/inter/latin-500.css";
+import "@fontsource/inter/latin-600.css";
+import "@fontsource/instrument-serif/latin-400.css";
+import "@fontsource/instrument-serif/latin-400-italic.css";
 
-import { PixelField } from "./animations/particles";
+import { initBackgroundField } from "./animations/background";
 import {
   currentTheme,
   root,
@@ -30,26 +34,30 @@ const setText = (selector: string, value: string | number): void => {
 };
 
 const capitalize = (value: string): string =>
-  value.charAt(0).toUpperCase() + value.slice(1);
+  value.split("-").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
 
 const pokemonIdForToday = (): number => {
   const today = new Date();
-  const start = new Date(today.getFullYear(), 0, 0);
-  const day = Math.floor((today.getTime() - start.getTime()) / 86_400_000);
+  const start = Date.UTC(today.getFullYear(), 0, 0);
+  const current = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+  const day = Math.floor((current - start) / 86_400_000);
   return (day % 1025) + 1;
 };
 
 const fetchPokemon = async (): Promise<void> => {
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 8000);
   try {
     const response = await fetch(
       `https://pokeapi.co/api/v2/pokemon/${pokemonIdForToday()}/`,
+      { signal: controller.signal },
     );
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const pokemon = (await response.json()) as PokemonData;
     setText("#pokemon-name", capitalize(pokemon.name));
     setText("#pokemon-id", pokemon.id);
-    setText("#pokemon-height", `${pokemon.height} dm`);
-    setText("#pokemon-weight", `${pokemon.weight} hg`);
+    setText("#pokemon-height", `${pokemon.height / 10} m`);
+    setText("#pokemon-weight", `${pokemon.weight / 10} kg`);
     setText("#pokemon-base-experience", pokemon.base_experience);
     setText(
       "#pokemon-types",
@@ -67,8 +75,18 @@ const fetchPokemon = async (): Promise<void> => {
       pokemon.sprites.other["official-artwork"].front_default ??
       pokemon.sprites.front_default;
     if (image && imageSource) {
+      image.addEventListener("load", () => {
+        image.hidden = false;
+        const loading = document.querySelector<HTMLElement>("#pokemon-loading");
+        if (loading) loading.hidden = true;
+      }, { once: true });
+      image.addEventListener("error", () => {
+        setText("#pokemon-loading", "Artwork unavailable.");
+      }, { once: true });
       image.src = imageSource;
-      image.alt = pokemon.name;
+      image.alt = `Official artwork of ${capitalize(pokemon.name)}`;
+    } else {
+      setText("#pokemon-loading", "No artwork for today’s Pokémon.");
     }
 
     const stats = document.querySelector<HTMLUListElement>("#pokemon-stats");
@@ -84,15 +102,18 @@ const fetchPokemon = async (): Promise<void> => {
       }),
     );
   } catch (error) {
-    console.error("Pokemon fetch error:", error);
-    setText("#pokemon-name", "Signal Lost");
+    console.warn("Pokémon could not be loaded:", error);
+    setText("#pokemon-name", "Pokémon unavailable");
+    setText("#pokemon-loading", "Today’s Pokémon couldn’t load. You can still head back to the portfolio.");
     document.querySelector(".pokemon-card")?.classList.add("is-error");
+  } finally {
+    window.clearTimeout(timeout);
   }
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  const particles = new PixelField(
-    document.querySelector<HTMLCanvasElement>("#particles-js"),
+  const background = initBackgroundField(
+    document.querySelector<HTMLCanvasElement>("#site-background"),
   );
   const toggle = document.querySelector<HTMLButtonElement>(".theme-toggle");
   const favicon = document.querySelector<HTMLLinkElement>("#favicon");
@@ -111,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
       appleIcon.href = `/assets/Images/favicons/apple-touch-icon-${theme}.png?v=wordmark`;
     }
     hydratePixelIcons();
-    particles.setTheme(theme);
+    background.setTheme(theme);
     if (persist) writeStorage(localStorage, "theme", theme);
   };
 

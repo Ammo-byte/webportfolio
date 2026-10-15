@@ -2,114 +2,83 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Aamodit Acharya portfolio 404 page."
-    />
+    <meta name="description" content="A small detour from Aamodit Acharya’s portfolio." />
+    <meta name="robots" content="noindex" />
     <script>
       (function () {
         let savedTheme = null;
-        try {
-          savedTheme = localStorage.getItem("theme");
-        } catch (error) {
-          console.warn("Theme preference could not be read.", error);
-        }
-        const systemDark = window.matchMedia(
-          "(prefers-color-scheme: dark)",
-        ).matches;
-        document.documentElement.dataset.theme =
-          savedTheme || (systemDark ? "dark" : "light");
+        try { savedTheme = localStorage.getItem("theme"); } catch (_) {}
+        const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme = savedTheme || (systemDark ? "dark" : "light");
       })();
     </script>
-    <link rel="stylesheet" href="/style.css?v=129" />
-    <link
-      id="favicon"
-      rel="icon"
-      type="image/png"
-      href="/assets/Images/favicons/favicon-dark.png?v=wordmark"
-    />
+    <link rel="stylesheet" href="/style.css" />
+    <link id="favicon" rel="icon" type="image/png" href="/assets/Images/favicons/favicon-dark.png?v=wordmark" />
     <link id="apple-touch-icon" rel="apple-touch-icon" sizes="180x180" href="/assets/Images/favicons/apple-touch-icon-dark.png?v=wordmark" />
     <link rel="manifest" href="/assets/Images/favicons/site.webmanifest" />
-    <title>Aamodit Acharya | 404</title>
+    <title>Aamodit Acharya | Page not found</title>
   </head>
   <body class="not-found-page">
-    <canvas id="particles-js" aria-hidden="true"></canvas>
+    <canvas id="site-background" class="site-background" aria-hidden="true"></canvas>
+    <svg class="background-poster" aria-hidden="true" viewBox="0 0 1600 1000" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M422.86 0.00Q376.47 42.46 373.21 45.04Q369.96 47.62 349.69 61.17Q329.41 74.73 310.79 84.98Q292.16 95.24 287.26 97.46Q282.35 99.68 258.82 108.36Q235.29 117.05 211.76 123.86Q188.24 130.67 164.71 135.97Q141.18 141.27 136.75 142.06Q132.32 142.86 113.22 145.66Q94.12 148.45 70.59 151.16Q47.06 153.86 23.53 156.01L0.00 158.16" stroke-width="0.9" opacity="0.2"/>
+    <path d="M643.44 0.00Q611.89 47.62 611.83 47.71Q611.76 47.81 593.97 71.52Q576.18 95.24 570.44 102.19Q564.71 109.14 548.76 126.00Q532.81 142.86 525.23 149.73Q517.65 156.60 495.09 173.54Q472.53 190.48 471.56 191.08Q470.59 191.69 447.06 203.64Q423.53 215.58 400.00 224.64Q376.47 233.69 369.03 235.89Q361.59 238.10 345.50 242.01Q329.41 245.93 305.88 250.17Q282.35 254.41 258.82 257.43Q235.29 260.44 211.76 262.54Q188.24 264.63 164.71 266.06Q141.18 267.48 117.65 268.44Q94.12 269.40 70.59 270.05Q47.06 270.71 23.53 271.21L0.00 271.71" stroke-width="0.9" opacity="0.2"/>
+    <path d="M818.99 0.00Q800.00 32.41 795.44 40.01Q790.88 47.62 777.48 71.43Q764.09 95.24 758.51 105.41Q752.94 115.58 744.90 129.22Q736.86 142.86 722.06 166.67Q707.25 190.48 706.57 191.48Q705.88 192.48 688.00 215.29Q670.12 238.10 664.47 244.15Q658.82 250.21 638.79 267.96Q618.75 285.71 615.26 288.24Q611.76 290.76 588.24 304.38Q564.71 318.00 546.93 325.67Q529.16 333.33 523.40 335.36Q517.65 337.40 494.12 343.66Q470.59 349.93 447.06 354.25Q423.53 358.57 400.00 361.40Q376.47 364.23 352.94 365.92Q329.41 367.61 305.88 368.46Q282.35 369.31 258.82 369.56Q235.29 369.80 211.76 369.64Q188.24 369.48 164.71 369.07Q141.18 368.66 117.65 368.13Q94.12 367.61 70.59 367.08Q47.06 366.55 23.53 366.12L0.00 365.68" stroke-width="1.2" opacity="0.4"/>
+    <path d="M995.77 0.00Q988.24 11.46 976.67 29.54Q965.11 47.62 953.14 69.61Q941.18 91.59 940.18 93.41Q939.19 95.24 927.66 119.05Q916.14 142.86 905.59 166.67Q895.05 190.48 894.58 191.57Q894.12 192.67 883.75 215.38Q873.38 238.10 861.62 261.90Q849.87 285.71 848.46 288.24Q847.06 290.76 833.53 312.05Q820.00 333.33 810.00 345.94Q800.00 358.56 789.32 369.75Q778.64 380.95 765.79 391.58Q752.94 402.21 732.36 415.39Q711.78 428.57 708.83 430.08Q705.88 431.59 682.35 441.01Q658.82 450.42 635.29 457.02Q611.76 463.63 588.24 468.03Q564.71 472.42 548.44 474.31Q532.17 476.19 524.91 476.91Q517.65 477.63 494.12 478.86Q470.59 480.09 447.06 480.40Q423.53 480.71 400.00 480.32Q376.47 479.93 352.94 479.03Q329.41 478.13 311.21 477.16Q293.01 476.19 287.68 475.90Q282.35 475.60 258.82 474.06Q235.29 472.51 211.76 470.89Q188.24 469.26 164.71 467.66Q141.18 466.06 117.65 464.57Q94.12 463.09 70.59 461.81Q47.06 460.52 23.53 459.51L0.00 458.50" stroke-width="0.9" opacity="0.2"/>
+    <path d="M1168.23 0.00Q1129.41 47.28 1129.28 47.45Q1129.15 47.62 1113.91 71.43Q1098.67 95.24 1090.51 110.98Q1082.35 126.72 1078.28 134.79Q1074.21 142.86 1064.22 166.67Q1054.23 190.48 1045.71 214.29Q1037.19 238.10 1036.24 241.04Q1035.29 243.99 1028.31 264.85Q1021.32 285.71 1013.15 309.52Q1004.98 333.33 996.61 354.47Q988.24 375.60 987.07 378.28Q985.90 380.95 973.04 404.76Q960.18 428.57 950.68 441.70Q941.18 454.83 932.03 465.51Q922.89 476.19 908.50 488.92Q894.12 501.66 878.37 512.73Q862.62 523.81 854.84 528.14Q847.06 532.47 823.53 542.75Q800.00 553.04 776.47 560.45Q752.94 567.85 745.01 569.64Q737.08 571.43 721.48 574.45Q705.88 577.46 682.35 580.45Q658.82 583.43 635.29 585.06Q611.76 586.68 588.24 587.18Q564.71 587.69 541.18 587.29Q517.65 586.90 494.12 585.78Q470.59 584.67 447.06 583.01Q423.53 581.36 400.00 579.29Q376.47 577.23 352.94 574.90Q329.41 572.58 324.05 572.00Q318.70 571.43 300.53 569.48Q282.35 567.54 258.82 564.99Q235.29 562.44 211.76 559.98Q188.24 557.52 164.71 555.24Q141.18 552.95 117.65 550.92Q94.12 548.89 70.59 547.20Q47.06 545.50 23.53 544.20L0.00 542.90" stroke-width="0.9" opacity="0.2"/>
+    <path d="M1393.84 0.00Q1364.71 18.29 1345.36 32.95Q1326.01 47.62 1321.83 51.49Q1317.65 55.35 1298.92 75.29Q1280.18 95.24 1275.39 101.72Q1270.59 108.20 1258.99 125.53Q1247.39 142.86 1235.46 166.18Q1223.53 189.50 1223.29 189.99Q1223.06 190.48 1214.27 214.29Q1205.47 238.10 1198.72 261.90Q1191.97 285.71 1186.44 309.52Q1180.92 333.33 1178.69 343.72Q1176.47 354.10 1173.53 367.53Q1170.59 380.95 1164.71 404.76Q1158.82 428.57 1150.89 452.38Q1142.95 476.19 1136.18 490.55Q1129.41 504.90 1124.48 514.36Q1119.56 523.81 1101.70 547.62Q1083.84 571.43 1083.09 572.17Q1082.35 572.91 1058.82 592.98Q1035.29 613.05 1031.02 616.05Q1026.74 619.05 1007.49 629.88Q988.24 640.72 964.71 651.06Q941.18 661.40 933.59 664.04Q926.01 666.67 910.06 671.50Q894.12 676.33 870.59 681.72Q847.06 687.11 823.53 690.88Q800.00 694.65 776.47 697.03Q752.94 699.41 729.41 700.60Q705.88 701.78 682.35 701.94Q658.82 702.09 635.29 701.37Q611.76 700.64 588.24 699.17Q564.71 697.71 541.18 695.62Q517.65 693.54 494.12 690.96Q470.59 688.38 447.06 685.41Q423.53 682.45 400.00 679.22Q376.47 675.98 352.94 672.59Q329.41 669.19 320.85 667.93Q312.29 666.67 297.32 664.56Q282.35 662.45 258.82 659.20Q235.29 655.96 211.76 652.91Q188.24 649.86 164.71 647.09Q141.18 644.32 117.65 641.92Q94.12 639.52 70.59 637.58Q47.06 635.64 23.53 634.24L0.00 632.85" stroke-width="1.2" opacity="0.4"/>
+    <path d="M1600.00 86.16Q1565.17 95.24 1559.06 97.21Q1552.94 99.18 1529.41 110.68Q1505.88 122.18 1490.41 132.52Q1474.94 142.86 1466.88 149.98Q1458.82 157.10 1443.71 173.79Q1428.59 190.48 1420.18 203.60Q1411.76 216.73 1405.91 227.41Q1400.05 238.10 1391.29 261.90Q1382.53 285.71 1377.06 309.52Q1371.59 333.33 1368.28 357.14Q1364.97 380.95 1364.84 382.34Q1364.71 383.73 1362.71 406.15Q1360.72 428.57 1358.39 452.38Q1356.06 476.19 1352.21 500.00Q1348.37 523.81 1341.45 547.62Q1334.53 571.43 1326.09 588.78Q1317.65 606.13 1314.32 612.59Q1310.99 619.05 1292.41 642.86Q1273.83 666.67 1272.21 668.21Q1270.59 669.75 1247.06 689.63Q1223.53 709.52 1220.26 711.90Q1217.00 714.29 1196.73 726.59Q1176.47 738.89 1152.94 750.40Q1129.42 761.90 1129.42 761.91Q1129.41 761.91 1105.88 771.15Q1082.35 780.39 1058.82 787.67Q1035.29 794.94 1011.76 800.57Q988.24 806.20 979.32 807.86Q970.40 809.52 955.79 812.33Q941.18 815.14 917.65 818.43Q894.12 821.72 870.59 823.82Q847.06 825.93 823.53 826.98Q800.00 828.02 776.47 828.10Q752.94 828.19 729.41 827.38Q705.88 826.58 682.35 824.97Q658.82 823.35 635.29 820.99Q611.76 818.62 588.24 815.57Q564.71 812.53 555.08 811.02Q545.45 809.52 531.55 807.64Q517.65 805.76 494.12 802.15Q470.59 798.54 447.06 794.59Q423.53 790.65 400.00 786.48Q376.47 782.30 352.94 777.99Q329.41 773.68 305.88 769.34Q282.35 765.01 273.67 763.46Q264.99 761.90 250.14 759.56Q235.29 757.21 211.76 753.77Q188.24 750.32 164.71 747.27Q141.18 744.22 117.65 741.69Q94.12 739.15 70.59 737.27Q47.06 735.39 23.53 734.30L0.00 733.20" stroke-width="0.9" opacity="0.2"/>
+    <path d="M0.00 844.28Q47.06 843.33 70.59 844.33Q94.12 845.32 117.65 847.45Q141.18 849.58 164.71 852.56Q188.24 855.53 193.38 856.34Q198.52 857.14 216.91 861.02Q235.29 864.90 258.82 870.26Q282.35 875.63 305.88 881.11Q329.41 886.59 352.94 892.02Q376.47 897.45 392.73 901.11Q408.99 904.76 416.26 907.21Q423.53 909.66 447.06 917.05Q470.59 924.45 494.12 931.02Q517.65 937.59 541.18 943.37Q564.71 949.14 572.21 950.76Q579.71 952.38 595.74 959.27Q611.76 966.17 635.29 974.49Q658.82 982.82 682.35 989.62Q705.88 996.43 713.41 998.21L720.93 1000.00" stroke-width="0.9" opacity="0.2"/>
+    </svg>
+    <header class="not-found-header">
+      <a href="/#home" class="logo" aria-label="Aamodit Acharya home">
+        <span class="wordmark">aa<span class="wordmark-dot">.</span></span>
+      </a>
+      <nav class="not-found-nav" aria-label="Page navigation">
+        <a href="/#home">Back to portfolio <span aria-hidden="true">↗</span></a>
+        <button class="theme-toggle not-found-theme" type="button" aria-label="Switch to light mode">
+          <span class="pixel-icon" data-icon="cloud-sun" aria-hidden="true"></span>
+        </button>
+      </nav>
+    </header>
 
     <main class="not-found-shell">
       <section class="not-found-card" aria-labelledby="not-found-title">
-        <div class="not-found-topline">
-          <p class="ui-label">OFF ROUTE / 404</p>
-          <button
-            class="theme-toggle not-found-theme"
-            type="button"
-            aria-label="Switch to light mode"
-          >
-            <span
-              class="pixel-icon"
-              data-icon="cloud-sun"
-              aria-hidden="true"
-            ></span>
-          </button>
-        </div>
-
-        <p class="not-found-code">404</p>
-        <h1 id="not-found-title">Aamodit Acharya</h1>
-        <p class="not-found-copy">
-          Sorry, but the page you were looking for might have moved, or does not
-          exist.
-        </p>
-        <p class="not-found-copy">
-          Meanwhile, enjoy today's <strong>Pokemon of the Day</strong>,
-          retrieved from
-          <a
-            href="https://pokeapi.co/"
-            target="_blank"
-            rel="noopener noreferrer"
-            >PokeAPI</a
-          >.
-        </p>
-
+        <p class="section-index">Page not found</p>
+        <p class="not-found-code" aria-hidden="true">404<span>.</span></p>
+        <h1 id="not-found-title">This page is out of play.</h1>
+        <p class="not-found-copy">That address doesn’t lead to a page. You can head home or take a look at my work.</p>
         <div class="not-found-actions">
-          <a class="not-found-home" href="/index.html">
-            RETURN HOME
-            <span
-              class="pixel-icon"
-              data-icon="arrow-right"
-              aria-hidden="true"
-            ></span>
-          </a>
-          <p class="ui-label">SIGNAL LOST / RECALCULATING</p>
+          <a class="not-found-home" href="/#home">Back home <span class="pixel-icon" data-icon="arrow-right" aria-hidden="true"></span></a>
+          <a class="not-found-work" href="/#experience">Explore my work <span aria-hidden="true">↗</span></a>
         </div>
+        <p class="not-found-footnote">There’s still a Pokémon to meet.</p>
       </section>
 
-      <aside class="pokemon-card" aria-live="polite">
-        <p class="ui-label">DAILY SIGNAL</p>
-        <h2>"<span id="pokemon-name">Loading</span>"</h2>
-        <img
-          id="pokemon-img"
-          src=""
-          alt=""
-          width="420"
-          height="420"
-          loading="lazy"
-        />
-        <div class="pokemon-grid">
-          <p><strong>ID</strong><span id="pokemon-id">--</span></p>
-          <p><strong>Types</strong><span id="pokemon-types">--</span></p>
-          <p><strong>Abilities</strong><span id="pokemon-abilities">--</span></p>
-          <p><strong>Height</strong><span id="pokemon-height">-- dm</span></p>
-          <p><strong>Weight</strong><span id="pokemon-weight">-- hg</span></p>
-          <p>
-            <strong>Base Experience</strong>
-            <span id="pokemon-base-experience">--</span>
-          </p>
+      <aside class="pokemon-card" aria-labelledby="pokemon-title">
+        <p class="ui-label">Pokémon of the day</p>
+        <h2 id="pokemon-title"><span id="pokemon-name">Today’s detour</span></h2>
+        <div class="pokemon-portrait">
+          <p id="pokemon-loading" class="pokemon-loading" role="status">Finding today’s Pokémon…</p>
+          <img id="pokemon-img" alt="" width="420" height="420" loading="eager" decoding="async" hidden />
         </div>
-        <ul id="pokemon-stats" class="pokemon-stats"></ul>
+        <div class="pokemon-grid">
+          <p><strong>Pokédex</strong><span id="pokemon-id">—</span></p>
+          <p><strong>Type</strong><span id="pokemon-types">—</span></p>
+          <p><strong>Abilities</strong><span id="pokemon-abilities">—</span></p>
+          <p><strong>Height</strong><span id="pokemon-height">—</span></p>
+          <p><strong>Weight</strong><span id="pokemon-weight">—</span></p>
+          <p><strong>Base experience</strong><span id="pokemon-base-experience">—</span></p>
+        </div>
+        <ul id="pokemon-stats" class="pokemon-stats" aria-label="Base stats"></ul>
       </aside>
     </main>
 
+    <footer class="not-found-footer">
+      <p>Aamodit Acharya</p>
+      <p>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI <span aria-hidden="true">↗</span></a></p>
+    </footer>
     <script type="module" src="/src/not-found.ts"></script>
   </body>
 </html>
