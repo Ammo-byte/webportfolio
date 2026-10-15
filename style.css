@@ -149,7 +149,13 @@ main > section[id]:not(.contact), #experience {
   position: fixed; inset: 0; z-index: -1;
   display: block; width: 100%; height: 100%; pointer-events: none;
 }
-.background-poster { color: var(--blue); }
+.site-background, .background-poster {
+  mask-image: radial-gradient(ellipse 70% 65% at 40% 45%, rgb(0 0 0 / .35) 0%, rgb(0 0 0 / .65) 55%, #000 100%);
+}
+.background-poster { color: var(--blue); --contour-alpha: .18; --contour-anchor-alpha: .3; }
+[data-theme="dark"] .background-poster { --contour-alpha: .22; --contour-anchor-alpha: .36; }
+.background-poster .contour-line { opacity: var(--contour-alpha); }
+.background-poster .contour-anchor { opacity: var(--contour-anchor-alpha); }
 .background-poster path { vector-effect: non-scaling-stroke; }
 .site-background[data-ready="true"] + .background-poster { display: none; }
 .hero-role { max-width: 380px; color: var(--text); font-size: clamp(19px, 2vw, 24px); line-height: 1.5; letter-spacing: -.035em; }

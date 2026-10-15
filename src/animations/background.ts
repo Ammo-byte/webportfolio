@@ -42,12 +42,13 @@ interface ContourLevel {
 
 interface CachedContour {
   anchor: boolean;
-  path: Path2D;
+  paths: ContourPath[];
 }
 
-const CYCLE_MS = 52_000;
-const FRAME_MS = 1000 / 24;
+const CYCLE_MS = 48_000;
+const FRAME_MS = 1000 / 60;
 const PULSE_MS = 850;
+const OVERSCAN = 30;
 const CASE_EDGES: readonly (readonly (readonly [number, number])[])[] = [
   [], [[3, 0]], [[0, 1]], [[3, 1]], [[1, 2]], [], [[0, 2]], [[3, 2]],
   [[2, 3]], [[0, 2]], [], [[1, 2]], [[1, 3]], [[0, 1]], [[3, 0]], [],
@@ -231,9 +232,7 @@ export const createBackgroundContours = (
   shift: Point = { x: 0, y: 0 },
 ): ContourLevel[] => {
   const compact = width <= 620;
-  const cellSize = compact
-    ? 58
-    : Math.max(48, Math.sqrt((width * height) / 1000));
+  const cellSize = compact ? 18 : 24;
   const columns = Math.max(2, Math.ceil(width / cellSize));
   const rows = Math.max(2, Math.ceil(height / cellSize));
   const regions = prepareRegions(densityRegions(width, height, elapsed, shift));
@@ -322,8 +321,9 @@ class ContourBackground implements ParticleController {
   private height = 480;
   private elapsed = 0;
   private pulseRemaining = 0;
-  private shift: Point = { x: 0, y: 0 };
   private pointer: Point = { x: 0, y: 0 };
+  private pointerTarget: Point = { x: 0, y: 0 };
+  private pointerStrength = 0;
   private pointerActive = false;
   private inView = false;
   private paused = false;
@@ -380,14 +380,22 @@ class ContourBackground implements ParticleController {
       const y = event.clientY - bounds.top;
       this.pointerActive =
         x >= 0 && x <= bounds.width && y >= 0 && y <= bounds.height;
-      if (this.pointerActive) this.pointer = { x, y };
+      if (this.pointerActive) {
+        this.pointerTarget = {
+          x: (clamp(x / bounds.width) * this.width + OVERSCAN)
+            * this.width / (this.width + OVERSCAN * 2),
+          y: (clamp(y / bounds.height) * this.height + OVERSCAN)
+            * this.height / (this.height + OVERSCAN * 2),
+        };
+        if (this.pointerStrength < 0.01) this.pointer = { ...this.pointerTarget };
+      }
     });
     window.addEventListener("pointerout", (event) => {
       if (!event.relatedTarget) this.pointerActive = false;
     });
     this.finePointer.addEventListener("change", () => {
       this.pointerActive = false;
-      this.shift = { x: 0, y: 0 };
+      this.pointerStrength = 0;
       this.draw();
     });
     document.addEventListener("visibilitychange", () => {
@@ -397,7 +405,7 @@ class ContourBackground implements ParticleController {
     reducedMotion.addEventListener("change", () => {
       this.stop();
       this.pointerActive = false;
-      this.shift = { x: 0, y: 0 };
+      this.pointerStrength = 0;
       this.pulseRemaining = 0;
       this.draw();
       this.refresh();
@@ -442,15 +450,9 @@ class ContourBackground implements ParticleController {
     if (this.canvas.width !== width) this.canvas.width = width;
     if (this.canvas.height !== height) this.canvas.height = height;
     if (geometryChanged) {
-      this.contours = createBackgroundContours(this.width, this.height).map(
-        (contour) => {
-          const path = new Path2D();
-          contour.paths.forEach((points) => drawContourPath(path, points));
-          return { anchor: contour.anchor, path };
-        },
-      );
+      this.contours = createBackgroundContours(this.width, this.height);
       this.pointerActive = false;
-      this.shift = { x: 0, y: 0 };
+      this.pointerStrength = 0;
     }
     this.draw();
   }
@@ -485,26 +487,19 @@ class ContourBackground implements ParticleController {
       this.accumulatedTime += Math.min(time - this.lastFrameTime, 80);
     }
     this.lastFrameTime = time;
-    if (this.accumulatedTime >= FRAME_MS) {
-      const delta = this.accumulatedTime - (this.accumulatedTime % FRAME_MS);
-      this.accumulatedTime %= FRAME_MS;
+    const interval = this.width <= 620 ? FRAME_MS * 2 : FRAME_MS;
+    if (this.accumulatedTime >= interval) {
+      const delta = this.accumulatedTime - (this.accumulatedTime % interval);
+      this.accumulatedTime %= interval;
       this.elapsed = (this.elapsed + delta) % CYCLE_MS;
       this.pulseRemaining = Math.max(0, this.pulseRemaining - delta);
-      let desiredShift: Point = { x: 0, y: 0 };
-      if (this.pointerActive) {
-        desiredShift = {
-          x: clamp((this.pointer.x / this.width) * 2 - 1, -1, 1) * 8,
-          y: clamp((this.pointer.y / this.height) * 2 - 1, -1, 1) * 6,
-        };
-        const distance = Math.hypot(desiredShift.x, desiredShift.y);
-        if (distance > 8) {
-          desiredShift.x *= 8 / distance;
-          desiredShift.y *= 8 / distance;
-        }
-      }
-      const smoothing = 1 - Math.exp(-delta / 600);
-      this.shift.x += (desiredShift.x - this.shift.x) * smoothing;
-      this.shift.y += (desiredShift.y - this.shift.y) * smoothing;
+      const pointerSmoothing = 1 - Math.exp(-delta / 450);
+      this.pointer.x += (this.pointerTarget.x - this.pointer.x) * pointerSmoothing;
+      this.pointer.y += (this.pointerTarget.y - this.pointer.y) * pointerSmoothing;
+      const smoothing = 1 - Math.exp(-delta / 900);
+      this.pointerStrength += (
+        (this.pointerActive ? 1 : 0) - this.pointerStrength
+      ) * smoothing;
       this.draw();
     }
     this.frame = window.requestAnimationFrame(this.tick);
@@ -520,18 +515,35 @@ class ContourBackground implements ParticleController {
     context.clearRect(0, 0, this.width, this.height);
     const phase = (this.elapsed / CYCLE_MS) * Math.PI * 2;
     const compact = this.width <= 620;
-    // Move the cached field as one continuous orbit, keeping every curve stable.
-    const driftX = reducedMotion.matches ? 0 : Math.sin(phase) * (compact ? 16 : 24);
-    const driftY = reducedMotion.matches ? 0 : (Math.cos(phase) - 1) * (compact ? 10 : 12);
-    const shiftX = reducedMotion.matches ? 0 : this.shift.x;
-    const shiftY = reducedMotion.matches ? 0 : this.shift.y;
-    const overscan = compact ? 28 : 36;
+    const overscan = OVERSCAN;
     context.save();
-    context.translate(-overscan + driftX + shiftX, -overscan + driftY + shiftY);
+    context.translate(-overscan, -overscan);
     context.scale(
       (this.width + overscan * 2) / this.width,
       (this.height + overscan * 2) / this.height,
     );
+    // Deform a stable, finely sampled field. Contours never reconnect or jump.
+    const flowPoint = (point: Point): Point => {
+      if (reducedMotion.matches) return point;
+      const nx = point.x / this.width;
+      const ny = point.y / this.height;
+      const amplitude = compact ? 5 : 8;
+      const flowX = amplitude * (
+        Math.sin(ny * 3.4 + phase) - Math.sin(ny * 3.4)
+      );
+      const flowY = amplitude * 0.8 * (
+        Math.sin(nx * 3.8 - phase) - Math.sin(nx * 3.8)
+      );
+      const dx = point.x + flowX - this.pointer.x;
+      const dy = point.y + flowY - this.pointer.y;
+      const radius = compact ? 150 : 240;
+      const influence = Math.exp(-(dx * dx + dy * dy) / (radius * radius))
+        * this.pointerStrength * 0.045;
+      return {
+        x: point.x + flowX + dx * influence,
+        y: point.y + flowY + dy * influence,
+      };
+    };
     const pulse = this.pulseRemaining > 0
       ? Math.sin((1 - this.pulseRemaining / PULSE_MS) * Math.PI)
       : 0;
@@ -540,11 +552,16 @@ class ContourBackground implements ParticleController {
     context.lineJoin = "round";
     this.contours.forEach((contour) => {
       const alpha = contour.anchor
-        ? (this.theme === "dark" ? 0.46 : 0.35)
-        : (this.theme === "dark" ? 0.24 : 0.2);
-      context.globalAlpha = alpha * (1 + pulse * 0.08);
-      context.lineWidth = contour.anchor ? 1.2 : 0.9;
-      context.stroke(contour.path);
+        ? (this.theme === "dark" ? 0.36 : 0.3)
+        : (this.theme === "dark" ? 0.22 : 0.18);
+      context.globalAlpha = alpha * (1 + pulse * 0.04);
+      context.lineWidth = contour.anchor ? 1 : 0.75;
+      context.beginPath();
+      contour.paths.forEach((path) => drawContourPath(context, {
+        closed: path.closed,
+        points: path.points.map(flowPoint),
+      }));
+      context.stroke();
     });
     context.restore();
     context.globalAlpha = 1;
