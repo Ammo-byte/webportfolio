@@ -119,7 +119,7 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: var(--fo
 .theme-toggle:hover { background: var(--surface); color: var(--text); }
 .menu-toggle, .mobile-menu { display: none; }
 section { position: relative; scroll-margin-top: var(--header-height); }
-main > section[id], #experience {
+main > section[id]:not(.contact), #experience {
   min-height: calc(100svh - var(--header-height));
   min-height: calc(100dvh - var(--header-height));
 }
@@ -249,23 +249,33 @@ main > section[id], #experience {
 .mini-list-desc { min-height: 0; overflow: hidden; color: var(--text-soft); font-size: 12px; line-height: 1.75; }
 .mini-list-row.open .mini-list-desc { padding-bottom: 18px; }
 
-.contact { max-width: var(--content-width); margin: 0 auto; padding: 76px 0 58px; border-top: 1px solid var(--line); }
+.page-ending {
+  display: flex; flex-direction: column; justify-content: flex-end;
+  min-height: calc(100svh - var(--header-height));
+  min-height: calc(100dvh - var(--header-height));
+}
+.page-ending > .contact, .page-ending > .footer {
+  width: min(calc(100% - 2 * var(--page-padding)), var(--content-width));
+  margin: 0 auto;
+}
+.contact { max-width: var(--content-width); margin: 0 auto; padding: 64px 0 30px; border-top: 1px solid var(--line); }
 .contact-content { display: flex; flex-direction: column; }
 .contact-title { order: -1; margin: 16px 0 18px; font-family: var(--font-display); font-size: clamp(58px, 8vw, 96px); font-weight: 400; letter-spacing: -.035em; line-height: 1.1; }
 .contact-note { max-width: 470px; color: var(--text-soft); font-size: 14px; }
-.contact-icons { display: grid; grid-template-columns: repeat(4,1fr); gap: 32px; margin-top: 48px; }
-.contact-icons > a, .contact-icons > button { display: grid; grid-template-columns: 1fr auto; align-items: center; padding: 16px 0; border: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: transparent; color: var(--text); text-align: left; transition: border-color var(--fast); }
+.contact-icons { display: grid; grid-template-columns: repeat(4,1fr); gap: 28px; margin-top: 36px; }
+.contact-icons > a, .contact-icons > button { display: grid; grid-template-columns: 28px minmax(0,1fr) auto; gap: 14px; align-items: center; padding: 16px 0; border: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: transparent; color: var(--text); text-align: left; transition: border-color var(--fast); }
 .contact-icons > a:hover, .contact-icons > button:hover { border-color: var(--blue); }
-.contact-icon-frame { display: none; }
+.contact-icon-frame { display: grid; place-items: center; color: var(--blue); }
+.contact-symbol { width: 28px; height: 28px; fill: currentColor; }
 .contact-copy { display: grid; gap: 2px; }
 .contact-label { font-size: 14px; }
 .contact-meta { color: var(--muted); font-size: 11px; }
 .contact-action { color: var(--blue); font-size: 17px; }
-.return-top { display: inline-flex; align-items: center; gap: 12px; margin-top: 60px; font-size: 10px; }
+.return-top { display: inline-flex; align-items: center; gap: 12px; margin-top: 32px; font-size: 10px; }
 .return-top .pixel-icon { width: 14px; height: 14px; }
 .return-top:hover { color: var(--text); }
 .section-watermark { display: none; }
-.footer { display: flex; align-items: center; justify-content: space-between; gap: 20px; max-width: var(--content-width); margin: 0 auto; padding: 24px 0 32px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
+.footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; max-width: var(--content-width); margin: 0 auto; padding: 18px 0 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
 .footer .ui-label { font-size: 10px; letter-spacing: 0; }
 
 .email-modal { position: fixed; inset: 0; z-index: 900; display: grid; place-items: center; padding: 24px; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity var(--medium), visibility var(--medium); }
@@ -586,8 +596,10 @@ main > section[id], #experience {
   .contact-title { font-size: 68px; }
   .contact-icons { grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 32px; }
   .contact-note { font-size: 13px; }
-  .return-top { margin-top: 40px; }
-  .footer { padding: 22px 0 30px; }
+  .contact-icons > a, .contact-icons > button { grid-template-columns: 24px minmax(0,1fr) auto; gap: 10px; }
+  .contact-symbol { width: 24px; height: 24px; }
+  .return-top { margin-top: 32px; }
+  .footer { padding: 18px 0 24px; }
   .email-modal-card { padding: 52px 24px 28px; }
   .email-modal-card > a { font-size: 12px; }
   .pokemon-grid, .pokemon-stats { grid-template-columns: 1fr; }

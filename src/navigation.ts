@@ -21,7 +21,7 @@ export const initNavigation = (): void => {
   );
   const sections = Array.from(
     document.querySelectorAll<HTMLElement>(
-      "main > section[id], #experience",
+      "main > section[id], #experience, #contact",
     ),
   );
   let activeFrame = 0;
